@@ -1,0 +1,42 @@
+/* TO DO: LEARN HOW TO USE POSTCSS PLUGINS */
+@import './colors.css';
+
+.container-fluid {
+  max-width: 1600px !important;
+  text-align: center;
+  border: 1px solid var(--errorRed);
+}
+
+/* NAVBAR */
+.navbar--color {
+  background-color: rgb(54, 51, 238);
+}
+
+.navbar__brand {
+  color: white;
+}
+
+.navbar__brand:hover {
+  color: antiquewhite;
+}
+
+.navbar__links--color {
+  color: white;
+}
+.navbar__links--color:hover {
+  color: antiquewhite;
+}
+
+.navbar__links--margin {
+  margin-right: 50px;
+}
+
+/* HOME */
+.cardImg {
+  height: 240px !important;
+  object-fit: contain;
+}
+
+.home__card--size {
+  margin-top: 50px;
+}
