@@ -5,6 +5,7 @@
   max-width: 1600px !important;
   text-align: center;
   border: 1px solid var(--errorRed);
+  min-height: 800px !important;
 }
 
 /* NAVBAR */
@@ -32,6 +33,13 @@
 }
 
 /* HOME */
+.games__listing {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
 .cardImg {
   height: 240px !important;
   object-fit: contain;
@@ -39,4 +47,26 @@
 
 .home__card--size {
   margin-top: 50px;
+}
+
+.home__cardBtn--margin {
+  margin: 10px 10px 0 10px;
+}
+
+/* GAME INFO */
+.gameinfo__wrapper {
+  display: flex;
+}
+
+.gameinfo__img--size {
+  max-height: 800px !important;
+  max-width: 700px !important;
+  object-fit: contain !important;
+  float: left;
+  margin: 30px 100px 0 20px;
+}
+
+.gameinfo__text {
+  max-width: 700px;
+  margin: 100px 0 0 0px;
 }
