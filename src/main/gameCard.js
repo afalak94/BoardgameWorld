@@ -19,7 +19,7 @@ const GameCard = props => {
           alt='Card image cap'
           className='cardImg'
         />
-        <CardBody>
+        <CardBody className='card__text'>
           <CardTitle>{props.game.name}</CardTitle>
           <CardSubtitle>Score: {props.game.score}</CardSubtitle>
           <Button

@@ -20,17 +20,19 @@ const routing = (
     <BrowserRouter>
       <div>
         <Navigation />
-        <div className='container-fluid'>
-          <Switch>
-            <Route path='/' component={App} exact />
-            <Route path='/listing' component={Listing} />
-            <Route path='/faq' component={FAQ} />
-            <Route path='/login' component={Login} />
-            <Route path='/register' component={Register} />
-            <Route path='/cart' component={Cart} />
-            <Route path='/game/:id' component={GameInfo} />
-            <Route component={Notfound} />
-          </Switch>
+        <div className='background'>
+          <div className='container-fluid'>
+            <Switch>
+              <Route path='/' component={App} exact />
+              <Route path='/listing' component={Listing} />
+              <Route path='/faq' component={FAQ} />
+              <Route path='/login' component={Login} />
+              <Route path='/register' component={Register} />
+              <Route path='/cart' component={Cart} />
+              <Route path='/game/:id' component={GameInfo} />
+              <Route component={Notfound} />
+            </Switch>
+          </div>
         </div>
       </div>
     </BrowserRouter>

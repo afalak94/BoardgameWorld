@@ -21,7 +21,7 @@ class GameInfo extends Component {
           <img className='img-fluid' src={this.boardgame.imgUrl} alt='info' />
         </div>
 
-        <div className='gameinfo__text'>
+        <div className='gameinfo__div'>
           <h2>{this.boardgame.name}</h2>
           <h4>Score: {this.boardgame.score}</h4>
           <h4>Price: {this.boardgame.price}</h4>

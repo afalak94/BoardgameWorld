@@ -1,16 +1,29 @@
 /* TO DO: LEARN HOW TO USE POSTCSS PLUGINS */
 @import './colors.css';
 
+.background {
+  background-image: url('./images/bgWorld-wallpaper2.jpg');
+  background-position: 'center';
+  background-repeat: 'repeat-y';
+  background-size: contain;
+  background-size: 100% 100%;
+  position: relative;
+}
+
 .container-fluid {
   max-width: 1600px !important;
   text-align: center;
   border: 1px solid var(--errorRed);
-  min-height: 800px !important;
+  min-height: 882px !important;
+
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 /* NAVBAR */
 .navbar--color {
-  background-color: rgb(54, 51, 238);
+  background-color: #2b4162;
 }
 
 .navbar__brand {
@@ -47,10 +60,20 @@
 
 .home__card--size {
   margin-top: 50px;
+  background-color: #2b4162;
+  border: 5px solid #2b4162;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .home__cardBtn--margin {
-  margin: 10px 10px 0 10px;
+  margin: 10px 10px -15px 10px;
+}
+
+.card__text {
+  background-color: #2b4162;
+  color: #d64933;
+  border-radius: 10px;
 }
 
 /* GAME INFO */
@@ -66,7 +89,14 @@
   margin: 30px 100px 0 20px;
 }
 
-.gameinfo__text {
+.gameinfo__div {
   max-width: 700px;
   margin: 100px 0 0 0px;
+  color: #d64933;
+  background-color: #2b4162;
+  display: block;
+  overflow: auto;
+  height: 100%;
+  padding: 20px;
+  border-radius: 10px;
 }
