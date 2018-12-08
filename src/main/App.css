@@ -100,3 +100,16 @@
   padding: 20px;
   border-radius: 10px;
 }
+
+/* CART */
+.cart__listgroup {
+  margin: 100px 0 0 100px;
+}
+.cart__list {
+  width: 400px;
+}
+
+.cart__itemImg {
+  height: 100px;
+  width: 160px;
+}
