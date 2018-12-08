@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import store from '../../main/store';
 import { Button } from 'reactstrap';
 //import { addToCart } from '../../modules/Cart/actions';
 import { connect } from 'react-redux';
@@ -9,8 +8,8 @@ class GameInfo extends Component {
     super(props);
 
     //find the boardgame from redux store with the id-1
-    this.boardgame = store.getState().boardgames[0][props.match.params.id - 1];
-    console.log(this.boardgame);
+    this.boardgame = this.props.boardgames[props.match.params.id - 1];
+    console.log(this.props.boardgames);
     //console.log(props.match.params.id);
   }
 
@@ -38,7 +37,7 @@ class GameInfo extends Component {
 //connect to redux store cart and enable addToCart function
 function mapStateToProps(state) {
   return {
-    cart: state.cart
+    boardgames: state.boardgames[0]
   };
 }
 

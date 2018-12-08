@@ -26,12 +26,14 @@ class App extends Component {
       this.setState({
         boardgames: snap.val()
       });
-      console.log(this.state.boardgames);
+      //console.log(this.state.boardgames);
 
-      //copy boardgames from firebase to redux store
-      this.props.addToStore(snap.val());
+      //copy boardgames from firebase to redux store if they dont exist alredy
+      if (!this.props.boardgames[0]) {
+        this.props.addToStore(snap.val());
+      }
       this.boardgames = store.getState().boardgames[0];
-      console.log(this.boardgames);
+      //console.log(this.props.boardgames[0]);
     });
   }
 

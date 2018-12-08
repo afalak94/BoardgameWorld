@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './main/index.css';
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './main/App';
+import App from './App';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './main/store';
-import Listing from './modules/Listing/index';
-import FAQ from './modules/FAQ/index';
-import Login from './modules/Login/index';
-import Cart from './modules/Cart/index';
-import Register from './modules/Register/index';
-import GameInfo from './modules/GameInfo/index';
-import Notfound from './modules/404/notFound';
-import Navigation from './main/Header/Navigation';
+import store from './store';
+import Listing from '../modules/Listing/index';
+import FAQ from '../modules/FAQ/index';
+import Login from '../modules/Login/index';
+import Cart from '../modules/Cart/index';
+import Register from '../modules/Register/index';
+import GameInfo from '../modules/GameInfo/index';
+import Notfound from '../modules/404/notFound';
+import Navigation from './Header/Navigation';
 
 const routing = (
   <Provider store={store}>
