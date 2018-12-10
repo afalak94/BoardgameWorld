@@ -13,6 +13,7 @@ import Cart from '../modules/Cart/index';
 import Register from '../modules/Register/index';
 import GameInfo from '../modules/GameInfo/index';
 import Notfound from '../modules/404/notFound';
+import AdminSection from '../modules/Admin/index';
 import Navigation from './Header/Navigation';
 
 const routing = (
@@ -30,6 +31,7 @@ const routing = (
               <Route path='/register' component={Register} />
               <Route path='/cart' component={Cart} />
               <Route path='/game/:id' component={GameInfo} />
+              <Route path='/admin' component={AdminSection} />
               <Route component={Notfound} />
             </Switch>
           </div>
