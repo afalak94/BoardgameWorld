@@ -14,14 +14,20 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import CategoryList from './categoryList';
+import ItemList from './itemList';
+import firebase from '../../main/firebase.config';
+import 'firebase/database';
 
 export default class AdminSection extends React.Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.updateInputValue = this.updateInputValue.bind(this);
+    this.addCategory = this.addCategory.bind(this);
     this.state = {
-      activeTab: '1'
+      activeTab: '1',
+      inputValue: ''
     };
   }
 
@@ -31,6 +37,31 @@ export default class AdminSection extends React.Component {
         activeTab: tab
       });
     }
+  }
+
+  updateInputValue(e) {
+    this.setState({
+      inputValue: e.target.value
+    });
+  }
+
+  addCategory(name) {
+    //adding a new category to firebase
+    //console.log(name);
+    this.setState({ inputValue: '' });
+
+    // Get a key for a new Post.
+    const newPostKey = firebase
+      .database()
+      .ref()
+      .child('categories')
+      .push().key;
+    let updates = {};
+    updates['/categories/' + newPostKey] = name;
+    return firebase
+      .database()
+      .ref()
+      .update(updates);
   }
 
   render() {
@@ -78,6 +109,7 @@ export default class AdminSection extends React.Component {
               <Col sm={{ size: 'auto', offset: 1 }}>
                 <CategoryList />
               </Col>
+
               <Col sm={{ size: 'auto' }}>
                 <InputGroup className='category__input'>
                   <InputGroupAddon addonType='prepend'>
@@ -85,10 +117,14 @@ export default class AdminSection extends React.Component {
                       Add category
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input />
+                  <Input
+                    value={this.state.inputValue}
+                    onChange={e => this.updateInputValue(e)}
+                  />
                   <InputGroupAddon
                     className='category__submitBtn'
                     addonType='append'
+                    onClick={() => this.addCategory(this.state.inputValue)}
                   >
                     <InputGroupText className='category__inputText'>
                       Submit
@@ -99,7 +135,13 @@ export default class AdminSection extends React.Component {
             </Row>
           </TabPane>
 
-          <TabPane tabId='2' />
+          <TabPane tabId='2'>
+            <Row style={{ width: 1500 }}>
+              <Col sm={{ size: 'auto', offset: 1 }}>
+                <ItemList />
+              </Col>
+            </Row>
+          </TabPane>
         </TabContent>
       </div>
     );

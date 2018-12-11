@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
@@ -13,47 +13,52 @@ export default class CategoryList extends Component {
   }
 
   componentWillMount() {
-    //get all games from database
+    //get all categories from database
     this.database = firebase.database().ref('categories/');
     this.database.on('value', snap => {
-      this.setState({
-        categories: snap.val()
+      //save categories data as array of objects with key-value pairs
+      let data = [];
+      snap.forEach(ss => {
+        data.push({ key: ss.key, value: ss.val() });
       });
-      console.log(snap);
-      console.log(this.state.categories);
+      this.setState({
+        categories: data
+      });
+      // console.log(data);
+      //console.log(this.state.categories);
     });
   }
 
-  deleteCategory(key) {
-    //removing category from firebase
+  deleteCategory(name) {
+    //removing category from firebase by using key
     const database = firebase.database().ref('categories/');
     database.on('child_removed', snap => {
       console.log(snap.val());
     });
-    database.child(key).remove();
+    database.child(name).remove();
   }
 
   render() {
     return (
-      <Fragment>
-        <div>
-          <ListGroup>
-            {this.state.categories.map((category, i) => {
-              return (
-                <ListGroupItem key={i} className='category__listGroup'>
-                  {category}
-                  <Button
-                    style={{ color: '#d64933' }}
-                    onClick={() => this.deleteCategory(i)}
-                  >
-                    Remove
-                  </Button>
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-        </div>
-      </Fragment>
+      <div>
+        <ListGroup>
+          {this.state.categories.map(category => {
+            return (
+              <ListGroupItem key={category.key} className='category__listGroup'>
+                <div className='category__listGroupText'>{category.value}</div>
+                <Button
+                  color='danger'
+                  outline
+                  className='category__listGroupBtn'
+                  onClick={() => this.deleteCategory(category.key)}
+                >
+                  Remove
+                </Button>
+              </ListGroupItem>
+            );
+          })}
+        </ListGroup>
+      </div>
     );
   }
 }
