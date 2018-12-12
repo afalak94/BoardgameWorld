@@ -15,7 +15,7 @@ class Cart extends Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props.cart);
+    //console.log(this.props.cart);
 
     this.calcTotal = this.calcTotal.bind(this);
   }
@@ -24,9 +24,9 @@ class Cart extends Component {
     //calculate total price from all items in the cart
     let total = 0;
     this.props.cart.forEach(function(item) {
-      total += item.price;
+      total += parseFloat(item.value.price, 10);
     });
-    return total;
+    return Math.round(total * 100) / 100;
   }
 
   render() {
@@ -39,7 +39,7 @@ class Cart extends Component {
                 <div style={{ float: 'left' }}>
                   <img
                     className='img-thumbnail cart__itemImg'
-                    src={item.imgUrl}
+                    src={item.value.imgUrl}
                     alt='cart item'
                   />
                 </div>
@@ -49,8 +49,8 @@ class Cart extends Component {
                     close
                     onClick={() => this.props.removeFromCart(item)}
                   />
-                  <ListGroupItemHeading>{item.name}</ListGroupItemHeading>
-                  <ListGroupItemText>{item.price} $</ListGroupItemText>
+                  <ListGroupItemHeading>{item.value.name}</ListGroupItemHeading>
+                  <ListGroupItemText>{item.value.price} $</ListGroupItemText>
                 </div>
               </ListGroupItem>
             );

@@ -5,8 +5,8 @@
   background-image: url('./images/bgWorld-wallpaper2.jpg');
   background-position: 'center';
   background-repeat: 'repeat-y';
-  background-size: contain;
-  background-size: 100% 100%;
+  //background-size: contain;
+  //background-size: 100% 100%;
   position: relative;
 }
 
@@ -23,7 +23,7 @@
 
 /* NAVBAR */
 .navbar--color {
-  background-color: #2b4162;
+  background-color: var(--styleBlue);
 }
 
 .navbar__brand {
@@ -36,9 +36,10 @@
 
 .navbar__links--color {
   color: white;
-}
-.navbar__links--color:hover {
-  color: antiquewhite;
+
+  &:hover {
+    color: antiquewhite;
+  }
 }
 
 .navbar__links--margin {
@@ -46,11 +47,42 @@
 }
 
 /* HOME */
-.games__listing {
+.home__carousel {
+  display: inline-block;
+  margin-top: 10px;
+  //text-align: center;
+}
+
+.home__corouselItem {
+  height: 500px;
+  width: 1100px;
+
+  .carousel__caption {
+    color: var(--styleRed);
+    padding-bottom: 0;
+    h3 {
+      background-color: var(--styleBlue);
+      border-radius: 20px;
+    }
+  }
+
+  img {
+    flex-shrink: 0;
+    min-width: 100%;
+    // min-height: 100%;
+    max-height: 100%;
+    border: 5px solid var(--styleBlue);
+    border-radius: 15px;
+  }
+}
+
+/* LISTING */
+.listing__games {
   display: flex;
   flex: 1;
   flex-wrap: wrap;
   flex-direction: row;
+  margin-bottom: 20px;
 }
 
 .cardImg {
@@ -60,19 +92,33 @@
 
 .home__card--size {
   margin-top: 50px;
-  background-color: #2b4162;
-  border: 5px solid #2b4162;
+  background-color: var(--styleBlue);
+  border: 5px solid var(--styleBlue);
   padding: 10px;
   border-radius: 10px;
 }
 
+.home__cardPrice {
+  display: flex;
+  font-size: 20px;
+
+  .card__regularPrice {
+    flex: 0 0 50%;
+    text-decoration: line-through;
+  }
+
+  .card__salePrice {
+    flex: 1;
+  }
+}
+
 .home__cardBtn--margin {
-  margin: 10px 10px -15px 10px;
+  margin: 0px 10px -15px 10px;
 }
 
 .card__text {
-  background-color: #2b4162;
-  color: #d64933;
+  background-color: var(--styleBlue);
+  color: var(--styleRed);
   border-radius: 10px;
 }
 
@@ -92,8 +138,8 @@
 .gameinfo__div {
   max-width: 700px;
   margin: 100px 0 0 0px;
-  color: #d64933;
-  background-color: #2b4162;
+  color: var(--styleRed);
+  background-color: var(--styleBlue);
   display: block;
   overflow: auto;
   height: 100%;
@@ -130,8 +176,8 @@
 }
 
 .cart__summary__jumbotron {
-  background-color: #2b4162;
-  color: #d64933;
+  background-color: var(--styleBlue);
+  color: var(--styleRed);
   border-radius: 10px;
 }
 
@@ -149,8 +195,8 @@
 }
 
 .admin__navItem {
-  background-color: #2b4162;
-  color: #d64933;
+  background-color: var(--styleBlue);
+  color: var(--styleRed);
   width: 250px;
 
   &:hover {
@@ -158,8 +204,8 @@
   }
 
   .active {
-    color: #d64933 !important;
-    background-color: #2b4162 !important;
+    color: var(--styleRed) !important;
+    background-color: var(--styleBlue) !important;
     font-weight: bold;
   }
 }
@@ -170,9 +216,9 @@
 }
 
 .category__listGroup {
-  background-color: #2b4162 !important;
-  color: #d64933 !important;
-  border: 1px solid #d64933;
+  background-color: var(--styleBlue) !important;
+  color: var(--styleRed) !important;
+  border: 1px solid var(--styleRed);
   width: 400px;
   display: flex;
 
@@ -189,8 +235,8 @@
   width: 600px;
 
   .category__inputText {
-    background-color: #2b4162 !important;
-    color: #d64933 !important;
+    background-color: var(--styleBlue) !important;
+    color: var(--styleRed) !important;
   }
 
   .category__submitBtn {
@@ -202,16 +248,26 @@
 
 /* ITEMS */
 .item__formContainer {
-  background-color: #2b4162;
-  color: #d64933;
+  background-color: var(--styleBlue);
+  color: var(--styleRed);
   padding: 10px;
   width: 600px !important;
 
   .inputGroup__dolar {
-    background-color: #2b4162;
-    color: #d64933;
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
     font-weight: bold;
     position: absolute;
     font-size: 16px;
+  }
+}
+
+/* FOOTER */
+
+.footer {
+  background-color: var(--styleBlue);
+
+  .footer__links {
+    margin-left: 1600px;
   }
 }

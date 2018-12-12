@@ -56,6 +56,7 @@ export default class AdminSection extends React.Component {
       .ref()
       .child('categories')
       .push().key;
+    //update a new category to firebase
     let updates = {};
     updates['/categories/' + newPostKey] = name;
     return firebase

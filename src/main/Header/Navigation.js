@@ -1,5 +1,5 @@
 //Navbar component
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Collapse,
   Navbar,
@@ -7,8 +7,9 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink} from 'reactstrap';
-  import { Link } from 'react-router-dom';
+  NavLink
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default class Navigation extends Component {
   constructor(props) {
@@ -27,29 +28,27 @@ export default class Navigation extends Component {
   render() {
     return (
       <div>
-        <Navbar className="navbar--color" expand="md">
-          <NavbarBrand className="navbar__brand" tag={Link} to="/">Boardgame World</NavbarBrand>
+        <Navbar className='navbar--color' expand='md'>
+          <NavbarBrand className='navbar__brand' tag={Link} to='/'>
+            Boardgame World
+          </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
+            <Nav className='ml-auto' navbar>
               <NavItem>
-                <NavLink className="navbar__links--color" tag={Link} to="/login">Login</NavLink>
+                <NavLink className='navbar__links--color' tag={Link} to='/cart'>
+                  Cart
+                </NavLink>
               </NavItem>
 
               <NavItem>
-                <NavLink className="navbar__links--color navbar__links--margin" tag={Link} to="/register">Register</NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink className="navbar__links--color" tag={Link} to="/cart">Cart</NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink className="navbar__links--color" tag={Link} to="/listing">Listing</NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink className="navbar__links--color" tag={Link} to="/faq">FAQ</NavLink>
+                <NavLink
+                  className='navbar__links--color'
+                  tag={Link}
+                  to='/listing'
+                >
+                  Listing
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>

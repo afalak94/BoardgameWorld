@@ -15,6 +15,7 @@ import GameInfo from '../modules/GameInfo/index';
 import Notfound from '../modules/404/notFound';
 import AdminSection from '../modules/Admin/index';
 import Navigation from './Header/Navigation';
+import Footer from './Footer/footer';
 
 const routing = (
   <Provider store={store}>
@@ -36,6 +37,7 @@ const routing = (
             </Switch>
           </div>
         </div>
+        <Footer />
       </div>
     </BrowserRouter>
   </Provider>

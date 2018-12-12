@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ListGroup, ListGroupItem, Button, Row, Col } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
-import ItemInfoTemplate from './itemInfoTemplate';
+import AddItemTemplate from './addItemTemplate';
 
 export default class ItemList extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ export default class ItemList extends Component {
     };
 
     this.deleteItem = this.deleteItem.bind(this);
+    this.addNewItem = this.addNewItem.bind(this);
   }
 
   componentWillMount() {
@@ -51,7 +52,59 @@ export default class ItemList extends Component {
     this.setState({ gotData: true });
   }
 
-  deleteItem(name) {}
+  deleteItem(name) {
+    //removing item (boardgame) from firebase by using key
+    const database = firebase.database().ref('boardgames/');
+    database.on('child_removed', snap => {
+      //console.log(snap.val());
+    });
+    database.child(name).remove();
+  }
+
+  //function that adds a new item in boardgames to firebase database
+  addNewItem(
+    name,
+    score,
+    imgUrl,
+    price,
+    salePrice,
+    onSale,
+    description,
+    category
+  ) {
+    //listener for new child entries
+    this.items.on('child_added', snap => {
+      //console.log(snap.val());
+    });
+
+    // Item data
+    const itemData = {
+      name: name,
+      score: score,
+      imgUrl: imgUrl,
+      price: price,
+      salePrice: salePrice,
+      onSale: onSale,
+      description: description,
+      category: category
+    };
+
+    // Get a key for a new Post.
+    const newItemKey = firebase
+      .database()
+      .ref()
+      .child('boardgames')
+      .push().key;
+
+    // Write the new item's data
+    const updates = {};
+    updates['/boardgames/' + newItemKey] = itemData;
+
+    return firebase
+      .database()
+      .ref()
+      .update(updates);
+  }
 
   render() {
     return (
@@ -69,6 +122,7 @@ export default class ItemList extends Component {
                       color='danger'
                       outline
                       className='category__listGroupBtn'
+                      onClick={() => this.deleteItem(item.key)}
                     >
                       Remove
                     </Button>
@@ -81,9 +135,10 @@ export default class ItemList extends Component {
           <Col sm={{ size: 'auto' }}>
             <div className='item__formContainer'>
               {this.state.gotData ? (
-                <ItemInfoTemplate
+                <AddItemTemplate
                   item={this.state.items}
                   categories={this.state.categories}
+                  addNewItem={this.addNewItem}
                 />
               ) : null}
             </div>

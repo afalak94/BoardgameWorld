@@ -6,118 +6,260 @@ import {
   FormGroup,
   Label,
   Input,
-  FormText
+  InputGroupText,
+  InputGroupAddon,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 
 export default class AddItemTemplate extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle1 = this.toggle1.bind(this);
+    this.toggle2 = this.toggle2.bind(this);
+    this.toggle3 = this.toggle3.bind(this);
+    this.commonChange = this.commonChange.bind(this);
+    this.onSaleChange = this.onSaleChange.bind(this);
+
+    this.state = {
+      dropdownOpen1: false,
+      dropdownOpen2: false,
+      dropdownOpen3: false,
+      dropdownValue1: null,
+      dropdownValue2: null,
+      dropdownValue3: null,
+      nameValue: '',
+      scoreValue: '',
+      imgUrlValue: '',
+      priceValue: '',
+      salePriceValue: '',
+      onSale: false,
+      descriptionValue: ''
+    };
+
+    // console.log(this.props.item);
+    // console.log(this.props.categories);
+  }
+
+  commonChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+    //console.log(this.state.nameValue);
+  }
+
+  onSaleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.checked
+    });
+  }
+
+  toggle1() {
+    this.setState({
+      dropdownOpen1: !this.state.dropdownOpen1
+    });
+  }
+  toggle2() {
+    this.setState({
+      dropdownOpen2: !this.state.dropdownOpen2
+    });
+  }
+  toggle3() {
+    this.setState({
+      dropdownOpen3: !this.state.dropdownOpen3
+    });
+  }
+
+  select1(event) {
+    this.setState({
+      dropdownOpen1: !this.state.dropdownOpen1,
+      dropdownValue1: event.target.innerText
+    });
+  }
+  select2(event) {
+    this.setState({
+      dropdownOpen2: !this.state.dropdownOpen2,
+      dropdownValue2: event.target.innerText
+    });
+  }
+  select3(event) {
+    this.setState({
+      dropdownOpen3: !this.state.dropdownOpen3,
+      dropdownValue3: event.target.innerText
+    });
+  }
+
   render() {
     return (
       <Form>
         <FormGroup row>
-          <Label for='exampleEmail' sm={2}>
-            Email
-          </Label>
-          <Col sm={10}>
+          <Label sm={2}>Name</Label>
+          <Col sm={8}>
+            <Input name='nameValue' type='text' onChange={this.commonChange} />
+          </Col>
+        </FormGroup>
+
+        <FormGroup row>
+          <Label sm={2}>Score</Label>
+          <Col sm={8}>
+            <Input name='scoreValue' type='text' onChange={this.commonChange} />
+          </Col>
+        </FormGroup>
+
+        <FormGroup row>
+          <Label sm={2}>Image URL</Label>
+          <Col sm={8}>
             <Input
-              type='email'
-              name='email'
-              id='exampleEmail'
-              placeholder='with a placeholder'
+              name='imgUrlValue'
+              type='text'
+              onChange={this.commonChange}
             />
           </Col>
         </FormGroup>
+
         <FormGroup row>
-          <Label for='examplePassword' sm={2}>
-            Password
-          </Label>
-          <Col sm={10}>
+          <Label sm={2}>Price</Label>
+          <Col sm={4}>
             <Input
-              type='password'
-              name='password'
-              id='examplePassword'
-              placeholder='password placeholder'
+              name='priceValue'
+              onChange={this.commonChange}
+              style={{ float: 'left' }}
             />
+            <InputGroupAddon addonType='append'>
+              <InputGroupText className='inputGroup__dolar'>$</InputGroupText>
+            </InputGroupAddon>
           </Col>
         </FormGroup>
+
         <FormGroup row>
-          <Label for='exampleSelect' sm={2}>
-            Select
-          </Label>
-          <Col sm={10}>
-            <Input type='select' name='select' id='exampleSelect' />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for='exampleSelectMulti' sm={2}>
-            Select Multiple
-          </Label>
-          <Col sm={10}>
+          <Label sm={2}>Sale price</Label>
+          <Col sm={4}>
             <Input
-              type='select'
-              name='selectMulti'
-              id='exampleSelectMulti'
-              multiple
+              name='salePriceValue'
+              onChange={this.commonChange}
+              style={{ float: 'left' }}
             />
+            <InputGroupAddon addonType='append'>
+              <InputGroupText className='inputGroup__dolar'>$</InputGroupText>
+            </InputGroupAddon>
           </Col>
         </FormGroup>
+
+        <FormGroup row>
+          <Col sm={{ size: 12 }}>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type='checkbox'
+                  name='onSale'
+                  onChange={this.onSaleChange}
+                />{' '}
+                Item on sale?
+              </Label>
+            </FormGroup>
+          </Col>
+        </FormGroup>
+
         <FormGroup row>
           <Label for='exampleText' sm={2}>
-            Text Area
+            Description
           </Label>
-          <Col sm={10}>
-            <Input type='textarea' name='text' id='exampleText' />
+          <Col sm={12}>
+            <Input
+              type='textarea'
+              name='descriptionValue'
+              onChange={this.commonChange}
+            />
           </Col>
         </FormGroup>
+
         <FormGroup row>
-          <Label for='exampleFile' sm={2}>
-            File
-          </Label>
-          <Col sm={10}>
-            <Input type='file' name='file' id='exampleFile' />
-            <FormText color='muted'>
-              This is some placeholder block-level help text for the above
-              input. It's a bit lighter and easily wraps to a new line.
-            </FormText>
+          <Label sm={2}>Categories</Label>
+          <Col sm={{ size: 3 }}>
+            <ButtonDropdown
+              isOpen={this.state.dropdownOpen1}
+              toggle={this.toggle1}
+            >
+              <DropdownToggle caret color='info' outline>
+                {this.state.dropdownValue1}
+              </DropdownToggle>
+              <DropdownMenu>
+                {this.props.categories.map(cat => {
+                  return (
+                    <DropdownItem onClick={e => this.select1(e)} key={cat.key}>
+                      {cat.value}
+                    </DropdownItem>
+                  );
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
+          </Col>
+
+          <Col sm={3}>
+            <ButtonDropdown
+              isOpen={this.state.dropdownOpen2}
+              toggle={this.toggle2}
+            >
+              <DropdownToggle caret color='info' outline>
+                {this.state.dropdownValue2}
+              </DropdownToggle>
+              <DropdownMenu>
+                {this.props.categories.map(cat => {
+                  return (
+                    <DropdownItem onClick={e => this.select2(e)} key={cat.key}>
+                      {cat.value}
+                    </DropdownItem>
+                  );
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
+          </Col>
+          <Col sm={3}>
+            <ButtonDropdown
+              isOpen={this.state.dropdownOpen3}
+              toggle={this.toggle3}
+            >
+              <DropdownToggle caret color='info' outline>
+                {this.state.dropdownValue3}
+              </DropdownToggle>
+              <DropdownMenu>
+                {this.props.categories.map(cat => {
+                  return (
+                    <DropdownItem onClick={e => this.select3(e)} key={cat.key}>
+                      {cat.value}
+                    </DropdownItem>
+                  );
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
           </Col>
         </FormGroup>
-        <FormGroup tag='fieldset' row>
-          <legend className='col-form-label col-sm-2'>Radio Buttons</legend>
-          <Col sm={10}>
-            <FormGroup check>
-              <Label check>
-                <Input type='radio' name='radio2' /> Option one is this and
-                that—be sure to include why it's great
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input type='radio' name='radio2' /> Option two can be something
-                else and selecting it will deselect option one
-              </Label>
-            </FormGroup>
-            <FormGroup check disabled>
-              <Label check>
-                <Input type='radio' name='radio2' disabled /> Option three is
-                disabled
-              </Label>
-            </FormGroup>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for='checkbox2' sm={2}>
-            Checkbox
-          </Label>
-          <Col sm={{ size: 10 }}>
-            <FormGroup check>
-              <Label check>
-                <Input type='checkbox' id='checkbox2' /> Check me out
-              </Label>
-            </FormGroup>
-          </Col>
-        </FormGroup>
+
         <FormGroup check row>
-          <Col sm={{ size: 10, offset: 2 }}>
-            <Button>Submit</Button>
+          <Col sm={{ size: 12 }}>
+            <Button
+              onClick={() =>
+                this.props.addNewItem(
+                  this.state.nameValue,
+                  this.state.scoreValue,
+                  this.state.imgUrlValue,
+                  this.state.priceValue,
+                  this.state.salePriceValue,
+                  this.state.onSale,
+                  this.state.descriptionValue,
+                  [
+                    this.state.dropdownValue1,
+                    this.state.dropdownValue2,
+                    this.state.dropdownValue3
+                  ]
+                )
+              }
+            >
+              Add new boardgame
+            </Button>
           </Col>
         </FormGroup>
       </Form>
