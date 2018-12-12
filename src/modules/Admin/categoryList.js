@@ -27,15 +27,22 @@ export default class CategoryList extends Component {
       // console.log(data);
       //console.log(this.state.categories);
     });
+    //listen for deleting category then update state
+    this.database.on('child_removed', snap => {
+      //save categories data as array of objects with key-value pairs
+      let data = [];
+      snap.forEach(ss => {
+        data.push({ key: ss.key, value: ss.val() });
+      });
+      this.setState({
+        categories: data
+      });
+    });
   }
 
   deleteCategory(name) {
     //removing category from firebase by using key
-    const database = firebase.database().ref('categories/');
-    database.on('child_removed', snap => {
-      console.log(snap.val());
-    });
-    database.child(name).remove();
+    this.database.child(name).remove();
   }
 
   render() {

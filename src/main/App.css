@@ -185,7 +185,7 @@
 /* CATEGORIES */
 .admin__nav {
   width: 1550px;
-  margin: 30px 0 0 0px;
+  margin: 30px 0 20px 0px;
   border-radius: 10px;
 }
 
@@ -261,6 +261,8 @@
     font-size: 16px;
   }
 }
+
+/* /ADMIN SECTION */
 
 /* FOOTER */
 

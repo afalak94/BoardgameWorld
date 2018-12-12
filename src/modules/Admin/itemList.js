@@ -35,6 +35,17 @@ export default class ItemList extends Component {
       //console.log(this.state.items);
     });
 
+    //listen when the item has been removed and update the state
+    this.items.on('child_removed', snap => {
+      let data = [];
+      snap.forEach(ss => {
+        data.push({ key: ss.key, value: ss.val() });
+      });
+      this.setState({
+        items: data
+      });
+    });
+
     //get all categories from database
     this.categories = firebase.database().ref('categories/');
     this.categories.on('value', snap => {
@@ -52,13 +63,19 @@ export default class ItemList extends Component {
     this.setState({ gotData: true });
   }
 
+  componentWillUnmount() {
+    //turn off subscriptions to prevent memory leak
+    this.categories.off();
+    this.items.off();
+  }
+
   deleteItem(name) {
     //removing item (boardgame) from firebase by using key
-    const database = firebase.database().ref('boardgames/');
-    database.on('child_removed', snap => {
-      //console.log(snap.val());
-    });
-    database.child(name).remove();
+    // const database = firebase.database().ref('boardgames/');
+    // database.on('child_removed', snap => {
+    //   console.log(snap.val());
+    // });
+    this.items.child(name).remove();
   }
 
   //function that adds a new item in boardgames to firebase database

@@ -30,10 +30,8 @@ class App extends Component {
       snap.forEach(ss => {
         data.push({ key: ss.key, value: ss.val() });
       });
-      //copy boardgames from firebase to redux store if they dont exist alredy
-      //if (!this.props.boardgames[0]) {
+      //copy boardgames from firebase to redux store
       this.props.addToStore(data);
-      //}
 
       //set state with boardgames that are on sale
       let itemsOnSale = [];
@@ -47,13 +45,10 @@ class App extends Component {
       });
       //console.log(this.state.itemsOnSale);
     });
+  }
 
-    //listen for added games
-    // this.database.on('child_added', snap => {
-    //   const child = { key: snap.key, value: snap.val() };
-    //   //console.log(child);
-    //   this.props.updateStore(child);
-    // });
+  componentWillUnmount() {
+    this.database.off();
   }
 
   render() {
