@@ -1,6 +1,7 @@
 //Redux store
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import cartReducer from '../modules/Cart/reducer';
+import reduxThunk from 'redux-thunk';
 import boardgamesReducer from './Redux/reducer';
 
 const rootReducer = combineReducers({
@@ -8,9 +9,12 @@ const rootReducer = combineReducers({
   boardgames: boardgamesReducer
 });
 
+const initialState = {};
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  initialState,
+  composeEnhancers(applyMiddleware(reduxThunk))
 );
 
 export default store;

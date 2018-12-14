@@ -8,6 +8,7 @@ import {
   Button
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+//import { firebaseConnect } from 'react-redux-firebase';
 
 class GameCard extends Component {
   constructor(props) {
@@ -61,7 +62,9 @@ class GameCard extends Component {
             </Button>
             <Button
               className='home__cardBtn--margin'
-              onClick={() => this.props.addToCart(this.props.game)}
+              onClick={() =>
+                this.props.addToCart(this.props.game, this.props.user)
+              }
             >
               Add to Cart
             </Button>

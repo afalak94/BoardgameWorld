@@ -6,19 +6,19 @@ import { Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import firebase from './firebase.config';
 import 'firebase/database';
+import 'firebase/auth';
 //import store from './store';
 import { bindActionCreators } from 'redux';
 //import actions
 import { addToCart } from '../modules/Cart/actions';
-import { addToStore } from './Redux/actions';
-import { updateStore } from './Redux/actions';
+import { addToStore, updateStore } from './Redux/actions';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.boardgames = [];
-    this.state = { itemsOnSale: [] };
+    this.authListener = this.authListener.bind(this);
+    this.state = { itemsOnSale: [], user: {} };
   }
 
   componentWillMount() {
@@ -47,8 +47,28 @@ class App extends Component {
     });
   }
 
+  componentDidMount() {
+    //listener for firebase authentication
+    this.authListener();
+  }
+
+  //listener for user authentication
+  authListener() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState(() => {
+          return { user };
+        });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+  }
+
   componentWillUnmount() {
+    //destroy listeners for database and authentication
     this.database.off();
+    this.unsubscribe();
   }
 
   render() {
@@ -62,7 +82,11 @@ class App extends Component {
           {this.state.itemsOnSale.map(game => {
             return (
               <Col xs='3' key={game.key}>
-                <GameCard game={game} addToCart={this.props.addToCart} />
+                <GameCard
+                  game={game}
+                  user={this.state.user}
+                  addToCart={this.props.addToCart}
+                />
               </Col>
             );
           })}
@@ -83,16 +107,6 @@ function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
     ...bindActionCreators({ addToStore, addToCart, updateStore }, dispatch)
-
-    //adding boardgames to store
-    // addToStore: games => {
-    //   dispatch({ type: 'STORE_GAMES', payload: games });
-    // }
-
-    //adding item to cart
-    // addToCart: item => {
-    //   dispatch({ type: 'ADD', payload: item });
-    // }
   };
 }
 
