@@ -62,6 +62,7 @@ class App extends Component {
       } else {
         this.setState({ user: null });
       }
+      console.log(this.state.user);
     });
   }
 

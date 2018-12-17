@@ -15,6 +15,7 @@ class GameCard extends Component {
     super(props);
 
     this.renderPrices = this.renderPrices.bind(this);
+    this.addToLocalStorage = this.addToLocalStorage.bind(this);
     //console.log(this.props.game);
   }
 
@@ -37,6 +38,17 @@ class GameCard extends Component {
         </div>
       );
     }
+  }
+
+  addToLocalStorage(data) {
+    //function that adds items to localstorage
+    const oldStorage = JSON.parse(localStorage.getItem('cart'));
+    const newStorage = [];
+    if (oldStorage !== null) {
+      newStorage.push(...oldStorage);
+    }
+    newStorage.push(data);
+    localStorage.setItem('cart', JSON.stringify(newStorage));
   }
 
   render() {
@@ -62,8 +74,12 @@ class GameCard extends Component {
             </Button>
             <Button
               className='home__cardBtn--margin'
-              onClick={() =>
-                this.props.addToCart(this.props.game, this.props.user)
+              onClick={
+                this.props.user
+                  ? //if the user is loged in, add item to his firebase cart
+                    () => this.props.addToCart(this.props.game, this.props.user)
+                  : //if its not, add item to local storage
+                    () => this.addToLocalStorage(this.props.game)
               }
             >
               Add to Cart

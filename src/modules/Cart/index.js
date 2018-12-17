@@ -24,7 +24,8 @@ class Cart extends Component {
     this.authListener = this.authListener.bind(this);
     this.state = {
       user: [],
-      cart: []
+      cart: [],
+      localCart: JSON.parse(localStorage.getItem('cart'))
     };
   }
 
@@ -37,14 +38,19 @@ class Cart extends Component {
     this.unsubscribe();
   }
 
+  removeFromLocalStorage(key) {
+    const oldStorage = JSON.parse(localStorage.getItem('cart'));
+    oldStorage.splice(key, 1);
+    localStorage.setItem('cart', JSON.stringify(oldStorage));
+    this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
+  }
+
   renderItems() {
     const { cart } = this.props;
     this.total = 0;
-
     this.itemsInCart = _.map(cart, (value, key) => {
       //calculate total price from all items in the cart
       this.total += parseFloat(value.value.price, 10);
-
       return (
         <ListGroupItem key={key} className='cart__list'>
           <div style={{ float: 'left' }}>
@@ -60,6 +66,38 @@ class Cart extends Component {
               close
               onClick={() => this.props.removeitem(key, this.state.user.uid)}
             />
+            <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
+            <ListGroupItemText>{value.value.price} $</ListGroupItemText>
+          </div>
+        </ListGroupItem>
+      );
+    });
+    if (!_.isEmpty(this.itemsInCart)) {
+      return this.itemsInCart;
+    }
+  }
+
+  renderLocalItems() {
+    this.total = 0;
+    //this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
+    this.itemsInCart = _.map(this.state.localCart, (value, key) => {
+      //console.log(value);
+      //console.log(this.state.user);
+      //calculate total price from all items in the cart
+      this.total += parseFloat(value.value.price, 10);
+
+      return (
+        <ListGroupItem key={key} className='cart__list'>
+          <div style={{ float: 'left' }}>
+            <img
+              className='img-thumbnail cart__itemImg'
+              src={value.value.imgUrl}
+              alt='cart item'
+            />
+          </div>
+
+          <div>
+            <Button close onClick={() => this.removeFromLocalStorage(key)} />
             <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
             <ListGroupItemText>{value.value.price} $</ListGroupItemText>
           </div>
@@ -96,8 +134,9 @@ class Cart extends Component {
   render() {
     return (
       <div className='cart'>
-        {/* list of all items in the cart */}
-        <ListGroup className='cart__listgroup'>{this.renderItems()}</ListGroup>
+        <ListGroup className='cart__listgroup'>
+          {this.state.user ? this.renderItems() : this.renderLocalItems()}
+        </ListGroup>
 
         <div className='cart__summary'>
           <Jumbotron className='cart__summary__jumbotron'>

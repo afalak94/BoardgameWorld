@@ -46,6 +46,17 @@ class GameInfo extends Component {
     });
   }
 
+  addToLocalStorage(data) {
+    //function that adds items to localstorage
+    const oldStorage = JSON.parse(localStorage.getItem('cart'));
+    const newStorage = [];
+    if (oldStorage !== null) {
+      newStorage.push(...oldStorage);
+    }
+    newStorage.push(data);
+    localStorage.setItem('cart', JSON.stringify(newStorage));
+  }
+
   render() {
     return (
       <div className='gameinfo__wrapper'>
@@ -63,8 +74,10 @@ class GameInfo extends Component {
           <h4>Price: {this.boardgame.value.price}</h4>
           <p>{this.boardgame.value.description}</p>
           <Button
-            onClick={() =>
-              this.props.addToCart(this.boardgame, this.state.user)
+            onClick={
+              this.state.user
+                ? () => this.props.addToCart(this.boardgame, this.state.user)
+                : () => this.addToLocalStorage(this.boardgame)
             }
           >
             Add to Cart
