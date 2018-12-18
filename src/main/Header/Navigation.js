@@ -10,41 +10,20 @@ import {
   NavLink
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import firebase from '../firebase.config';
-import 'firebase/auth';
+import { connect } from 'react-redux';
 
-export default class Navigation extends Component {
+class Navigation extends Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-    this.authListener = this.authListener.bind(this);
     this.state = {
-      isOpen: false,
-      user: {}
+      isOpen: false
     };
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
-    });
-  }
-
-  componentDidMount() {
-    this.authListener();
-  }
-
-  //listener for user authentication
-  authListener() {
-    firebase.auth().onAuthStateChanged(user => {
-      //console.log(user);
-      if (user) {
-        // User is signed in.
-        this.setState({ user });
-      } else {
-        //console.log(user);
-        this.setState({ user: null });
-      }
     });
   }
 
@@ -59,8 +38,8 @@ export default class Navigation extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className='ml-auto' navbar>
               <NavItem className='navbar__userListEl'>
-                <div className='navbar__user'>
-                  {this.state.user ? this.state.user.email : 'Anonymous'}
+                <div className='navbar__user' id='logged-user'>
+                  {this.props.user ? this.props.user.email : 'Anonymous'}
                 </div>
               </NavItem>
 
@@ -86,3 +65,14 @@ export default class Navigation extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user[0]
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(Navigation);

@@ -17,8 +17,11 @@ import CategoryList from './categoryList';
 import ItemList from './itemList';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
+import 'firebase/auth';
+import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 
-export default class AdminSection extends React.Component {
+class AdminSection extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,6 +32,8 @@ export default class AdminSection extends React.Component {
       activeTab: '1',
       inputValue: ''
     };
+
+    console.log(this.props.user);
   }
 
   toggle(tab) {
@@ -66,6 +71,11 @@ export default class AdminSection extends React.Component {
   }
 
   render() {
+    //admin section can only be entered if admin clicks on Admin section btn in footer
+    //manual routing wont work in any case
+    if (!this.props.user) {
+      return <Redirect to='/' />;
+    }
     return (
       <div className='admin__nav'>
         <Nav tabs className='admin__nav--position'>
@@ -148,3 +158,14 @@ export default class AdminSection extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user[0]
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(AdminSection);

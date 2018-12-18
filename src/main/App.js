@@ -12,6 +12,7 @@ import { bindActionCreators } from 'redux';
 //import actions
 import { addToCart } from '../modules/Cart/actions';
 import { addToStore, updateStore } from './Redux/actions';
+import { addUser } from '../modules/Login/actions';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class App extends Component {
     this.state = { itemsOnSale: [], user: {} };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     //get all games from database
     this.database = firebase.database().ref('boardgames/');
     this.database.on('value', snap => {
@@ -43,11 +44,8 @@ class App extends Component {
       this.setState({
         itemsOnSale: itemsOnSale
       });
-      //console.log(this.state.itemsOnSale);
     });
-  }
 
-  componentDidMount() {
     //listener for firebase authentication
     this.authListener();
   }
@@ -56,13 +54,14 @@ class App extends Component {
   authListener() {
     this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState(() => {
-          return { user };
-        });
+        // this.setState(() => {
+        //   return { user };
+        // });
+        this.props.addUser(user);
       } else {
-        this.setState({ user: null });
+        // this.setState({ user: null });
       }
-      console.log(this.state.user);
+      // console.log(this.props.user);
     });
   }
 
@@ -85,7 +84,7 @@ class App extends Component {
               <Col xs='3' key={game.key}>
                 <GameCard
                   game={game}
-                  user={this.state.user}
+                  user={this.props.user}
                   addToCart={this.props.addToCart}
                 />
               </Col>
@@ -100,14 +99,18 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart,
-    boardgames: state.boardgames
+    boardgames: state.boardgames,
+    user: state.user[0]
   };
 }
 
 function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
-    ...bindActionCreators({ addToStore, addToCart, updateStore }, dispatch)
+    ...bindActionCreators(
+      { addToStore, addToCart, updateStore, addUser },
+      dispatch
+    )
   };
 }
 

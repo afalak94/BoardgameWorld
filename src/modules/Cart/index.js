@@ -50,7 +50,15 @@ class Cart extends Component {
     this.total = 0;
     this.itemsInCart = _.map(cart, (value, key) => {
       //calculate total price from all items in the cart
-      this.total += parseFloat(value.value.price, 10);
+      //add regular or sale price
+      if (String(value.value.onSale) === 'true') {
+        this.total += parseFloat(value.value.salePrice, 10);
+        this.itemValue = value.value.salePrice;
+      } else {
+        this.total += parseFloat(value.value.price, 10);
+        this.itemValue = value.value.price;
+      }
+
       return (
         <ListGroupItem key={key} className='cart__list'>
           <div style={{ float: 'left' }}>
@@ -67,7 +75,7 @@ class Cart extends Component {
               onClick={() => this.props.removeitem(key, this.state.user.uid)}
             />
             <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
-            <ListGroupItemText>{value.value.price} $</ListGroupItemText>
+            <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
           </div>
         </ListGroupItem>
       );
@@ -81,10 +89,15 @@ class Cart extends Component {
     this.total = 0;
     //this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
     this.itemsInCart = _.map(this.state.localCart, (value, key) => {
-      //console.log(value);
-      //console.log(this.state.user);
       //calculate total price from all items in the cart
-      this.total += parseFloat(value.value.price, 10);
+      //add regular or sale price
+      if (String(value.value.onSale) === 'true') {
+        this.total += parseFloat(value.value.salePrice, 10);
+        this.itemValue = value.value.salePrice;
+      } else {
+        this.total += parseFloat(value.value.price, 10);
+        this.itemValue = value.value.price;
+      }
 
       return (
         <ListGroupItem key={key} className='cart__list'>
@@ -99,7 +112,7 @@ class Cart extends Component {
           <div>
             <Button close onClick={() => this.removeFromLocalStorage(key)} />
             <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
-            <ListGroupItemText>{value.value.price} $</ListGroupItemText>
+            <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
           </div>
         </ListGroupItem>
       );
