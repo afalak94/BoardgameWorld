@@ -95,6 +95,11 @@
   flex-wrap: wrap;
   flex-direction: row;
   margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.listing__btnGroup {
+  margin: 50px 0 0 950px;
 }
 
 .cardImg {
@@ -103,7 +108,7 @@
 }
 
 .home__card--size {
-  margin-top: 50px;
+  margin-bottom: 20px;
   background-color: var(--styleBlue);
   border: 5px solid var(--styleBlue);
   padding: 10px;

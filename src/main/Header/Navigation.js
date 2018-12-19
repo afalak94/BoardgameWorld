@@ -44,6 +44,15 @@ class Navigation extends Component {
               </NavItem>
 
               <NavItem>
+                <input
+                  class='form-control mr-sm-2'
+                  type='search'
+                  placeholder='Search'
+                  aria-label='Search'
+                />
+              </NavItem>
+
+              <NavItem>
                 <NavLink className='navbar__links--color' tag={Link} to='/cart'>
                   Cart
                 </NavLink>

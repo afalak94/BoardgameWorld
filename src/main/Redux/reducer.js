@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const boardgamesReducer = (state = [], action) => {
   switch (action.type) {
     case 'STORE_GAMES':
@@ -16,6 +18,18 @@ const boardgamesReducer = (state = [], action) => {
           d.value.category.some(cat => cat === action.payload)
         )
       ];
+
+    case 'PRICE_ASC':
+      //sort items by price ascending
+      let sortedAsc = state[state.length - 1];
+      sortedAsc = _.orderBy(sortedAsc, 'value.price', ['asc']);
+      return [...state, sortedAsc];
+
+    case 'PRICE_DESC':
+      //sort items by price descending
+      let sortedDesc = state[state.length - 1];
+      sortedDesc = _.orderBy(sortedDesc, 'value.price', ['desc']);
+      return [...state, sortedDesc];
 
     default:
       return state;

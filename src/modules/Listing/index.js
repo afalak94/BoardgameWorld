@@ -1,25 +1,33 @@
 //Listing container
 import React, { Component } from 'react';
 import GameCard from '../../main/gameCard';
-import { Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
+import {
+  Col,
+  Row,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  InputGroup,
+  InputGroupAddon
+} from 'reactstrap';
 import { bindActionCreators } from 'redux';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
 import 'firebase/auth';
+import _ from 'lodash';
 //import actions
 import { addToCart } from '../Cart/actions';
 import { addToStore } from '../../main/Redux/actions';
 import { connect } from 'react-redux';
 import { addUser } from '../../modules/Login/actions';
-import _ from 'lodash';
-import { onCategoryClick } from './actions';
+import { onCategoryClick, onPriceClick } from './actions';
 
 class Listing extends Component {
   constructor(props) {
     super(props);
 
     this.authListener = this.authListener.bind(this);
-    this.state = { categories: [], selectedCategory: '' };
+    this.state = { categories: [] };
   }
 
   componentDidMount() {
@@ -119,6 +127,17 @@ class Listing extends Component {
         </Col>
 
         <Col xs='9'>
+          <div>
+            <InputGroup className='listing__btnGroup'>
+              <InputGroupAddon addonType='prepend'>Price</InputGroupAddon>
+              <Button onClick={() => this.props.onPriceClick('ASC')}>
+                Asc
+              </Button>
+              <Button onClick={() => this.props.onPriceClick('DESC')}>
+                Desc
+              </Button>
+            </InputGroup>
+          </div>
           <div className='listing__games'>{this.renderItems()}</div>
         </Col>
       </Row>
@@ -128,7 +147,6 @@ class Listing extends Component {
 
 function mapStateToProps(state) {
   return {
-    initialBoardgames: state.boardgames[0],
     boardgames: state.boardgames[state.boardgames.length - 1],
     user: state.user[0]
   };
@@ -136,9 +154,8 @@ function mapStateToProps(state) {
 
 function mapDispatchtoProps(dispatch) {
   return {
-    //bind both action creators
     ...bindActionCreators(
-      { addToStore, addToCart, addUser, onCategoryClick },
+      { addToStore, addToCart, addUser, onCategoryClick, onPriceClick },
       dispatch
     )
   };
