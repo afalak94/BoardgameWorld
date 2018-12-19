@@ -4,13 +4,11 @@ import cartReducer from '../modules/Cart/reducer';
 import reduxThunk from 'redux-thunk';
 import boardgamesReducer from './Redux/reducer';
 import authReducer from '../modules/Login/reducer';
-import selectedCategoryReducer from '../modules/Listing/reducer';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
   boardgames: boardgamesReducer,
-  user: authReducer,
-  selectedCategory: selectedCategoryReducer
+  user: authReducer
 });
 
 const initialState = {};

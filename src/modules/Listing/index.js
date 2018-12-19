@@ -12,7 +12,7 @@ import { addToStore } from '../../main/Redux/actions';
 import { connect } from 'react-redux';
 import { addUser } from '../../modules/Login/actions';
 import _ from 'lodash';
-import { allBoardgames, categorySelector } from './selectors';
+import { onCategoryClick } from './actions';
 
 class Listing extends Component {
   constructor(props) {
@@ -51,7 +51,6 @@ class Listing extends Component {
     });
 
     this.authListener();
-    console.log(this.props.results);
   }
 
   componentWillUnmount() {
@@ -95,7 +94,7 @@ class Listing extends Component {
           tag='button'
           action
           key={category.key}
-          //onClick={() => this.props.fetchCategoryItems(category.value)}
+          onClick={() => this.props.onCategoryClick(category.value)}
         >
           {category.value}
         </ListGroupItem>
@@ -108,7 +107,11 @@ class Listing extends Component {
       <Row>
         <Col xs='3'>
           <ListGroup className='listing__categories'>
-            <ListGroupItem tag='button' action>
+            <ListGroupItem
+              tag='button'
+              action
+              onClick={() => this.componentDidMount()}
+            >
               All categories
             </ListGroupItem>
             {this.renderCategories()}
@@ -125,16 +128,19 @@ class Listing extends Component {
 
 function mapStateToProps(state) {
   return {
-    boardgames: allBoardgames(state),
+    initialBoardgames: state.boardgames[0],
+    boardgames: state.boardgames[state.boardgames.length - 1],
     user: state.user[0]
-    //results: categorySelector(state)
   };
 }
 
 function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
-    ...bindActionCreators({ addToStore, addToCart, addUser }, dispatch)
+    ...bindActionCreators(
+      { addToStore, addToCart, addUser, onCategoryClick },
+      dispatch
+    )
   };
 }
 
