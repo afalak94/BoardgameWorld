@@ -134,6 +134,10 @@
   border-radius: 10px;
 }
 
+.listing__categories {
+  margin-top: 50px;
+}
+
 /* GAME INFO */
 .gameinfo__wrapper {
   display: flex;

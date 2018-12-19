@@ -21,6 +21,7 @@ class Login extends Component {
   componentDidMount() {
     //listener for firebase authentication
     this.authListener();
+    window.scrollTo(0, 0);
   }
 
   //listener for user authentication

@@ -15,6 +15,7 @@ import {
 import classnames from 'classnames';
 import CategoryList from './categoryList';
 import ItemList from './itemList';
+import UsersList from './usersList';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
 import 'firebase/auth';
@@ -68,6 +69,10 @@ class AdminSection extends React.Component {
       .database()
       .ref()
       .update(updates);
+  }
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
   }
 
   render() {
@@ -150,6 +155,14 @@ class AdminSection extends React.Component {
             <Row style={{ width: 1500 }}>
               <Col sm={{ size: 'auto', offset: 1 }}>
                 <ItemList />
+              </Col>
+            </Row>
+          </TabPane>
+
+          <TabPane tabId='2'>
+            <Row style={{ width: 1500 }}>
+              <Col sm={{ size: 'auto', offset: 1 }}>
+                <UsersList />
               </Col>
             </Row>
           </TabPane>
