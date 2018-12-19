@@ -11,20 +11,43 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { onNameFilter } from './actions';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 class Navigation extends Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.sendFilter = this.sendFilter.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      searchTerm: ''
     };
   }
+
+  componentDidUpdate(prevProps) {
+    //clear search bar text on route change
+    if (this.props.location !== prevProps.location) {
+      this.setState({ searchTerm: '' });
+    }
+  }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  handleChange(e) {
+    //call sendFilter function in the callback after state has been updated
+    this.setState({ searchTerm: e.target.value }, this.sendFilter);
+  }
+
+  sendFilter() {
+    this.props.onNameFilter(this.state.searchTerm);
   }
 
   render() {
@@ -45,10 +68,15 @@ class Navigation extends Component {
 
               <NavItem>
                 <input
-                  class='form-control mr-sm-2'
+                  id='searchBar'
+                  className='form-control mr-sm-2'
                   type='search'
                   placeholder='Search'
                   aria-label='Search'
+                  onChange={e => this.handleChange(e)}
+                  value={this.state.searchTerm}
+                  //go to /listing so user can see filtered items
+                  onClick={() => this.props.history.push('/listing')}
                 />
               </NavItem>
 
@@ -77,11 +105,18 @@ class Navigation extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user[0]
+    user: state.user[0],
+    boardgames: state.boardgames[0]
+  };
+}
+
+function mapDispatchtoProps(dispatch) {
+  return {
+    ...bindActionCreators({ onNameFilter }, dispatch)
   };
 }
 
 export default connect(
   mapStateToProps,
-  null
-)(Navigation);
+  mapDispatchtoProps
+)(withRouter(Navigation));

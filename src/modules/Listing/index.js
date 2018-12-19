@@ -27,6 +27,7 @@ class Listing extends Component {
     super(props);
 
     this.authListener = this.authListener.bind(this);
+    this.categoryClicked = this.categoryClicked.bind(this);
     this.state = { categories: [] };
   }
 
@@ -102,12 +103,17 @@ class Listing extends Component {
           tag='button'
           action
           key={category.key}
-          onClick={() => this.props.onCategoryClick(category.value)}
+          onClick={() => this.categoryClicked(category.value)}
         >
           {category.value}
         </ListGroupItem>
       );
     });
+  }
+
+  categoryClicked(category) {
+    document.getElementById('searchBar').value = '';
+    this.props.onCategoryClick(category);
   }
 
   render() {
@@ -118,7 +124,10 @@ class Listing extends Component {
             <ListGroupItem
               tag='button'
               action
-              onClick={() => this.componentDidMount()}
+              onClick={() => {
+                this.componentDidMount();
+                document.getElementById('searchBar').value = '';
+              }}
             >
               All categories
             </ListGroupItem>

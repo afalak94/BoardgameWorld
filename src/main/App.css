@@ -313,3 +313,10 @@
   border-radius: 10px;
   padding: 30px;
 }
+
+/* NOT FOUND */
+.notFound {
+  background-color: var(--styleBlue);
+  color: var(--styleRed);
+  margin-top: 50px;
+}

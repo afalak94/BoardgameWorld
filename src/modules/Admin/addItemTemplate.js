@@ -48,7 +48,7 @@ export default class AddItemTemplate extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    //console.log(this.state.nameValue);
+    console.log(this.state.nameValue);
   }
 
   onSaleChange(event) {

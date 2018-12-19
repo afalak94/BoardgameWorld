@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
-import firebase from '../../main/firebase.config';
-import 'firebase/database';
+import { ListGroup /*, ListGroupItem, Button*/ } from 'reactstrap';
+// import firebase from '../../main/firebase.config';
+// import 'firebase/database';
 
 export default class UsersList extends Component {
   constructor(props) {

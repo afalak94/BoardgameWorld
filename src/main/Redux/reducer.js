@@ -12,6 +12,7 @@ const boardgamesReducer = (state = [], action) => {
       return newState;
 
     case 'CATEGORY':
+      //filter by category
       return [
         ...state,
         state[0].filter(d =>
@@ -30,6 +31,17 @@ const boardgamesReducer = (state = [], action) => {
       let sortedDesc = state[state.length - 1];
       sortedDesc = _.orderBy(sortedDesc, 'value.price', ['desc']);
       return [...state, sortedDesc];
+
+    case 'NAME':
+      //filter by name
+      let letters = action.payload.toUpperCase();
+      if (letters === '') {
+        return [state[0]];
+      }
+      let filteredByName = state[0].filter(d =>
+        d.value.name.toUpperCase().match(letters)
+      );
+      return [...state, filteredByName];
 
     default:
       return state;
