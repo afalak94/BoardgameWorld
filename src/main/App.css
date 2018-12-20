@@ -283,6 +283,25 @@
   }
 }
 
+/* USERS */
+.user__listGroup {
+  background-color: var(--styleBlue) !important;
+  color: var(--styleRed) !important;
+  border: 1px solid var(--styleRed);
+  width: 500px;
+  display: flex;
+  margin-left: 300px;
+  align-items: center;
+
+  .user__listGroupText {
+    flex: 0 0 55%;
+  }
+
+  .user__listGroupBtn {
+    flex: 1;
+  }
+}
+
 /* /ADMIN SECTION */
 
 /* FOOTER */

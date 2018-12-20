@@ -159,7 +159,7 @@ class AdminSection extends React.Component {
             </Row>
           </TabPane>
 
-          <TabPane tabId='2'>
+          <TabPane tabId='3'>
             <Row style={{ width: 1500 }}>
               <Col sm={{ size: 'auto', offset: 1 }}>
                 <UsersList />
