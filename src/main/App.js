@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import GameCard from './gameCard';
 import SaleCarousel from './carousel';
 import { Col } from 'reactstrap';
