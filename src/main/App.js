@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 import firebase from './firebase.config';
 import 'firebase/database';
 import 'firebase/auth';
-//import store from './store';
 import { bindActionCreators } from 'redux';
 //import actions
 import { addToCart } from '../modules/Cart/actions';
 import { addToStore, updateStore } from './Redux/actions';
 import { addUser } from '../modules/Login/actions';
+import styles from './App.module.css';
 
 class App extends Component {
   constructor(props) {
@@ -74,11 +74,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className='home__carousel'>
+        <div className={styles['home__carousel']}>
           <SaleCarousel />
         </div>
 
-        <div className='listing__games'>
+        <div className={styles['saleGames']}>
           {this.state.itemsOnSale.map(game => {
             return (
               <Col xs='3' key={game.key}>

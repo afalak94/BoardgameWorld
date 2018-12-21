@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/auth';
+import styles from './Register.module.css';
 
 class Register extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Register extends Component {
 
   render() {
     return (
-      <div className='container login__form'>
+      <div className={styles.register__form}>
         <Form>
           <FormGroup>
             <Label for='exampleEmail'>Email</Label>

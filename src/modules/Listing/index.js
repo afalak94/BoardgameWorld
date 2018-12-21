@@ -21,6 +21,7 @@ import { addToStore } from '../../main/Redux/actions';
 import { connect } from 'react-redux';
 import { addUser } from '../../modules/Login/actions';
 import { onCategoryClick, onPriceClick } from './actions';
+import styles from './Listing.module.css';
 
 class Listing extends Component {
   constructor(props) {
@@ -104,6 +105,7 @@ class Listing extends Component {
           action
           key={category.key}
           onClick={() => this.categoryClicked(category.value)}
+          className={styles['listing__categoryListItem']}
         >
           {category.value}
         </ListGroupItem>
@@ -111,6 +113,7 @@ class Listing extends Component {
     });
   }
 
+  //clear search bar text
   categoryClicked(category) {
     document.getElementById('searchBar').value = '';
     this.props.onCategoryClick(category);
@@ -120,8 +123,9 @@ class Listing extends Component {
     return (
       <Row>
         <Col xs='3'>
-          <ListGroup className='listing__categories'>
+          <ListGroup className={styles['listing__categories']}>
             <ListGroupItem
+              className={styles['listing__categoryListItem']}
               tag='button'
               action
               onClick={() => {
@@ -137,17 +141,28 @@ class Listing extends Component {
 
         <Col xs='9'>
           <div>
-            <InputGroup className='listing__btnGroup'>
-              <InputGroupAddon addonType='prepend'>Price</InputGroupAddon>
-              <Button onClick={() => this.props.onPriceClick('ASC')}>
+            <InputGroup className={styles['listing__priceBtnGroup']}>
+              <InputGroupAddon
+                className={styles['listing__priceBtn']}
+                addonType='prepend'
+              >
+                Price
+              </InputGroupAddon>
+              <Button
+                className={styles['listing__filterBtn']}
+                onClick={() => this.props.onPriceClick('ASC')}
+              >
                 Asc
               </Button>
-              <Button onClick={() => this.props.onPriceClick('DESC')}>
+              <Button
+                className={styles['listing__filterBtn']}
+                onClick={() => this.props.onPriceClick('DESC')}
+              >
                 Desc
               </Button>
             </InputGroup>
           </div>
-          <div className='listing__games'>{this.renderItems()}</div>
+          <div className={styles['listing__games']}>{this.renderItems()}</div>
         </Col>
       </Row>
     );

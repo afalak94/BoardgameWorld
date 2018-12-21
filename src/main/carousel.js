@@ -6,6 +6,7 @@ import {
   CarouselIndicators,
   CarouselCaption
 } from 'reactstrap';
+import styles from './App.module.css';
 
 const items = [
   {
@@ -79,12 +80,12 @@ class SaleCarousel extends Component {
           onExiting={this.onExiting}
           onExited={this.onExited}
           key={item.src}
-          className='home__corouselItem'
+          className={styles['home__corouselItem']}
         >
           <img src={item.src} alt={item.altText} />
           <CarouselCaption
             style={{ marginTop: 50 }}
-            className='carousel__caption'
+            className={styles['carousel__caption']}
             captionText={''}
             captionHeader={item.caption}
           />

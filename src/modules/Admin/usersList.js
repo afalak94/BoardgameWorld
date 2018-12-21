@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
-//import firebase from '../../main/firebase.config';
-//import 'firebase/functions';
 import axios from 'axios';
+import styles from './Admin.module.css';
 
 export default class UsersList extends Component {
   constructor(props) {
@@ -65,12 +64,17 @@ export default class UsersList extends Component {
         <ListGroup>
           {this.state.userList.map(user => {
             return (
-              <ListGroupItem key={user.uid} className='user__listGroup'>
-                <div className='user__listGroupText'>{user.email}</div>
+              <ListGroupItem
+                key={user.uid}
+                className={styles['user__listGroup']}
+              >
+                <div className={styles['user__listGroupText']}>
+                  {user.email}
+                </div>
                 <Button
                   color='danger'
                   outline
-                  className='user__listGroupBtn'
+                  className={styles['user__listGroupBtn']}
                   onClick={() =>
                     this.deleteUser(user.uid, this.componentDidMount)
                   }

@@ -1,0 +1,99 @@
+/* ADMIN SECTION */
+@import '../../main/colors.css';
+
+/* CATEGORIES */
+.admin__nav {
+  width: 1550px;
+  margin: 30px 0 20px 0px;
+  border-radius: 10px;
+
+  .admin__nav--position {
+    margin-left: 400px;
+    border: none !important;
+  }
+
+  .admin__navItem {
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
+    width: 250px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .active {
+      color: var(--styleRed) !important;
+      background-color: var(--styleBlue) !important;
+      font-weight: bold !important;
+    }
+  }
+}
+
+.admin__tabContent {
+  margin: 100px 0 0 100px;
+  width: 1400px;
+
+  .category__input {
+    margin-left: 100px;
+    width: 600px;
+
+    .category__inputText {
+      background-color: var(--styleBlue) !important;
+      color: var(--styleRed) !important;
+    }
+
+    .category__submitBtn:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.category__listGroup {
+  background-color: var(--styleBlue) !important;
+  color: var(--styleRed) !important;
+  border: 1px solid var(--styleRed);
+  width: 400px;
+  display: flex;
+
+  .category__listGroupText {
+    flex: 0 0 45%;
+  }
+  .category__listGroupBtn {
+    flex: 1;
+  }
+}
+
+/* ITEMS */
+.item__formContainer {
+  background-color: var(--styleBlue);
+  color: var(--styleRed);
+  padding: 10px;
+  width: 600px !important;
+
+  .inputGroup__dolar {
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
+    font-weight: bold;
+    position: absolute;
+    font-size: 16px;
+  }
+}
+
+/* USERS */
+.user__listGroup {
+  background-color: var(--styleBlue) !important;
+  color: var(--styleRed) !important;
+  border: 1px solid var(--styleRed);
+  width: 500px;
+  display: flex;
+  margin-left: 300px;
+  align-items: center;
+
+  .user__listGroupText {
+    flex: 0 0 55%;
+  }
+
+  .user__listGroupBtn {
+    flex: 1;
+  }
+}

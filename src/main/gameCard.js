@@ -8,7 +8,7 @@ import {
   Button
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-//import { firebaseConnect } from 'react-redux-firebase';
+import styles from './gameCard.module.css';
 
 class GameCard extends Component {
   constructor(props) {
@@ -28,11 +28,11 @@ class GameCard extends Component {
       );
     } else {
       return (
-        <div className='home__cardPrice'>
-          <div className='card__regularPrice'>
+        <div className={styles['gameCard__price']}>
+          <div className={styles['gameCard__price--regular']}>
             Old Price: {this.props.game.value.price}
           </div>
-          <div className='card__salePrice'>
+          <div className={styles['gameCard__price--sale']}>
             Sale Price: {this.props.game.value.salePrice}
           </div>
         </div>
@@ -54,26 +54,26 @@ class GameCard extends Component {
   render() {
     return (
       <div>
-        <Card className='home__card--size'>
+        <Card className={styles['gameCard--size']}>
           <CardImg
             top
             src={this.props.game.value.imgUrl}
             alt='Card image cap'
-            className='cardImg'
+            className={styles['gameCard__img']}
           />
-          <CardBody className='card__text'>
+          <CardBody className={styles['gameCard__body']}>
             <CardTitle>{this.props.game.value.name}</CardTitle>
             <CardSubtitle>Score: {this.props.game.value.score}</CardSubtitle>
             {this.renderPrices()}
             <Button
               tag={Link}
               to={'/game/' + this.props.game.key}
-              className='home__cardBtn--margin'
+              className={styles['gameCard__btn--margin']}
             >
               View more
             </Button>
             <Button
-              className='home__cardBtn--margin'
+              className={styles['gameCard__btn--margin']}
               onClick={
                 this.props.user
                   ? //if the user is loged in, add item to his firebase cart

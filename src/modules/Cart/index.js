@@ -16,6 +16,7 @@ import firebase from '../../main/firebase.config';
 import 'firebase/auth';
 import 'firebase/database';
 import { fetchitems, removeitem } from './actions';
+import styles from './Cart.module.css';
 
 class Cart extends Component {
   constructor(props) {
@@ -60,10 +61,10 @@ class Cart extends Component {
       }
 
       return (
-        <ListGroupItem key={key} className='cart__list'>
+        <ListGroupItem key={key} className={styles['cart__listGroup--size']}>
           <div style={{ float: 'left' }}>
             <img
-              className='img-thumbnail cart__itemImg'
+              className={styles['cart__itemImg']}
               src={value.value.imgUrl}
               alt='cart item'
             />
@@ -100,10 +101,10 @@ class Cart extends Component {
       }
 
       return (
-        <ListGroupItem key={key} className='cart__list'>
+        <ListGroupItem key={key} className={styles['cart__listGroup--size']}>
           <div style={{ float: 'left' }}>
             <img
-              className='img-thumbnail cart__itemImg'
+              className={styles['cart__itemImg']}
               src={value.value.imgUrl}
               alt='cart item'
             />
@@ -146,13 +147,13 @@ class Cart extends Component {
 
   render() {
     return (
-      <div className='cart'>
-        <ListGroup className='cart__listgroup'>
+      <div className={styles['cart--flex']}>
+        <ListGroup className={styles['cart__listGroup']}>
           {this.state.user ? this.renderItems() : this.renderLocalItems()}
         </ListGroup>
 
-        <div className='cart__summary'>
-          <Jumbotron className='cart__summary__jumbotron'>
+        <div className={styles['cart__summary']}>
+          <Jumbotron className={styles['cart__summary__jumbotron']}>
             <Container>
               <h1 className='display-3'>Cart summary</h1>
               <p className='lead'>

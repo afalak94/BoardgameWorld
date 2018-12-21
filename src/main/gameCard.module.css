@@ -1,0 +1,39 @@
+/* GAMECARD */
+@import './colors.css';
+
+.gameCard--size {
+  margin-bottom: 20px;
+  background-color: var(--styleBlue);
+  border: 5px solid var(--styleBlue);
+  padding: 10px;
+  border-radius: 10px;
+
+  .gameCard__img {
+    height: 240px !important;
+    object-fit: contain;
+  }
+
+  .gameCard__body {
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
+    border-radius: 10px;
+
+    .gameCard__price {
+      display: flex;
+      font-size: 20px;
+
+      .gameCard__price--regular {
+        flex: 0 0 50%;
+        text-decoration: line-through;
+      }
+
+      .gameCard__price--sale {
+        flex: 1;
+      }
+    }
+
+    .gameCard__btn--margin {
+      margin: 0px 10px -15px 10px;
+    }
+  }
+}

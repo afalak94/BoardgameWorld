@@ -1,0 +1,26 @@
+@import '../../main/colors.css';
+
+/* GAME INFO */
+.gameinfo__wrapper {
+  display: flex;
+
+  .gameinfo__img--size {
+    max-height: 800px !important;
+    max-width: 700px !important;
+    object-fit: contain !important;
+    float: left;
+    margin: 30px 100px 0 20px;
+  }
+}
+
+.gameinfo__info {
+  max-width: 700px;
+  margin: 100px 0 0 0px;
+  color: var(--styleRed);
+  background-color: var(--styleBlue);
+  display: block;
+  overflow: auto;
+  height: 100%;
+  padding: 20px;
+  border-radius: 10px;
+}

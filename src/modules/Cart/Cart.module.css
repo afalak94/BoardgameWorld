@@ -1,0 +1,36 @@
+@import '../../main/colors.css';
+
+/* CART */
+.cart--flex {
+  display: flex;
+
+  .cart__listGroup {
+    margin: 100px 0 0 100px;
+    float: left !important;
+    width: 400px;
+    flex: 0 0 45%;
+
+    .cart__listGroup--size {
+      width: 400px;
+
+      .cart__itemImg {
+        height: 100px;
+        width: 160px;
+      }
+    }
+  }
+
+  .cart__summary {
+    margin-top: 100px;
+    max-width: 600px !important;
+    max-height: 400px !important;
+    float: left !important;
+    flex: 1;
+  }
+
+  .cart__summary__jumbotron {
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
+    border-radius: 10px;
+  }
+}

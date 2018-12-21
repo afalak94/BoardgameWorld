@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addUser } from '../../modules/Login/actions';
+import styles from './Footer.module.css';
 
 class Footer extends Component {
   constructor(props) {
@@ -34,14 +35,14 @@ class Footer extends Component {
                 ? false
                 : true
             }
-            className='navbar__links--color'
+            className={styles['footer__links--color']}
             tag={Link}
             to='/admin'
           >
             Admin section
           </NavLink>
 
-          <NavLink className='footer__user' onClick={this.logout}>
+          <NavLink className={styles['footer__user']} onClick={this.logout}>
             Log out
           </NavLink>
         </div>
@@ -49,11 +50,15 @@ class Footer extends Component {
     } else {
       return (
         <Fragment>
-          <NavLink className='navbar__links--color' tag={Link} to='/login'>
+          <NavLink
+            className={styles['footer__links--color']}
+            tag={Link}
+            to='/login'
+          >
             Login
           </NavLink>
           <NavLink
-            className='navbar__links--color navbar__links--margin'
+            className={styles['footer__links--color']}
             tag={Link}
             to='/register'
           >
@@ -66,12 +71,16 @@ class Footer extends Component {
 
   render() {
     return (
-      <div className='footer'>
+      <div className={styles['footer']}>
         <Navbar expand='md'>
           <div>
-            <Nav vertical className='footer__links'>
+            <Nav vertical className={styles['footer__links']}>
               {this.returnAuth()}
-              <NavLink className='navbar__links--color' tag={Link} to='/faq'>
+              <NavLink
+                className={styles['footer__links--color']}
+                tag={Link}
+                to='/faq'
+              >
                 FAQ
               </NavLink>{' '}
             </Nav>

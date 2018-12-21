@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { onNameFilter } from './actions';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
+import styles from './Navigation.module.css';
 
 class Navigation extends Component {
   constructor(props) {
@@ -53,15 +54,15 @@ class Navigation extends Component {
   render() {
     return (
       <div>
-        <Navbar className='navbar--color' expand='md'>
-          <NavbarBrand className='navbar__brand' tag={Link} to='/'>
+        <Navbar className={styles['navbar--color']} expand='md'>
+          <NavbarBrand className={styles['navbar__brand']} tag={Link} to='/'>
             Boardgame World
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className='ml-auto' navbar>
-              <NavItem className='navbar__userListEl'>
-                <div className='navbar__user' id='logged-user'>
+              <NavItem className={styles['navbar__userListEl']}>
+                <div className={styles['navbar__user']} id='logged-user'>
                   {this.props.user ? this.props.user.email : 'Anonymous'}
                 </div>
               </NavItem>
@@ -81,14 +82,18 @@ class Navigation extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink className='navbar__links--color' tag={Link} to='/cart'>
+                <NavLink
+                  className={styles['navbar__links--color']}
+                  tag={Link}
+                  to='/cart'
+                >
                   Cart
                 </NavLink>
               </NavItem>
 
               <NavItem>
                 <NavLink
-                  className='navbar__links--color'
+                  className={styles['navbar__links--color']}
                   tag={Link}
                   to='/listing'
                 >

@@ -6,6 +6,7 @@ import 'firebase/auth';
 import { connect } from 'react-redux';
 import { addUser } from '../../modules/Login/actions';
 import { bindActionCreators } from 'redux';
+import styles from './Login.module.css';
 
 class Login extends Component {
   constructor(props) {
@@ -61,7 +62,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div className='container login__form'>
+      <div className={styles['login__form']}>
         <Form>
           <FormGroup>
             <Label for='exampleEmail'>Email</Label>

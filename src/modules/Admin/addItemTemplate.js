@@ -13,6 +13,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
+import styles from './Admin.module.css';
 
 export default class AddItemTemplate extends React.Component {
   constructor(props) {
@@ -131,7 +132,9 @@ export default class AddItemTemplate extends React.Component {
               style={{ float: 'left' }}
             />
             <InputGroupAddon addonType='append'>
-              <InputGroupText className='inputGroup__dolar'>$</InputGroupText>
+              <InputGroupText className={styles['inputGroup__dolar']}>
+                $
+              </InputGroupText>
             </InputGroupAddon>
           </Col>
         </FormGroup>
@@ -145,7 +148,9 @@ export default class AddItemTemplate extends React.Component {
               style={{ float: 'left' }}
             />
             <InputGroupAddon addonType='append'>
-              <InputGroupText className='inputGroup__dolar'>$</InputGroupText>
+              <InputGroupText className={styles['inputGroup__dolar']}>
+                $
+              </InputGroupText>
             </InputGroupAddon>
           </Col>
         </FormGroup>

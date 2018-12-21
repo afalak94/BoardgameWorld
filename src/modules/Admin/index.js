@@ -21,6 +21,7 @@ import 'firebase/database';
 import 'firebase/auth';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import styles from './Admin.module.css';
 
 class AdminSection extends React.Component {
   constructor(props) {
@@ -82,9 +83,9 @@ class AdminSection extends React.Component {
       return <Redirect to='/' />;
     }
     return (
-      <div className='admin__nav'>
-        <Nav tabs className='admin__nav--position'>
-          <NavItem className='admin__navItem'>
+      <div className={styles['admin__nav']}>
+        <Nav tabs className={styles['admin__nav--position']}>
+          <NavItem className={styles['admin__navItem']}>
             <NavLink
               className={classnames({ active: this.state.activeTab === '1' })}
               onClick={() => {
@@ -94,7 +95,7 @@ class AdminSection extends React.Component {
               Category management
             </NavLink>
           </NavItem>
-          <NavItem className='admin__navItem'>
+          <NavItem className={styles['admin__navItem']}>
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
               onClick={() => {
@@ -104,7 +105,7 @@ class AdminSection extends React.Component {
               Item management
             </NavLink>
           </NavItem>
-          <NavItem className='admin__navItem'>
+          <NavItem className={styles['admin__navItem']}>
             <NavLink
               className={classnames({ active: this.state.activeTab === '3' })}
               onClick={() => {
@@ -118,7 +119,7 @@ class AdminSection extends React.Component {
 
         <TabContent
           activeTab={this.state.activeTab}
-          className='admin__tabContent'
+          className={styles['admin__tabContent']}
         >
           <TabPane tabId='1'>
             <Row style={{ width: 1500 }}>
@@ -127,9 +128,9 @@ class AdminSection extends React.Component {
               </Col>
 
               <Col sm={{ size: 'auto' }}>
-                <InputGroup className='category__input'>
+                <InputGroup className={styles['category__input']}>
                   <InputGroupAddon addonType='prepend'>
-                    <InputGroupText className='category__inputText'>
+                    <InputGroupText className={styles['category__inputText']}>
                       Add category
                     </InputGroupText>
                   </InputGroupAddon>
@@ -138,11 +139,11 @@ class AdminSection extends React.Component {
                     onChange={e => this.updateInputValue(e)}
                   />
                   <InputGroupAddon
-                    className='category__submitBtn'
+                    className={styles['category__submitBtn']}
                     addonType='append'
                     onClick={() => this.addCategory(this.state.inputValue)}
                   >
-                    <InputGroupText className='category__inputText'>
+                    <InputGroupText className={styles['category__inputText']}>
                       Submit
                     </InputGroupText>
                   </InputGroupAddon>

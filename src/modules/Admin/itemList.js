@@ -3,6 +3,7 @@ import { ListGroup, ListGroupItem, Button, Row, Col } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
 import AddItemTemplate from './addItemTemplate';
+import styles from './Admin.module.css';
 
 export default class ItemList extends Component {
   constructor(props) {
@@ -134,14 +135,17 @@ export default class ItemList extends Component {
             <ListGroup>
               {this.state.items.map(item => {
                 return (
-                  <ListGroupItem key={item.key} className='category__listGroup'>
-                    <div className='category__listGroupText'>
+                  <ListGroupItem
+                    key={item.key}
+                    className={styles['category__listGroup']}
+                  >
+                    <div className={styles['category__listGroupText']}>
                       {item.value.name}
                     </div>
                     <Button
                       color='danger'
                       outline
-                      className='category__listGroupBtn'
+                      className={styles['category__listGroupBtn']}
                       onClick={() => this.deleteItem(item.key)}
                     >
                       Remove
@@ -153,7 +157,7 @@ export default class ItemList extends Component {
           </Col>
 
           <Col sm={{ size: 'auto' }}>
-            <div className='item__formContainer'>
+            <div className={styles['item__formContainer']}>
               {this.state.gotData ? (
                 <AddItemTemplate
                   item={this.state.items}

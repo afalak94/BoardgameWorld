@@ -1,0 +1,34 @@
+/* NAVBAR */
+.navbar--color {
+  background-color: var(--styleBlue);
+}
+
+.navbar__brand {
+  color: white;
+
+  &:hover {
+    color: antiquewhite;
+  }
+}
+
+@import '../colors.css';
+
+.navbar__userListEl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+
+  .navbar__user {
+    color: white;
+    font-size: 18px !important;
+  }
+}
+
+.navbar__links--color {
+  color: white;
+
+  &:hover {
+    color: antiquewhite;
+  }
+}

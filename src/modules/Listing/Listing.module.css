@@ -1,0 +1,38 @@
+/* LISTING */
+@import '../../main/colors.css';
+
+.listing__categories {
+  margin-top: 110px;
+
+  .listing__categoryListItem {
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
+    border: 1px solid var(--styleRed);
+  }
+}
+
+.listing__priceBtnGroup {
+  margin: 50px 0 0 950px;
+  width: 200px;
+
+  .listing__priceBtn {
+    background-color: var(--styleBlue) !important;
+    color: var(--styleRed) !important;
+    margin-right: 1px;
+  }
+
+  .listing__filterBtn {
+    background-color: var(--styleBlue);
+    color: var(--styleRed);
+    width: 60px;
+  }
+}
+
+.listing__games {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}

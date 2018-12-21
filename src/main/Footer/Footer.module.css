@@ -1,0 +1,27 @@
+@import '../colors.css';
+
+/* FOOTER */
+.footer {
+  background-color: var(--styleBlue);
+
+  .footer__links {
+    margin-left: 1600px;
+  }
+}
+
+.footer__links--color {
+  color: white;
+
+  &:hover {
+    color: antiquewhite;
+  }
+}
+
+.footer__user {
+  color: white !important;
+
+  &:hover {
+    cursor: pointer;
+    color: antiquewhite !important;
+  }
+}

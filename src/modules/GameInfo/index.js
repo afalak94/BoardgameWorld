@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-//import { addToCart } from '../../modules/Cart/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { removeitem, addToCart } from '../Cart/actions';
 import firebase from '../../main/firebase.config';
 import 'firebase/auth';
+import styles from './GameInfo.module.css';
 
 class GameInfo extends Component {
   constructor(props) {
@@ -59,8 +59,8 @@ class GameInfo extends Component {
 
   render() {
     return (
-      <div className='gameinfo__wrapper'>
-        <div className='gameinfo__img--size'>
+      <div className={styles['gameinfo__wrapper']}>
+        <div className={styles['gameinfo__img--size']}>
           <img
             className='img-fluid'
             src={this.boardgame.value.imgUrl}
@@ -68,7 +68,7 @@ class GameInfo extends Component {
           />
         </div>
 
-        <div className='gameinfo__div'>
+        <div className={styles['gameinfo__info']}>
           <h2>{this.boardgame.value.name}</h2>
           <h4>Score: {this.boardgame.value.score}</h4>
           <h4>Price: {this.boardgame.value.price}</h4>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
+import styles from './Admin.module.css';
 
 export default class CategoryList extends Component {
   constructor(props) {
@@ -51,12 +52,17 @@ export default class CategoryList extends Component {
         <ListGroup>
           {this.state.categories.map(category => {
             return (
-              <ListGroupItem key={category.key} className='category__listGroup'>
-                <div className='category__listGroupText'>{category.value}</div>
+              <ListGroupItem
+                key={category.key}
+                className={styles['category__listGroup']}
+              >
+                <div className={styles['category__listGroupText']}>
+                  {category.value}
+                </div>
                 <Button
                   color='danger'
                   outline
-                  className='category__listGroupBtn'
+                  className={styles['category__listGroupBtn']}
                   onClick={() => this.deleteCategory(category.key)}
                 >
                   Remove
