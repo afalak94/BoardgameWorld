@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Navbar, Nav, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import firebase from '../firebase.config';
+import firebase from '../../main/firebase.config';
 import 'firebase/auth';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';

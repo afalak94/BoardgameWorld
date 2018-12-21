@@ -1,5 +1,5 @@
 /* GAMECARD */
-@import './colors.css';
+@import '../../main/colors.css';
 
 .gameCard--size {
   margin-bottom: 20px;

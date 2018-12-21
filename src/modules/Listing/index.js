@@ -1,6 +1,6 @@
 //Listing container
 import React, { Component } from 'react';
-import GameCard from '../../main/gameCard';
+import GameCard from '../GameCard/gameCard';
 import {
   Col,
   Row,

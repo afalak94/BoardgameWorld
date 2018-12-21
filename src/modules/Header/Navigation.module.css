@@ -1,3 +1,5 @@
+@import '../../main/colors.css';
+
 /* NAVBAR */
 .navbar--color {
   background-color: var(--styleBlue);
@@ -10,8 +12,6 @@
     color: antiquewhite;
   }
 }
-
-@import '../colors.css';
 
 .navbar__userListEl {
   display: flex;

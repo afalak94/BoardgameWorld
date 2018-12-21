@@ -1,5 +1,5 @@
 /* HOME */
-@import './colors.css';
+@import '../../main/colors.css';
 
 .home__carousel {
   display: inline-block;

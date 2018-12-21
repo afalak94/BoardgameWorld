@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import GameCard from './gameCard';
+import GameCard from '../GameCard/gameCard';
 import SaleCarousel from './carousel';
 import { Col } from 'reactstrap';
 import { connect } from 'react-redux';
-import firebase from './firebase.config';
+import firebase from '../../main/firebase.config';
 import 'firebase/database';
 import 'firebase/auth';
 import { bindActionCreators } from 'redux';
 //import actions
-import { addToCart } from '../modules/Cart/actions';
-import { addToStore, updateStore } from './Redux/actions';
-import { addUser } from '../modules/Login/actions';
-import styles from './App.module.css';
+import { addToCart } from '../Cart/actions';
+import { addToStore, updateStore } from '../../main/Redux/actions';
+import { addUser } from '../Login/actions';
+import styles from './Home.module.css';
 
-class App extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
 
@@ -116,4 +116,4 @@ function mapDispatchtoProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchtoProps
-)(App);
+)(Home);
