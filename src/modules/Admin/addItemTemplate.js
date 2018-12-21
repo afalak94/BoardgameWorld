@@ -48,7 +48,7 @@ export default class AddItemTemplate extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     });
-    console.log(this.state.nameValue);
+    //console.log(this.state.nameValue);
   }
 
   onSaleChange(event) {
@@ -57,6 +57,7 @@ export default class AddItemTemplate extends React.Component {
     });
   }
 
+  //toggle function for each category dropdown menu
   toggle1() {
     this.setState({
       dropdownOpen1: !this.state.dropdownOpen1
@@ -73,6 +74,7 @@ export default class AddItemTemplate extends React.Component {
     });
   }
 
+  //functions that change menu toggler text when the category is selected
   select1(event) {
     this.setState({
       dropdownOpen1: !this.state.dropdownOpen1,
@@ -176,6 +178,7 @@ export default class AddItemTemplate extends React.Component {
           </Col>
         </FormGroup>
 
+        {/* 3 categories togglers */}
         <FormGroup row>
           <Label sm={2}>Categories</Label>
           <Col sm={{ size: 3 }}>
@@ -241,6 +244,7 @@ export default class AddItemTemplate extends React.Component {
         <FormGroup check row>
           <Col sm={{ size: 12 }}>
             <Button
+              //passing all values to addNewItem function from props
               onClick={() =>
                 this.props.addNewItem(
                   this.state.nameValue,

@@ -19,7 +19,8 @@ export default class ItemList extends Component {
     this.addNewItem = this.addNewItem.bind(this);
   }
 
-  componentWillMount() {
+  //REMINDER: dont use componentWillMount because it acts unexpectedly
+  componentDidMount() {
     //get all items from database
     this.items = firebase.database().ref('boardgames/');
     this.items.on('value', snap => {
@@ -67,6 +68,8 @@ export default class ItemList extends Component {
     //turn off subscriptions to prevent memory leak
     this.categories.off();
     this.items.off();
+    //this.itemsRemoved.off();
+    //this.newItemAdded.off();
   }
 
   deleteItem(name) {
