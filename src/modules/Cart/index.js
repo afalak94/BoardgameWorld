@@ -73,7 +73,7 @@ class Cart extends Component {
           <div>
             <Button
               close
-              onClick={() => this.props.removeitem(key, this.state.user.uid)}
+              onClick={() => this.props.removeitem(key, this.props.user.uid)}
             />
             <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
             <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
@@ -126,21 +126,10 @@ class Cart extends Component {
   //listener for user authentication
   authListener() {
     this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      //console.log(user);
       if (user) {
-        // User is signed in.
-        //this.setState({ user });
-        this.setState(() => {
-          return { user };
-        });
-        //console.log(this.state.user.uid);
-
         //when the user is logged in then fetch his cart from firebase
-        this.props.fetchitems(this.state.user.uid);
+        this.props.fetchitems(this.props.user.uid);
         this.setState({ cart: this.props.cart });
-      } else {
-        //console.log(user);
-        this.setState({ user: null });
       }
     });
   }
@@ -149,7 +138,7 @@ class Cart extends Component {
     return (
       <div className={styles['cart--flex']}>
         <ListGroup className={styles['cart__listGroup']}>
-          {this.state.user ? this.renderItems() : this.renderLocalItems()}
+          {this.props.user ? this.renderItems() : this.renderLocalItems()}
         </ListGroup>
 
         <div className={styles['cart__summary']}>
@@ -157,7 +146,7 @@ class Cart extends Component {
             <Container>
               <h1 className='display-3'>Cart summary</h1>
               <p className='lead'>
-                {this.state.user ? this.state.user.email : ''}
+                {this.props.user ? this.props.user.email : ''}
               </p>
               {this.itemsInCart ? (
                 <p className='lead'>
@@ -180,6 +169,7 @@ class Cart extends Component {
 
 function mapStateToProps(state) {
   return {
+    user: state.user[0],
     cart: state.cart[state.cart.length - 1]
   };
 }

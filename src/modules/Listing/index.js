@@ -73,8 +73,6 @@ class Listing extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.props.addUser(user);
-      } else {
-        //do nothing
       }
     });
   }

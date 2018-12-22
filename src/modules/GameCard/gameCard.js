@@ -41,7 +41,7 @@ class GameCard extends Component {
   }
 
   addToLocalStorage(data) {
-    //function that adds items to localstorage
+    //function that adds items to localStorage
     const oldStorage = JSON.parse(localStorage.getItem('cart'));
     const newStorage = [];
     if (oldStorage !== null) {

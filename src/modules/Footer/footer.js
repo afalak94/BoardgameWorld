@@ -18,6 +18,7 @@ class Footer extends Component {
   }
 
   logout() {
+    //delete user data from redux store and redirect to Home
     let promise = new Promise(function(resolve, reject) {
       firebase.auth().signOut();
     });

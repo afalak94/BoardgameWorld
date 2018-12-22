@@ -15,6 +15,9 @@ import { onNameFilter } from './actions';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import styles from './Navigation.module.css';
+import { addUser } from '../Login/actions';
+import firebase from '../../main/firebase.config';
+import 'firebase/auth';
 
 class Navigation extends Component {
   constructor(props) {
@@ -23,10 +26,15 @@ class Navigation extends Component {
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.sendFilter = this.sendFilter.bind(this);
+    this.authListener = this.authListener.bind(this);
     this.state = {
       isOpen: false,
       searchTerm: ''
     };
+  }
+
+  componentDidMount() {
+    this.authListener();
   }
 
   componentDidUpdate(prevProps) {
@@ -34,6 +42,25 @@ class Navigation extends Component {
     if (this.props.location !== prevProps.location) {
       this.setState({ searchTerm: '' });
     }
+  }
+
+  authListener() {
+    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // this.setState(() => {
+        //   return { user };
+        // });
+        this.props.addUser(user);
+      } else {
+        // this.setState({ user: null });
+      }
+      // console.log(this.props.user);
+    });
+  }
+
+  componentWillUnmount() {
+    //destroy listener for authentication
+    this.unsubscribe();
   }
 
   toggle() {
@@ -117,7 +144,7 @@ function mapStateToProps(state) {
 
 function mapDispatchtoProps(dispatch) {
   return {
-    ...bindActionCreators({ onNameFilter }, dispatch)
+    ...bindActionCreators({ onNameFilter, addUser }, dispatch)
   };
 }
 

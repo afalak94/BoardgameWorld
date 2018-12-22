@@ -5,20 +5,17 @@ import { Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
-import 'firebase/auth';
 import { bindActionCreators } from 'redux';
 //import actions
 import { addToCart } from '../Cart/actions';
 import { addToStore, updateStore } from '../../main/Redux/actions';
-import { addUser } from '../Login/actions';
 import styles from './Home.module.css';
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.authListener = this.authListener.bind(this);
-    this.state = { itemsOnSale: [], user: {} };
+    this.state = { itemsOnSale: [] };
   }
 
   componentDidMount() {
@@ -44,30 +41,11 @@ class Home extends Component {
         itemsOnSale: itemsOnSale
       });
     });
-
-    //listener for firebase authentication
-    this.authListener();
-  }
-
-  //listener for user authentication
-  authListener() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // this.setState(() => {
-        //   return { user };
-        // });
-        this.props.addUser(user);
-      } else {
-        // this.setState({ user: null });
-      }
-      // console.log(this.props.user);
-    });
   }
 
   componentWillUnmount() {
     //destroy listeners for database and authentication
     this.database.off();
-    this.unsubscribe();
   }
 
   render() {
@@ -106,10 +84,7 @@ function mapStateToProps(state) {
 function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
-    ...bindActionCreators(
-      { addToStore, addToCart, updateStore, addUser },
-      dispatch
-    )
+    ...bindActionCreators({ addToStore, addToCart, updateStore }, dispatch)
   };
 }
 
