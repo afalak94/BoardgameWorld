@@ -144,7 +144,7 @@ class Cart extends Component {
         <div className={styles['cart__summary']}>
           <Jumbotron className={styles['cart__summary__jumbotron']}>
             <Container>
-              <h1 className='display-3'>Cart summary</h1>
+              <h1 className={styles['cart__summary__header']}>Cart summary</h1>
               <p className='lead'>
                 {this.props.user ? this.props.user.email : ''}
               </p>
@@ -157,7 +157,8 @@ class Cart extends Component {
               )}
 
               <p className='lead'>
-                Total price: {Math.round(this.total * 100) / 100}{' '}
+                Total price: {Math.round(this.total * 100) / 100}
+                {' $'}
               </p>
             </Container>
           </Jumbotron>

@@ -4,7 +4,7 @@
 .gameCard--size {
   margin-bottom: 20px;
   background-color: var(--styleBlue);
-  border: 5px solid var(--styleBlue);
+  /* border: 5px solid var(--styleBlue); */
   padding: 10px;
   border-radius: 10px;
 
@@ -17,10 +17,16 @@
     background-color: var(--styleBlue);
     color: var(--styleRed);
     border-radius: 10px;
+    font-family: var(--font3);
+    padding-top: 5px !important;
+
+    .gameCard__title {
+      font-weight: 600;
+    }
 
     .gameCard__price {
       display: flex;
-      font-size: 20px;
+      font-size: 18px;
 
       .gameCard__price--regular {
         flex: 0 0 50%;
@@ -33,7 +39,11 @@
     }
 
     .gameCard__btn--margin {
-      margin: 0px 10px -15px 10px;
+      margin: 0px 20px -15px 20px;
+      font-family: var(--font1) !important;
+      background-color: var(--styleYellow);
+      color: black;
+      width: 100px !important;
     }
   }
 }

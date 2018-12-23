@@ -62,7 +62,9 @@ class GameCard extends Component {
             className={styles['gameCard__img']}
           />
           <CardBody className={styles['gameCard__body']}>
-            <CardTitle>{this.props.game.value.name}</CardTitle>
+            <CardTitle className={styles['gameCard__title']}>
+              {this.props.game.value.name}
+            </CardTitle>
             <CardSubtitle>Score: {this.props.game.value.score}</CardSubtitle>
             {this.renderPrices()}
             <Button

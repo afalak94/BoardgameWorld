@@ -94,7 +94,7 @@ class Navigation extends Component {
                 </div>
               </NavItem>
 
-              <NavItem>
+              <NavItem className={styles['navbar__search']}>
                 <input
                   id='searchBar'
                   className='form-control mr-sm-2'

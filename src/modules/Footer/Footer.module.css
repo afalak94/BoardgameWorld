@@ -3,6 +3,8 @@
 /* FOOTER */
 .footer {
   background-color: var(--styleBlue);
+  font-size: 16px;
+  font-weight: 600;
 
   .footer__links {
     margin-left: 1600px;
@@ -10,18 +12,20 @@
 }
 
 .footer__links--color {
-  color: white;
+  color: var(--styleBlack);
+  font-family: var(--font3);
 
   &:hover {
-    color: antiquewhite;
+    color: var(--styleYellow);
   }
 }
 
 .footer__user {
-  color: white !important;
+  color: var(--styleBlack) !important;
+  font-family: var(--font3);
 
   &:hover {
     cursor: pointer;
-    color: antiquewhite !important;
+    color: var(--styleYellow) !important;
   }
 }

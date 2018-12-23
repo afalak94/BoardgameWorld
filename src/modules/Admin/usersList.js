@@ -8,7 +8,6 @@ export default class UsersList extends Component {
     super(props);
 
     this.deleteUser = this.deleteUser.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
     this.state = { userList: [] };
   }
 

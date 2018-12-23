@@ -16,18 +16,17 @@ code {
 }
 
 .background {
-  background-image: url('./images/bgWorld-wallpaper2.jpg');
-  background-position: 'center';
-  background-repeat: 'repeat-y';
-  //background-size: contain;
-  //background-size: 100% 100%;
-  position: relative;
+  background-image: url('./images/fantasy1.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .container-fluid {
   max-width: 1600px !important;
   text-align: center;
-  border: 1px solid var(--errorRed);
+  /* border: 1px solid var(--errorRed); */
   min-height: 882px !important;
 
   display: flex;

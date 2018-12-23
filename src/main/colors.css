@@ -1,5 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Charm|Open+Sans|Pacifico');
+
 :root {
   --errorRed: #e03030;
-  --styleRed: #d64933;
-  --styleBlue: #2b4162;
+  --styleRed: #ff8875;
+  --styleBlue: #11658e; /*#3e4474*/
+  --styleYellow: #f9f871;
+  --styleGreen1: #38cb99;
+  --styleGreen2: #9be581;
+  --styleBlack: black;
+  --stylePurple: #3f6a9f;
+
+  --font1: 'Charm';
+  --font2: 'Pacifico';
+  --font3: 'Open Sans';
 }

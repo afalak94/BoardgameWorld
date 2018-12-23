@@ -3,13 +3,18 @@
 /* NAVBAR */
 .navbar--color {
   background-color: var(--styleBlue);
+  max-height: 55px;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar__brand {
-  color: white;
+  color: var(--styleBlack);
+  font-family: var(--font2);
+  font-size: 26px;
 
   &:hover {
-    color: antiquewhite;
+    color: var(--styleYellow);
   }
 }
 
@@ -20,15 +25,26 @@
   margin-right: 10px;
 
   .navbar__user {
-    color: white;
-    font-size: 18px !important;
+    color: var(--styleBlack);
+    font-size: 20px;
+    font-family: var(--font2);
+  }
+}
+
+.navbar__search {
+  justify-content: center;
+
+  input {
+    margin-top: 3px;
   }
 }
 
 .navbar__links--color {
-  color: white;
+  color: var(--styleBlack);
+  font-family: var(--font2);
+  font-size: 20px;
 
   &:hover {
-    color: antiquewhite;
+    color: var(--styleYellow);
   }
 }
