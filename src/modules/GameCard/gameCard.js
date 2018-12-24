@@ -23,17 +23,17 @@ class GameCard extends Component {
     if (this.props.game.value.onSale === false) {
       return (
         <div style={{ fontSize: 20 }}>
-          <div>Price: {this.props.game.value.price}</div>
+          <div>Price: {this.props.game.value.price} $</div>
         </div>
       );
     } else {
       return (
         <div className={styles['gameCard__price']}>
           <div className={styles['gameCard__price--regular']}>
-            Old Price: {this.props.game.value.price}
+            Old price: {this.props.game.value.price} $
           </div>
           <div className={styles['gameCard__price--sale']}>
-            Sale Price: {this.props.game.value.salePrice}
+            SALE: {this.props.game.value.salePrice} $
           </div>
         </div>
       );
@@ -70,12 +70,12 @@ class GameCard extends Component {
             <Button
               tag={Link}
               to={'/game/' + this.props.game.key}
-              className={styles['gameCard__btn--margin']}
+              className={styles['gameCard__btn']}
             >
               View more
             </Button>
             <Button
-              className={styles['gameCard__btn--margin']}
+              className={styles['gameCard__btn']}
               onClick={
                 this.props.user
                   ? //if the user is loged in, add item to his firebase cart

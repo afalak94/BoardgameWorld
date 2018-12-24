@@ -15,35 +15,44 @@
 
   .gameCard__body {
     background-color: var(--styleBlue);
-    color: var(--styleRed);
+    color: var(--styleWhite);
     border-radius: 10px;
     font-family: var(--font3);
     padding-top: 5px !important;
 
     .gameCard__title {
+      height: 48px;
       font-weight: 600;
+      display: flex;
+      justify-content: center; /* align horizontal */
+      align-items: center; /* align vertical */
     }
 
     .gameCard__price {
       display: flex;
       font-size: 18px;
+      width: 300px;
 
       .gameCard__price--regular {
         flex: 0 0 50%;
         text-decoration: line-through;
+        text-align: left;
       }
 
       .gameCard__price--sale {
         flex: 1;
+        text-align: right;
+        color: var(--styleRed);
+        font-weight: 600;
       }
     }
 
-    .gameCard__btn--margin {
-      margin: 0px 20px -15px 20px;
-      font-family: var(--font1) !important;
+    .gameCard__btn {
+      margin: 0px 10px -15px 10px;
+      font-family: var(--font3) !important;
       background-color: var(--styleYellow);
       color: black;
-      width: 100px !important;
+      width: 110px !important;
     }
   }
 }
