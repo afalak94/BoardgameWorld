@@ -1,18 +1,21 @@
 @import '../../main/colors.css';
 
 /* CART */
-.cart--flex {
-  display: flex;
+.cart__wrapper {
+  display: grid;
+  margin-top: 50px;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto;
+  grid-template-areas: 'items summary';
+  justify-items: center;
 
   .cart__listGroup {
-    margin: 100px 0 0 100px;
-    float: left !important;
-    flex: 0 0 45%;
+    grid-area: items;
 
     .cart__listGroup--size {
       width: 500px;
       background-color: var(--styleBlue);
-      color: var(--styleRed);
+      color: var(--styleWhite);
       font-family: var(--font3);
 
       .cart__itemImg {
@@ -22,25 +25,58 @@
     }
   }
 
-  .cart__summary {
-    margin-top: 100px;
-    max-width: 600px !important;
-    max-height: 400px !important;
-    float: left !important;
-    flex: 1;
+  .cart__summary__jumbotron {
+    grid-area: summary;
+    width: 500px;
+    height: 420px;
+    background-color: var(--styleBlue);
+    color: var(--styleWhite);
+    border-radius: 10px;
+    font-family: var(--font3);
+    padding: 10px 30px;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 100px 50px 100px 50px 100px;
+    grid-template-areas:
+      'title'
+      'user'
+      'number'
+      'total_price'
+      'priceNum';
+    align-items: center;
   }
 
-  .cart__summary__jumbotron {
-    background-color: var(--styleBlue);
+  .cart__summary__header {
+    grid-area: title;
     color: var(--styleRed);
-    border-radius: 10px;
-    padding: 20px !important;
-    font-family: var(--font3);
+    font-family: var(--font2);
+    font-size: 54px;
+  }
 
-    .cart__summary__header {
-      font-family: var(--font2);
-      font-size: 54px;
-      margin-bottom: 20px;
-    }
+  .cart__summary__user {
+    grid-area: user;
+    justify-self: start;
+    font-size: 28px;
+  }
+
+  .cart__summary__number {
+    grid-area: number;
+    justify-self: start;
+    font-size: 28px;
+  }
+
+  .cart__summary__price {
+    grid-area: total_price;
+    justify-self: start;
+    align-self: start;
+    font-size: 28px;
+  }
+
+  .cart__summary__priceNum {
+    grid-area: priceNum;
+    justify-self: center;
+    align-self: center;
+    font-size: 40px;
   }
 }

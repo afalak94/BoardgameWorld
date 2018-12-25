@@ -97,6 +97,7 @@
 
   button {
     margin-top: 10px;
+    width: 100%;
   }
 
   .gameinfo__price {

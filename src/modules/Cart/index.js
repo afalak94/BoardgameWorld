@@ -6,7 +6,6 @@ import {
   ListGroupItemHeading,
   ListGroupItemText,
   Jumbotron,
-  Container,
   Button
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -136,33 +135,32 @@ class Cart extends Component {
 
   render() {
     return (
-      <div className={styles['cart--flex']}>
+      <div className={styles['cart__wrapper']}>
         <ListGroup className={styles['cart__listGroup']}>
           {this.props.user ? this.renderItems() : this.renderLocalItems()}
         </ListGroup>
 
-        <div className={styles['cart__summary']}>
-          <Jumbotron className={styles['cart__summary__jumbotron']}>
-            <Container>
-              <h1 className={styles['cart__summary__header']}>Cart summary</h1>
-              <p className='lead'>
-                {this.props.user ? this.props.user.email : ''}
-              </p>
-              {this.itemsInCart ? (
-                <p className='lead'>
-                  Number of items: {this.itemsInCart.length}
-                </p>
-              ) : (
-                ''
-              )}
+        <Jumbotron className={styles['cart__summary__jumbotron']}>
+          <h1 className={styles['cart__summary__header']}>Cart summary</h1>
+          <div className={styles['cart__summary__user']}>
+            User: {this.props.user ? this.props.user.email : 'Guest'}
+          </div>
+          {this.itemsInCart ? (
+            <div className={styles['cart__summary__number']}>
+              Number of items: <strong>{this.itemsInCart.length}</strong>
+            </div>
+          ) : (
+            ''
+          )}
 
-              <p className='lead'>
-                Total price: {Math.round(this.total * 100) / 100}
-                {' $'}
-              </p>
-            </Container>
-          </Jumbotron>
-        </div>
+          <div className={styles['cart__summary__price']}>Total price: </div>
+          <div className={styles['cart__summary__priceNum']}>
+            <strong>
+              {Math.round(this.total * 100) / 100}
+              {' $'}
+            </strong>
+          </div>
+        </Jumbotron>
       </div>
     );
   }

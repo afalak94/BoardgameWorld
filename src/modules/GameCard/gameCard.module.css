@@ -6,7 +6,8 @@
   background-color: var(--styleBlue);
   /* border: 5px solid var(--styleBlue); */
   padding: 10px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  width: 360px;
 
   .gameCard__img {
     height: 240px !important;

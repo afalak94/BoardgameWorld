@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import GameCard from '../GameCard/gameCard';
 import SaleCarousel from './carousel';
-import { Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
@@ -50,21 +49,30 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles['home__wrapper']}>
         <div className={styles['home__carousel']}>
           <SaleCarousel />
+        </div>
+
+        <div className={styles['home__saleInfo']}>
+          <h1>Holiday Sale</h1>
+          <br />
+          Check out special holiday sale discounts on your favorite boardgames.
+          Inluding specials like <strong>Gloomhaven</strong>,
+          <strong>Terraforming Mars</strong>, <strong>Spirit Island </strong>
+          and <strong>Scythe</strong>!
         </div>
 
         <div className={styles['saleGames']}>
           {this.state.itemsOnSale.map(game => {
             return (
-              <Col xs='3' key={game.key}>
-                <GameCard
-                  game={game}
-                  user={this.props.user}
-                  addToCart={this.props.addToCart}
-                />
-              </Col>
+              <GameCard
+                className={styles['saleGames_card']}
+                key={game.key}
+                game={game}
+                user={this.props.user}
+                addToCart={this.props.addToCart}
+              />
             );
           })}
         </div>
