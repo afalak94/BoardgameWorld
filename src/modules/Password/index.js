@@ -3,33 +3,35 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/auth';
-import styles from './Register.module.css';
+import styles from './Password.module.css';
 
-class Register extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.register = this.register.bind(this);
+    this.resetPW = this.resetPW.bind(this);
 
-    this.state = { email: '', password: '' };
+    this.state = { email: '' };
   }
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  register(e) {
+  resetPW() {
     firebase
       .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .sendPasswordResetEmail(this.state.email)
       .then(() => {
-        //redirect loged in user to homepage
-        this.props.history.push('/');
+        // Email sent.
+        alert('Password reset mail has been sent to ' + this.state.email);
+        this.setState({ email: '' });
       })
-      .catch(function(error) {
-        // Handle Errors here.
-        console.log(error.message);
+      .catch(error => {
+        // An error happened.
+        alert(error.message);
+        this.setState({ email: '' });
       });
   }
 
@@ -39,8 +41,13 @@ class Register extends Component {
 
   render() {
     return (
-      <div className={styles.register__form}>
+      <div className={styles.password__form}>
         <Form>
+          <h4>
+            Insert your registered email account and we will send you password
+            reset message
+          </h4>
+          <br />
           <FormGroup>
             <Label for='exampleEmail'>Email</Label>
             <Input
@@ -53,24 +60,12 @@ class Register extends Component {
             />
           </FormGroup>
 
-          <FormGroup>
-            <Label for='examplePassword'>Password</Label>
-            <Input
-              value={this.state.password}
-              onChange={this.handleChange}
-              type='password'
-              name='password'
-              id='examplePassword'
-              placeholder='Enter your password'
-            />
-          </FormGroup>
-
           <Button
             color='success'
-            className={styles.register__btn}
-            onClick={this.register}
+            className={styles.password__btn}
+            onClick={() => this.resetPW()}
           >
-            Register
+            Send email
           </Button>
         </Form>
       </div>
@@ -78,4 +73,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default ResetPassword;

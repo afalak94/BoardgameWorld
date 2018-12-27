@@ -1,3 +1,5 @@
+// TODO: implement new carousel
+
 import React, { Component } from 'react';
 import {
   Carousel,
@@ -7,23 +9,24 @@ import {
   CarouselCaption
 } from 'reactstrap';
 import styles from './Home.module.css';
+//images
+import scythe from '../../main/images/scythe-carousel.jpg';
+import azul from '../../main/images/azul-carousel.jpg';
+import mars from '../../main/images/mars-carousel.jpg';
 
 const items = [
   {
-    src:
-      'https://cf.geekdo-images.com/imagepagezoom/img/c18aSQqozMiGW2XcqyfH5G1LAWU=/fit-in/1200x900/filters:no_upscale()/pic2535740.jpg',
+    src: scythe,
     altText: 'Scythe',
     caption: 'Restock of most popular Scythe figures'
   },
   {
-    src:
-      'https://cf.geekdo-images.com/imagepagezoom/img/yDFd2k_qiRy6wrck1T2Eig07Lkc=/fit-in/1200x900/filters:no_upscale()/pic3907025.jpg',
+    src: azul,
     altText: 'Slide 2',
     caption: 'New edition of Azul has arrived'
   },
   {
-    src:
-      'https://cf.geekdo-images.com/imagepagezoom/img/y3VfaXqkheaDWFe7juSZDbHCU2Y=/fit-in/1200x900/filters:no_upscale()/pic2891965.jpg',
+    src: mars,
     altText: 'Slide 3',
     caption: 'Terraforming Mars is back in the stock'
   }

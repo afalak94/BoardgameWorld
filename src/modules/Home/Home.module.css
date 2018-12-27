@@ -28,12 +28,6 @@
       border-radius: 20px;
     }
   }
-
-  img {
-    flex-shrink: 0;
-    min-width: 100%;
-    max-height: 100%;
-  }
 }
 
 .home__saleInfo {
@@ -43,6 +37,7 @@
   font-size: 30px;
   font-family: var(--font3);
   padding: 50px 10px;
+  border: 3px solid var(--styleRed);
 
   h1 {
     font-family: var(--font2);

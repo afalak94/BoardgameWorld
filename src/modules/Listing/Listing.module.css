@@ -3,12 +3,18 @@
 
 .listing__categories {
   margin-top: 110px;
-  font-family: var(--font3);
+  font-family: var(--font1);
 
   .listing__categoryListItem {
     background-color: var(--styleBlue);
     color: var(--styleRed);
     border: 1px solid var(--styleRed);
+    font-size: 24px;
+    font-weight: 600;
+    height: 50px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0px;
   }
 }
 

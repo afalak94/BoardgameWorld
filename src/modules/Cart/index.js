@@ -160,6 +160,8 @@ class Cart extends Component {
               {' $'}
             </strong>
           </div>
+
+          <Button color='success'>CHECKOUT</Button>
         </Jumbotron>
       </div>
     );

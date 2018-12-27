@@ -6,6 +6,7 @@ import 'firebase/auth';
 import { connect } from 'react-redux';
 import { addUser } from '../../modules/Login/actions';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 
 class Login extends Component {
@@ -88,7 +89,21 @@ class Login extends Component {
             />
           </FormGroup>
 
-          <Button onClick={this.login}>Log in</Button>
+          <Button
+            color='success'
+            className={styles['login__btn']}
+            onClick={this.login}
+          >
+            Log in
+          </Button>
+          <Button
+            color='danger'
+            className={styles.login__btn}
+            tag={Link}
+            to='/password'
+          >
+            Forgot password?
+          </Button>
         </Form>
       </div>
     );

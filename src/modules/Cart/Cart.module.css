@@ -28,7 +28,7 @@
   .cart__summary__jumbotron {
     grid-area: summary;
     width: 500px;
-    height: 420px;
+    height: 480px;
     background-color: var(--styleBlue);
     color: var(--styleWhite);
     border-radius: 10px;

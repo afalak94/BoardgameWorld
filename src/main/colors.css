@@ -2,7 +2,7 @@
 
 :root {
   --errorRed: #e03030;
-  --styleRed: #db3a34;
+  --styleRed: #bf1363; /*#f03a47; #db3a34;*/
   --styleBlue: #11658e; /*#3e4474*/
   --styleYellow: #ffc857;
   --styleGreen1: #38cb99;
