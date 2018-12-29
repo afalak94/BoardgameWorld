@@ -129,45 +129,34 @@ export default class ItemList extends Component {
 
   render() {
     return (
-      <div>
-        <Row style={{ width: 1500 }}>
-          <Col sm={{ size: 'auto', offset: 1 }}>
-            <ListGroup>
-              {this.state.items.map(item => {
-                return (
-                  <ListGroupItem
-                    key={item.key}
-                    className={styles['category__listGroup']}
-                  >
-                    <div className={styles['category__listGroupText']}>
-                      {item.value.name}
-                    </div>
-                    <Button
-                      color='danger'
-                      outline
-                      className={styles['category__listGroupBtn']}
-                      onClick={() => this.deleteItem(item.key)}
-                    >
-                      Remove
-                    </Button>
-                  </ListGroupItem>
-                );
-              })}
-            </ListGroup>
-          </Col>
+      <div className={styles['itemManagement__wrapper']}>
+        <div className={styles['boardgames__wrapper']}>
+          {this.state.items.map(item => {
+            return (
+              <div className={styles['boardgames__item']} key={item.key}>
+                <div className={styles['boardgames__itemName']}>
+                  {item.value.name}
+                </div>
 
-          <Col sm={{ size: 'auto' }}>
-            <div className={styles['item__formContainer']}>
-              {this.state.gotData ? (
-                <AddItemTemplate
-                  item={this.state.items}
-                  categories={this.state.categories}
-                  addNewItem={this.addNewItem}
-                />
-              ) : null}
-            </div>
-          </Col>
-        </Row>
+                <div className={styles['boardgames__itemRemove']}>
+                  <Button onClick={() => this.deleteItem(item.key)}>
+                    &times;
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className={styles['item__formContainer']}>
+          {this.state.gotData ? (
+            <AddItemTemplate
+              item={this.state.items}
+              categories={this.state.categories}
+              addNewItem={this.addNewItem}
+            />
+          ) : null}
+        </div>
       </div>
     );
   }

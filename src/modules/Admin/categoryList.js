@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
 import styles from './Admin.module.css';
@@ -48,29 +48,22 @@ export default class CategoryList extends Component {
 
   render() {
     return (
-      <div>
-        <ListGroup>
-          {this.state.categories.map(category => {
-            return (
-              <ListGroupItem
-                key={category.key}
-                className={styles['category__listGroup']}
-              >
-                <div className={styles['category__listGroupText']}>
-                  {category.value}
-                </div>
-                <Button
-                  color='danger'
-                  outline
-                  className={styles['category__listGroupBtn']}
-                  onClick={() => this.deleteCategory(category.key)}
-                >
-                  Remove
+      <div className={styles['categories__wrapper']}>
+        {this.state.categories.map(category => {
+          return (
+            <div className={styles['categories__item']} key={category.key}>
+              <div className={styles['categories__itemName']}>
+                {category.value}
+              </div>
+
+              <div className={styles['categories__itemRemove']}>
+                <Button onClick={() => this.deleteCategory(category.key)}>
+                  &times;
                 </Button>
-              </ListGroupItem>
-            );
-          })}
-        </ListGroup>
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }

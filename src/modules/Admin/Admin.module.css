@@ -16,6 +16,8 @@
     background-color: var(--styleBlue);
     color: var(--styleRed);
     width: 250px;
+    font-weight: bold !important;
+    font-family: var(--font3);
 
     &:hover {
       cursor: pointer;
@@ -32,18 +34,66 @@
 .admin__tabContent {
   margin: 100px 0 0 100px;
   width: 1400px;
+  font-family: var(--font3);
 
-  .category__input {
-    margin-left: 100px;
+  .category__input__wrapper {
     width: 600px;
+    height: 220px;
+    padding: 20px 40px;
+    margin-left: 120px;
+    background-color: var(--styleBlue);
+    color: var(--styleWhite);
+    border: 2px solid var(--styleRed);
+    border-radius: 10px;
 
-    .category__inputText {
-      background-color: var(--styleBlue) !important;
-      color: var(--styleRed) !important;
+    h3 {
+      font-weight: bold;
     }
 
-    .category__submitBtn:hover {
-      cursor: pointer;
+    button {
+      margin-top: 20px;
+    }
+  }
+}
+
+.categories__wrapper {
+  display: flex;
+  width: 600px;
+  min-height: 200px;
+  background-color: var(--styleBlue);
+  border: 2px solid var(--styleRed);
+  border-radius: 10px;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-content: flex-start;
+  padding: 10px 0;
+
+  .categories__item {
+    height: 30px;
+    width: 180px;
+    background-color: var(--styleRed);
+    color: var(--styleWhite);
+    margin: 5px 5px 5px 5px !important;
+    display: flex;
+    border-radius: 10px;
+
+    .categories__itemName {
+      flex: 0 0 83%;
+      line-height: 30px;
+    }
+
+    .categories__itemRemove {
+      flex: 1;
+      height: 20px;
+
+      button {
+        background-color: transparent !important;
+        height: 30px;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0 10px;
+        border: none;
+      }
     }
   }
 }
@@ -64,11 +114,61 @@
 }
 
 /* ITEMS */
+.itemManagement__wrapper {
+  display: flex;
+  width: 1500px;
+  flex-flow: row wrap;
+  align-items: flex-start;
+}
+
+.boardgames__wrapper {
+  display: flex;
+  width: 600px;
+  min-height: 200px;
+  background-color: var(--styleBlue);
+  border: 2px solid var(--styleRed);
+  border-radius: 10px;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-content: flex-start;
+  padding: 10px 0;
+
+  .boardgames__item {
+    height: 60px;
+    width: 180px;
+    background-color: var(--styleRed);
+    color: var(--styleWhite);
+    margin: 5px 5px 5px 5px !important;
+    display: flex;
+    border-radius: 10px;
+
+    .boardgames__itemName {
+      flex: 0 0 83%;
+      margin: auto;
+    }
+
+    .boardgames__itemRemove {
+      flex: 1;
+      height: 30px;
+
+      button {
+        background-color: transparent !important;
+        height: 30px;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0 10px;
+        border: none;
+      }
+    }
+  }
+}
+
 .item__formContainer {
   background-color: var(--styleBlue);
   color: var(--styleRed);
   padding: 10px;
   width: 600px !important;
+  margin-left: 160px;
 
   .inputGroup__dolar {
     background-color: var(--styleBlue);

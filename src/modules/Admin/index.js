@@ -7,9 +7,7 @@ import {
   NavLink,
   Row,
   Col,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
+  Button,
   Input
 } from 'reactstrap';
 import classnames from 'classnames';
@@ -54,22 +52,25 @@ class AdminSection extends React.Component {
 
   addCategory(name) {
     //adding a new category to firebase
-    //console.log(name);
     this.setState({ inputValue: '' });
-
-    // Get a key for a new Post.
-    const newPostKey = firebase
-      .database()
-      .ref()
-      .child('categories')
-      .push().key;
-    //update a new category to firebase
-    let updates = {};
-    updates['/categories/' + newPostKey] = name;
-    return firebase
-      .database()
-      .ref()
-      .update(updates);
+    //check if name is valid length
+    if (name.length < 1 || name.length > 18) {
+      alert('Invalid category name length');
+    } else {
+      // Get a key for a new Post.
+      const newPostKey = firebase
+        .database()
+        .ref()
+        .child('categories')
+        .push().key;
+      //update a new category to firebase
+      let updates = {};
+      updates['/categories/' + newPostKey] = name;
+      return firebase
+        .database()
+        .ref()
+        .update(updates);
+    }
   }
 
   componentDidMount() {
@@ -82,6 +83,7 @@ class AdminSection extends React.Component {
     if (!this.props.user) {
       return <Redirect to='/' />;
     }
+
     return (
       <div className={styles['admin__nav']}>
         <Nav tabs className={styles['admin__nav--position']}>
@@ -123,38 +125,32 @@ class AdminSection extends React.Component {
         >
           <TabPane tabId='1'>
             <Row style={{ width: 1500 }}>
-              <Col sm={{ size: 'auto', offset: 1 }}>
+              <Col sm={{ size: 'auto' }}>
                 <CategoryList />
               </Col>
 
               <Col sm={{ size: 'auto' }}>
-                <InputGroup className={styles['category__input']}>
-                  <InputGroupAddon addonType='prepend'>
-                    <InputGroupText className={styles['category__inputText']}>
-                      Add category
-                    </InputGroupText>
-                  </InputGroupAddon>
+                <div className={styles['category__input__wrapper']}>
+                  <h3>Add a new category</h3>
+                  <p>(max. 18 letters)</p>
                   <Input
                     value={this.state.inputValue}
                     onChange={e => this.updateInputValue(e)}
                   />
-                  <InputGroupAddon
-                    className={styles['category__submitBtn']}
-                    addonType='append'
+                  <Button
+                    color='success'
                     onClick={() => this.addCategory(this.state.inputValue)}
                   >
-                    <InputGroupText className={styles['category__inputText']}>
-                      Submit
-                    </InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
+                    Submit
+                  </Button>
+                </div>
               </Col>
             </Row>
           </TabPane>
 
           <TabPane tabId='2'>
             <Row style={{ width: 1500 }}>
-              <Col sm={{ size: 'auto', offset: 1 }}>
+              <Col sm={{ size: 'auto' }}>
                 <ItemList />
               </Col>
             </Row>
