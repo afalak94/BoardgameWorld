@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Button, Row, Col } from 'reactstrap';
+import { Button } from 'reactstrap';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
 import AddItemTemplate from './addItemTemplate';

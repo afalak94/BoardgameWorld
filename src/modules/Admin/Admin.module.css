@@ -164,36 +164,141 @@
 }
 
 .item__formContainer {
+  font-family: var(--font3);
   background-color: var(--styleBlue);
-  color: var(--styleRed);
+  color: var(--styleWhite);
   padding: 10px;
-  width: 600px !important;
+  width: 600px;
   margin-left: 160px;
+  border: 2px solid var(--styleRed);
+  border-radius: 10px;
+}
 
-  .inputGroup__dolar {
-    background-color: var(--styleBlue);
+.item__form {
+  display: grid;
+  padding: 0 10px;
+  grid-template-columns: 50% 50%;
+  grid-gap: 5px;
+  grid-template-rows: auto auto auto auto auto auto auto;
+  grid-template-areas:
+    'title title'
+    'name price'
+    'score salePrice'
+    'img onSale'
+    'description description'
+    'categories categories'
+    'submit submit';
+
+  h3 {
+    grid-area: title;
+    padding: 5px;
     color: var(--styleRed);
+  }
+
+  label {
     font-weight: bold;
-    position: absolute;
-    font-size: 16px;
+  }
+
+  .form__name {
+    grid-area: name;
+  }
+
+  .form__score {
+    grid-area: score;
+  }
+
+  .form__img {
+    grid-area: img;
+  }
+
+  .form__price {
+    grid-area: price;
+  }
+
+  .form__salePrice {
+    grid-area: salePrice;
+  }
+
+  .form__onSale {
+    grid-area: onSale;
+  }
+
+  .form__description {
+    grid-area: description;
+    textarea {
+      height: 130px;
+    }
+  }
+
+  .form__categories {
+    grid-area: categories;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    grid-template-areas:
+      'catTitle catTitle catTitle'
+      'catNum catNum catNum';
+
+    label {
+      grid-area: catTitle;
+    }
+
+    .form__categories__menu {
+      background-color: var(--styleBlue);
+
+      button:hover {
+        background-color: var(--styleRed);
+      }
+    }
+
+    button {
+      color: var(--styleWhite);
+    }
+  }
+
+  .form__submit {
+    grid-area: submit;
   }
 }
 
 /* USERS */
+.user__wrapper {
+  width: 80%;
+  background-color: var(--styleBlue);
+  border: 2px solid var(--styleRed);
+  border-radius: 10px;
+  display: grid;
+  grid-gap: 10px;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  grid-template-columns: 50% 50%;
+  justify-items: center;
+}
+
 .user__listGroup {
-  background-color: var(--styleBlue) !important;
-  color: var(--styleRed) !important;
-  border: 1px solid var(--styleRed);
+  background-color: var(--styleRed);
+  color: var(--styleWhite);
+  border-radius: 10px;
+  font-family: var(--font3);
   width: 500px;
+  padding: 5px;
   display: flex;
-  margin-left: 300px;
   align-items: center;
 
   .user__listGroupText {
     flex: 0 0 55%;
+    font-weight: bold;
   }
 
   .user__listGroupBtn {
     flex: 1;
+    color: var(--styleWhite) !important;
+    border: 1px solid var(--styleBlue);
+
+    &:hover {
+      background-color: var(--styleBlue);
+    }
   }
 }

@@ -140,12 +140,7 @@ class Listing extends Component {
         <Col xs='9'>
           <div>
             <InputGroup className={styles['listing__priceBtnGroup']}>
-              <InputGroupAddon
-                className={styles['listing__priceBtn']}
-                addonType='prepend'
-              >
-                Price
-              </InputGroupAddon>
+              <div className={styles['listing__priceText']}>Price</div>
               <Button
                 className={styles['listing__filterBtn']}
                 onClick={() => this.props.onPriceClick('ASC')}

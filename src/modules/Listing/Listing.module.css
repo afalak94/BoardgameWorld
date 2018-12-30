@@ -19,20 +19,25 @@
 }
 
 .listing__priceBtnGroup {
-  margin: 50px 0 0 950px;
-  width: 200px;
+  margin: 50px 0 0 945px;
+  width: 300px;
   font-family: var(--font3);
+  font-weight: 600;
 
-  .listing__priceBtn {
+  .listing__priceText {
     background-color: var(--styleBlue) !important;
     color: var(--styleRed) !important;
-    margin-right: 1px;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 80px;
+    line-height: 38px;
   }
 
   .listing__filterBtn {
     background-color: var(--styleBlue);
     color: var(--styleRed);
     width: 60px;
+    font-weight: 600;
   }
 }
 

@@ -1,13 +1,10 @@
 import React from 'react';
 import {
-  Col,
   Button,
   Form,
   FormGroup,
   Label,
   Input,
-  InputGroupText,
-  InputGroupAddon,
   ButtonDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -97,179 +94,149 @@ export default class AddItemTemplate extends React.Component {
 
   render() {
     return (
-      <Form>
-        <FormGroup row>
-          <Label sm={2}>Name</Label>
-          <Col sm={8}>
-            <Input name='nameValue' type='text' onChange={this.commonChange} />
-          </Col>
+      <Form className={styles['item__form']}>
+        <h3>Add new boardgame</h3>
+        <FormGroup className={styles['form__name']}>
+          <Label>Name</Label>
+          <Input name='nameValue' type='text' onChange={this.commonChange} />
         </FormGroup>
 
-        <FormGroup row>
-          <Label sm={2}>Score</Label>
-          <Col sm={8}>
-            <Input name='scoreValue' type='text' onChange={this.commonChange} />
-          </Col>
+        <FormGroup className={styles['form__score']}>
+          <Label>Score</Label>
+
+          <Input name='scoreValue' type='text' onChange={this.commonChange} />
         </FormGroup>
 
-        <FormGroup row>
-          <Label sm={2}>Image URL</Label>
-          <Col sm={8}>
-            <Input
-              name='imgUrlValue'
-              type='text'
-              onChange={this.commonChange}
-            />
-          </Col>
+        <FormGroup className={styles['form__img']}>
+          <Label>Image URL</Label>
+
+          <Input name='imgUrlValue' type='text' onChange={this.commonChange} />
         </FormGroup>
 
-        <FormGroup row>
-          <Label sm={2}>Price</Label>
-          <Col sm={4}>
-            <Input
-              name='priceValue'
-              onChange={this.commonChange}
-              style={{ float: 'left' }}
-            />
-            <InputGroupAddon addonType='append'>
-              <InputGroupText className={styles['inputGroup__dolar']}>
-                $
-              </InputGroupText>
-            </InputGroupAddon>
-          </Col>
+        <FormGroup className={styles['form__price']}>
+          <Label>Price</Label>
+          <Input
+            name='priceValue'
+            onChange={this.commonChange}
+            style={{ float: 'left' }}
+          />
         </FormGroup>
 
-        <FormGroup row>
-          <Label sm={2}>Sale price</Label>
-          <Col sm={4}>
-            <Input
-              name='salePriceValue'
-              onChange={this.commonChange}
-              style={{ float: 'left' }}
-            />
-            <InputGroupAddon addonType='append'>
-              <InputGroupText className={styles['inputGroup__dolar']}>
-                $
-              </InputGroupText>
-            </InputGroupAddon>
-          </Col>
+        <FormGroup className={styles['form__salePrice']}>
+          <Label>Sale price</Label>
+
+          <Input
+            name='salePriceValue'
+            onChange={this.commonChange}
+            style={{ float: 'left' }}
+          />
         </FormGroup>
 
-        <FormGroup row>
-          <Col sm={{ size: 12 }}>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type='checkbox'
-                  name='onSale'
-                  onChange={this.onSaleChange}
-                />{' '}
-                Item on sale?
-              </Label>
-            </FormGroup>
-          </Col>
+        <FormGroup className={styles['form__onSale']}>
+          <Label>Is item on SALE?</Label>
+          <FormGroup check>
+            <Label check>
+              <Input
+                type='checkbox'
+                name='onSale'
+                onChange={this.onSaleChange}
+              />{' '}
+              Check if item is on SALE
+            </Label>
+          </FormGroup>
         </FormGroup>
 
-        <FormGroup row>
-          <Label for='exampleText' sm={2}>
-            Description
-          </Label>
-          <Col sm={12}>
-            <Input
-              type='textarea'
-              name='descriptionValue'
-              onChange={this.commonChange}
-            />
-          </Col>
+        <FormGroup className={styles['form__description']}>
+          <Label for='exampleText'>Description</Label>
+          <Input
+            type='textarea'
+            name='descriptionValue'
+            onChange={this.commonChange}
+          />
         </FormGroup>
 
         {/* 3 categories togglers */}
-        <FormGroup row>
-          <Label sm={2}>Categories</Label>
-          <Col sm={{ size: 3 }}>
-            <ButtonDropdown
-              isOpen={this.state.dropdownOpen1}
-              toggle={this.toggle1}
-            >
-              <DropdownToggle caret color='info' outline>
-                {this.state.dropdownValue1}
-              </DropdownToggle>
-              <DropdownMenu>
-                {this.props.categories.map(cat => {
-                  return (
-                    <DropdownItem onClick={e => this.select1(e)} key={cat.key}>
-                      {cat.value}
-                    </DropdownItem>
-                  );
-                })}
-              </DropdownMenu>
-            </ButtonDropdown>
-          </Col>
+        <FormGroup className={styles['form__categories']}>
+          <Label>Categories</Label>
 
-          <Col sm={3}>
-            <ButtonDropdown
-              isOpen={this.state.dropdownOpen2}
-              toggle={this.toggle2}
-            >
-              <DropdownToggle caret color='info' outline>
-                {this.state.dropdownValue2}
-              </DropdownToggle>
-              <DropdownMenu>
-                {this.props.categories.map(cat => {
-                  return (
-                    <DropdownItem onClick={e => this.select2(e)} key={cat.key}>
-                      {cat.value}
-                    </DropdownItem>
-                  );
-                })}
-              </DropdownMenu>
-            </ButtonDropdown>
-          </Col>
-          <Col sm={3}>
-            <ButtonDropdown
-              isOpen={this.state.dropdownOpen3}
-              toggle={this.toggle3}
-            >
-              <DropdownToggle caret color='info' outline>
-                {this.state.dropdownValue3}
-              </DropdownToggle>
-              <DropdownMenu>
-                {this.props.categories.map(cat => {
-                  return (
-                    <DropdownItem onClick={e => this.select3(e)} key={cat.key}>
-                      {cat.value}
-                    </DropdownItem>
-                  );
-                })}
-              </DropdownMenu>
-            </ButtonDropdown>
-          </Col>
+          <ButtonDropdown
+            isOpen={this.state.dropdownOpen1}
+            toggle={this.toggle1}
+          >
+            <DropdownToggle caret outline>
+              {this.state.dropdownValue1}
+            </DropdownToggle>
+            <DropdownMenu className={styles['form__categories__menu']}>
+              {this.props.categories.map(cat => {
+                return (
+                  <DropdownItem onClick={e => this.select1(e)} key={cat.key}>
+                    {cat.value}
+                  </DropdownItem>
+                );
+              })}
+            </DropdownMenu>
+          </ButtonDropdown>
+
+          <ButtonDropdown
+            isOpen={this.state.dropdownOpen2}
+            toggle={this.toggle2}
+          >
+            <DropdownToggle caret outline>
+              {this.state.dropdownValue2}
+            </DropdownToggle>
+            <DropdownMenu className={styles['form__categories__menu']}>
+              {this.props.categories.map(cat => {
+                return (
+                  <DropdownItem onClick={e => this.select2(e)} key={cat.key}>
+                    {cat.value}
+                  </DropdownItem>
+                );
+              })}
+            </DropdownMenu>
+          </ButtonDropdown>
+
+          <ButtonDropdown
+            isOpen={this.state.dropdownOpen3}
+            toggle={this.toggle3}
+          >
+            <DropdownToggle caret outline>
+              {this.state.dropdownValue3}
+            </DropdownToggle>
+            <DropdownMenu className={styles['form__categories__menu']}>
+              {this.props.categories.map(cat => {
+                return (
+                  <DropdownItem onClick={e => this.select3(e)} key={cat.key}>
+                    {cat.value}
+                  </DropdownItem>
+                );
+              })}
+            </DropdownMenu>
+          </ButtonDropdown>
         </FormGroup>
 
-        <FormGroup check row>
-          <Col sm={{ size: 12 }}>
-            <Button
-              //passing all values to addNewItem function from props
-              onClick={() =>
-                this.props.addNewItem(
-                  this.state.nameValue,
-                  this.state.scoreValue,
-                  this.state.imgUrlValue,
-                  this.state.priceValue,
-                  this.state.salePriceValue,
-                  this.state.onSale,
-                  this.state.descriptionValue,
-                  [
-                    this.state.dropdownValue1,
-                    this.state.dropdownValue2,
-                    this.state.dropdownValue3
-                  ]
-                )
-              }
-            >
-              Add new boardgame
-            </Button>
-          </Col>
+        <FormGroup className={styles['form__submit']}>
+          <Button
+            color='success'
+            //passing all values to addNewItem function from props
+            onClick={() =>
+              this.props.addNewItem(
+                this.state.nameValue,
+                this.state.scoreValue,
+                this.state.imgUrlValue,
+                this.state.priceValue,
+                this.state.salePriceValue,
+                this.state.onSale,
+                this.state.descriptionValue,
+                [
+                  this.state.dropdownValue1,
+                  this.state.dropdownValue2,
+                  this.state.dropdownValue3
+                ]
+              )
+            }
+          >
+            Submit
+          </Button>
         </FormGroup>
       </Form>
     );
