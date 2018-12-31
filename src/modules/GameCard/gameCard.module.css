@@ -12,6 +12,25 @@
   .gameCard__img {
     height: 240px !important;
     object-fit: contain;
+    z-index: 2;
+  }
+
+  .gameCard__saleOverlay {
+    position: absolute;
+    z-index: 3;
+    width: 100px;
+    height: 50px;
+    line-height: 45px;
+    margin-left: 250px;
+    background-color: var(--styleRed);
+    border: 2px solid var(--styleBlue);
+    border-radius: 5px;
+    font-family: var(--font2);
+    font-size: 26px;
+
+    span {
+      float: center;
+    }
   }
 
   .gameCard__body {
@@ -20,6 +39,10 @@
     border-radius: 10px;
     font-family: var(--font3);
     padding-top: 5px !important;
+
+    h6 {
+      font-size: 18px !important;
+    }
 
     .gameCard__title {
       height: 48px;
@@ -44,7 +67,7 @@
         flex: 1;
         text-align: right;
         color: var(--styleRed);
-        font-weight: 600 !important;
+        font-weight: bold;
       }
     }
 

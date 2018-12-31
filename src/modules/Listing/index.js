@@ -7,8 +7,7 @@ import {
   ListGroup,
   ListGroupItem,
   Button,
-  InputGroup,
-  InputGroupAddon
+  InputGroup
 } from 'reactstrap';
 import { bindActionCreators } from 'redux';
 import firebase from '../../main/firebase.config';

@@ -15,6 +15,7 @@ class GameCard extends Component {
     super(props);
 
     this.renderPrices = this.renderPrices.bind(this);
+    this.renderDiscount = this.renderDiscount.bind(this);
     this.addToLocalStorage = this.addToLocalStorage.bind(this);
     //console.log(this.props.game);
   }
@@ -40,6 +41,22 @@ class GameCard extends Component {
     }
   }
 
+  renderDiscount() {
+    //calculate discount percent and display it on sale items
+    if (this.props.game.value.onSale === true) {
+      let discount =
+        (1 -
+          parseFloat(this.props.game.value.salePrice) /
+            parseFloat(this.props.game.value.price)) *
+        100;
+      return (
+        <div className={styles['gameCard__saleOverlay']}>
+          <span>-{Math.floor(discount)} %</span>
+        </div>
+      );
+    }
+  }
+
   addToLocalStorage(data) {
     //function that adds items to localStorage
     const oldStorage = JSON.parse(localStorage.getItem('cart'));
@@ -55,6 +72,7 @@ class GameCard extends Component {
     return (
       <div>
         <Card className={styles['gameCard--size']}>
+          {this.renderDiscount()}
           <CardImg
             top
             src={this.props.game.value.imgUrl}

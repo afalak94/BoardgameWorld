@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GameCard from '../GameCard/gameCard';
-import SaleCarousel from './carousel';
+import SaleCarousel from './carousel2';
 import { connect } from 'react-redux';
 import firebase from '../../main/firebase.config';
 import 'firebase/database';
