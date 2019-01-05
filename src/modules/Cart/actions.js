@@ -4,12 +4,34 @@ import 'firebase/auth';
 
 //saves item to firebase db from current user
 export const addToCart = (newitem, user) => async dispatch => {
+  let updates = {};
   firebase
     .database()
-    .ref('/carts')
-    .child(user.uid)
-    .push()
-    .set(newitem);
+    .ref('carts/' + user.uid + '/' + newitem.key)
+    .once('value')
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        //if item in cart exists alredy, update its quantity
+        let quantity = snapshot.val().quantity;
+        updates['/carts/' + user.uid + '/' + newitem.key + '/quantity'] =
+          quantity + 1;
+        firebase
+          .database()
+          .ref()
+          .update(updates);
+      } else {
+        //if item in cart doesnt exist, create it
+        let data = {
+          quantity: 1,
+          data: newitem.value
+        };
+        updates['/carts/' + user.uid + '/' + newitem.key] = data;
+        firebase
+          .database()
+          .ref()
+          .update(updates);
+      }
+    });
 };
 
 //removes item in firebase db from current user

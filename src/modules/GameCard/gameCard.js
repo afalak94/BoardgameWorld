@@ -34,7 +34,7 @@ class GameCard extends Component {
             Old price: {this.props.game.value.price} $
           </div>
           <div className={styles['gameCard__price--sale']}>
-            SALE: {this.props.game.value.salePrice} $
+            <span>SALE: {this.props.game.value.salePrice} $</span>
           </div>
         </div>
       );

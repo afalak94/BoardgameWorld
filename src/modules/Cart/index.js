@@ -24,7 +24,6 @@ class Cart extends Component {
     this.authListener = this.authListener.bind(this);
     this.state = {
       user: [],
-      cart: [],
       localCart: JSON.parse(localStorage.getItem('cart'))
     };
   }
@@ -48,23 +47,27 @@ class Cart extends Component {
   renderItems() {
     const { cart } = this.props;
     this.total = 0;
+    this.numOfItems = 0;
+
     this.itemsInCart = _.map(cart, (value, key) => {
       //calculate total price from all items in the cart
       //add regular or sale price
-      if (String(value.value.onSale) === 'true') {
-        this.total += parseFloat(value.value.salePrice, 10);
-        this.itemValue = value.value.salePrice;
+      if (String(value.data.onSale) === 'true') {
+        this.total += parseFloat(value.data.salePrice, 10) * value.quantity;
+        this.itemValue = value.data.salePrice;
       } else {
-        this.total += parseFloat(value.value.price, 10);
-        this.itemValue = value.value.price;
+        this.total += parseFloat(value.data.price, 10) * value.quantity;
+        this.itemValue = value.data.price;
       }
+      //calculate number of all items in users cart
+      this.numOfItems += value.quantity;
 
       return (
         <ListGroupItem key={key} className={styles['cart__listGroup--size']}>
           <div style={{ float: 'left' }}>
             <img
               className={styles['cart__itemImg']}
-              src={value.value.imgUrl}
+              src={value.data.imgUrl}
               alt='cart item'
             />
           </div>
@@ -74,8 +77,9 @@ class Cart extends Component {
               close
               onClick={() => this.props.removeitem(key, this.props.user.uid)}
             />
-            <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
+            <ListGroupItemHeading>{value.data.name}</ListGroupItemHeading>
             <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
+            <ListGroupItemText>Quantity: {value.quantity}</ListGroupItemText>
           </div>
         </ListGroupItem>
       );
@@ -87,10 +91,8 @@ class Cart extends Component {
 
   renderLocalItems() {
     this.total = 0;
-    //this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
     this.itemsInCart = _.map(this.state.localCart, (value, key) => {
       //calculate total price from all items in the cart
-      //add regular or sale price
       if (String(value.value.onSale) === 'true') {
         this.total += parseFloat(value.value.salePrice, 10);
         this.itemValue = value.value.salePrice;
@@ -128,7 +130,6 @@ class Cart extends Component {
       if (user) {
         //when the user is logged in then fetch his cart from firebase
         this.props.fetchitems(this.props.user.uid);
-        this.setState({ cart: this.props.cart });
       }
     });
   }
@@ -147,10 +148,13 @@ class Cart extends Component {
           </div>
           {this.itemsInCart ? (
             <div className={styles['cart__summary__number']}>
-              Number of items: <strong>{this.itemsInCart.length}</strong>
+              Number of items:{' '}
+              <strong>
+                {this.props.user ? this.numOfItems : this.itemsInCart.length}
+              </strong>
             </div>
           ) : (
-            ''
+            'None'
           )}
 
           <div className={styles['cart__summary__price']}>Total price: </div>

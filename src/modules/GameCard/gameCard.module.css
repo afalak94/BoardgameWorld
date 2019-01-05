@@ -66,8 +66,13 @@
       .gameCard__price--sale {
         flex: 1;
         text-align: right;
-        color: var(--styleRed);
         font-weight: bold;
+
+        span {
+          background-color: var(--styleRed);
+          color: var(--styleWhite);
+          padding: 0 5px;
+        }
       }
     }
 
