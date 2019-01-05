@@ -57,3 +57,40 @@ export const fetchitems = user => async dispatch => {
       });
     });
 };
+
+//transactions for increasing or decreasing item quantity
+export const increaseQuantity = (itemId, user) => async dispatch => {
+  const quantity = firebase
+    .database()
+    .ref('/carts')
+    .child(user)
+    .child(itemId)
+    .child('quantity');
+
+  quantity.transaction(currentQuantity => {
+    return currentQuantity + 1;
+  });
+};
+
+export const decreaseQuantity = (itemId, user) => async dispatch => {
+  const quantity = firebase
+    .database()
+    .ref('/carts')
+    .child(user)
+    .child(itemId)
+    .child('quantity');
+
+  quantity.transaction(currentQuantity => {
+    //delete item if its quantity should drop to zero
+    if (currentQuantity === 1) {
+      firebase
+        .database()
+        .ref('/carts')
+        .child(user)
+        .child(itemId)
+        .remove();
+    } else {
+      return currentQuantity - 1;
+    }
+  });
+};

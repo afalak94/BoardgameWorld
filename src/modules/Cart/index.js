@@ -14,7 +14,12 @@ import _ from 'lodash';
 import firebase from '../../main/firebase.config';
 import 'firebase/auth';
 import 'firebase/database';
-import { fetchitems, removeitem } from './actions';
+import {
+  fetchitems,
+  removeitem,
+  increaseQuantity,
+  decreaseQuantity
+} from './actions';
 import styles from './Cart.module.css';
 
 class Cart extends Component {
@@ -79,7 +84,26 @@ class Cart extends Component {
             />
             <ListGroupItemHeading>{value.data.name}</ListGroupItemHeading>
             <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
-            <ListGroupItemText>Quantity: {value.quantity}</ListGroupItemText>
+            <ListGroupItemText>
+              Quantity:
+              <Button
+                onClick={() =>
+                  this.props.decreaseQuantity(key, this.props.user.uid)
+                }
+                className={styles['cart__listGroup__btn']}
+              >
+                &#8722;
+              </Button>
+              {value.quantity}
+              <Button
+                onClick={() =>
+                  this.props.increaseQuantity(key, this.props.user.uid)
+                }
+                className={styles['cart__listGroup__btn']}
+              >
+                &#43;
+              </Button>
+            </ListGroupItemText>
           </div>
         </ListGroupItem>
       );
@@ -182,7 +206,10 @@ function mapStateToProps(state) {
 function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
-    ...bindActionCreators({ fetchitems, removeitem }, dispatch)
+    ...bindActionCreators(
+      { fetchitems, removeitem, increaseQuantity, decreaseQuantity },
+      dispatch
+    )
   };
 }
 

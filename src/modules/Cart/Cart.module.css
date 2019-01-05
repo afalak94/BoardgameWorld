@@ -11,17 +11,29 @@
 
   .cart__listGroup {
     grid-area: items;
+    font-family: var(--font3);
 
     .cart__listGroup--size {
       width: 500px;
       background-color: var(--styleBlue);
       color: var(--styleWhite);
-      font-family: var(--font3);
 
       .cart__itemImg {
         height: 100px;
         width: 160px;
       }
+    }
+
+    .cart__listGroup__btn {
+      width: 24px;
+      height: 24px;
+      margin: 0 10px;
+      padding: 0px;
+      background-color: var(--styleRed);
+      color: var(--styleWhite);
+      font-size: 24px;
+      line-height: 24px;
+      font-weight: bold;
     }
   }
 
