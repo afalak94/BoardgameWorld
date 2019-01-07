@@ -49,6 +49,23 @@ class Cart extends Component {
     this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
   }
 
+  increaseLocalStorageQuantity(key) {
+    const storage = JSON.parse(localStorage.getItem('cart'));
+    storage[key].quantity++;
+    localStorage.setItem('cart', JSON.stringify(storage));
+    this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
+  }
+  decreaseLocalStorageQuantity(key) {
+    const storage = JSON.parse(localStorage.getItem('cart'));
+    storage[key].quantity--;
+    if (storage[key].quantity === 0) {
+      this.removeFromLocalStorage(key);
+    } else {
+      localStorage.setItem('cart', JSON.stringify(storage));
+    }
+    this.setState({ localCart: JSON.parse(localStorage.getItem('cart')) });
+  }
+
   renderItems() {
     const { cart } = this.props;
     this.total = 0;
@@ -115,30 +132,50 @@ class Cart extends Component {
 
   renderLocalItems() {
     this.total = 0;
+    this.numOfItems = 0;
     this.itemsInCart = _.map(this.state.localCart, (value, key) => {
       //calculate total price from all items in the cart
-      if (String(value.value.onSale) === 'true') {
-        this.total += parseFloat(value.value.salePrice, 10);
-        this.itemValue = value.value.salePrice;
+      if (String(value.data.value.onSale) === 'true') {
+        this.total +=
+          parseFloat(value.data.value.salePrice, 10) * value.quantity;
+        this.itemValue = value.data.value.salePrice;
       } else {
-        this.total += parseFloat(value.value.price, 10);
-        this.itemValue = value.value.price;
+        this.total += parseFloat(value.data.value.price, 10) * value.quantity;
+        this.itemValue = value.data.value.price;
       }
+      //calculate number of all items in guests cart
+      this.numOfItems += value.quantity;
 
       return (
         <ListGroupItem key={key} className={styles['cart__listGroup--size']}>
-          <div style={{ float: 'left' }}>
+          <div className={styles['cart__listGroup__imgDiv']}>
             <img
               className={styles['cart__itemImg']}
-              src={value.value.imgUrl}
+              src={value.data.value.imgUrl}
               alt='cart item'
             />
           </div>
 
           <div>
             <Button close onClick={() => this.removeFromLocalStorage(key)} />
-            <ListGroupItemHeading>{value.value.name}</ListGroupItemHeading>
+            <ListGroupItemHeading>{value.data.value.name}</ListGroupItemHeading>
             <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
+            <ListGroupItemText>
+              Quantity:
+              <Button
+                onClick={() => this.decreaseLocalStorageQuantity(key)}
+                className={styles['cart__listGroup__btn']}
+              >
+                &#8722;
+              </Button>
+              {value.quantity}
+              <Button
+                onClick={() => this.increaseLocalStorageQuantity(key)}
+                className={styles['cart__listGroup__btn']}
+              >
+                &#43;
+              </Button>
+            </ListGroupItemText>
           </div>
         </ListGroupItem>
       );
@@ -172,10 +209,7 @@ class Cart extends Component {
           </div>
           {this.itemsInCart ? (
             <div className={styles['cart__summary__number']}>
-              Number of items:{' '}
-              <strong>
-                {this.props.user ? this.numOfItems : this.itemsInCart.length}
-              </strong>
+              Number of items: <strong>{this.numOfItems}</strong>
             </div>
           ) : (
             'None'

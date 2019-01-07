@@ -15,14 +15,33 @@ class GameInfo extends Component {
   }
 
   addToLocalStorage(data) {
-    //function that adds items to localstorage
+    //function that adds item to localStorage
+    let exists = false;
     const oldStorage = JSON.parse(localStorage.getItem('cart'));
-    const newStorage = [];
-    if (oldStorage !== null) {
-      newStorage.push(...oldStorage);
+
+    //check if item alredy exists in localStorage
+    oldStorage.forEach(item => {
+      if (item.data.key === data.key) {
+        //item exists, increment quantity
+        exists = true;
+        item.quantity++;
+        localStorage.setItem('cart', JSON.stringify(oldStorage));
+      }
+    });
+
+    //if item doesnt exists in localStorage, create it
+    if (!exists) {
+      const newStorage = [];
+      if (oldStorage !== null) {
+        newStorage.push(...oldStorage);
+      }
+      let item = {
+        quantity: 1,
+        data: data
+      };
+      newStorage.push(item);
+      localStorage.setItem('cart', JSON.stringify(newStorage));
     }
-    newStorage.push(data);
-    localStorage.setItem('cart', JSON.stringify(newStorage));
   }
 
   renderCategories() {
