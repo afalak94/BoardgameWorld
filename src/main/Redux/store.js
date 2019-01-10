@@ -1,9 +1,9 @@
 //Redux store
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import cartReducer from '../../modules/Cart/reducer';
+import { cartReducer } from '../../modules/Cart';
 import reduxThunk from 'redux-thunk';
-import boardgamesReducer from './reducer';
-import authReducer from '../../modules/Login/reducer';
+import { boardgamesReducer } from '../../modules/Listing';
+import authReducer from '../../modules/Authentication/redux/reducer';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
