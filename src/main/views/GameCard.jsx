@@ -9,6 +9,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styles from '../css/gameCard.module.css';
+import { LS } from '../services/LocalStorage';
 
 export class GameCard extends Component {
   constructor(props) {
@@ -16,8 +17,6 @@ export class GameCard extends Component {
 
     this.renderPrices = this.renderPrices.bind(this);
     this.renderDiscount = this.renderDiscount.bind(this);
-    this.addToLocalStorage = this.addToLocalStorage.bind(this);
-    //console.log(this.props.game);
   }
 
   renderPrices() {
@@ -57,36 +56,6 @@ export class GameCard extends Component {
     }
   }
 
-  addToLocalStorage(data) {
-    //function that adds item to localStorage
-    let exists = false;
-    const oldStorage = JSON.parse(localStorage.getItem('cart'));
-
-    //check if item alredy exists in localStorage
-    oldStorage.forEach(item => {
-      if (item.data.key === data.key) {
-        //item exists, increment quantity
-        exists = true;
-        item.quantity++;
-        localStorage.setItem('cart', JSON.stringify(oldStorage));
-      }
-    });
-
-    //if item doesnt exists in localStorage, create it
-    if (!exists) {
-      const newStorage = [];
-      if (oldStorage !== null) {
-        newStorage.push(...oldStorage);
-      }
-      let item = {
-        quantity: 1,
-        data: data
-      };
-      newStorage.push(item);
-      localStorage.setItem('cart', JSON.stringify(newStorage));
-    }
-  }
-
   render() {
     return (
       <div>
@@ -118,7 +87,7 @@ export class GameCard extends Component {
                   ? //if the user is loged in, add item to his firebase cart
                     () => this.props.addToCart(this.props.game, this.props.user)
                   : //if its not, add item to local storage
-                    () => this.addToLocalStorage(this.props.game)
+                    () => LS.addToLocalStorage(this.props.game)
               }
             >
               Add to Cart

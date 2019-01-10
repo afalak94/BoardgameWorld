@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { addToCart } from '../../modules/Cart/redux/actions';
 import styles from '../css/GameInfo.module.css';
 import { Redirect } from 'react-router';
+import { LS } from '../services/LocalStorage';
 
 class GameInfo extends Component {
   constructor(props) {
@@ -12,36 +13,6 @@ class GameInfo extends Component {
 
     this.renderCategories = this.renderCategories.bind(this);
     this.renderPrice = this.renderPrice.bind(this);
-  }
-
-  addToLocalStorage(data) {
-    //function that adds item to localStorage
-    let exists = false;
-    const oldStorage = JSON.parse(localStorage.getItem('cart'));
-
-    //check if item alredy exists in localStorage
-    oldStorage.forEach(item => {
-      if (item.data.key === data.key) {
-        //item exists, increment quantity
-        exists = true;
-        item.quantity++;
-        localStorage.setItem('cart', JSON.stringify(oldStorage));
-      }
-    });
-
-    //if item doesnt exists in localStorage, create it
-    if (!exists) {
-      const newStorage = [];
-      if (oldStorage !== null) {
-        newStorage.push(...oldStorage);
-      }
-      let item = {
-        quantity: 1,
-        data: data
-      };
-      newStorage.push(item);
-      localStorage.setItem('cart', JSON.stringify(newStorage));
-    }
   }
 
   renderCategories() {
@@ -123,7 +94,7 @@ class GameInfo extends Component {
             onClick={
               this.props.user
                 ? () => this.props.addToCart(this.boardgame, this.props.user)
-                : () => this.addToLocalStorage(this.boardgame)
+                : () => LS.addToLocalStorage(this.boardgame)
             }
           >
             Add to Cart

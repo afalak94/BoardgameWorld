@@ -22,10 +22,10 @@ import {
   increaseQuantity,
   decreaseQuantity
 } from '../index';
-import { LocalStorageService } from '../../../main/services/LocalStorage';
+import { LS } from '../../../main/services/LocalStorage';
 import styles from '../../../main/css/Cart.module.css';
 
-class Cart extends LocalStorageService {
+class Cart extends Component {
   constructor(props) {
     super(props);
 
@@ -44,6 +44,30 @@ class Cart extends LocalStorageService {
     //stop listener for user authentication
     this.unsubscribe();
   }
+
+  handleDelete = event => {
+    const { key } = event.target.dataset;
+    this.setState(() => {
+      const local = LS.removeFromLocalStorage(key);
+      return { localCart: local };
+    });
+  };
+
+  handleIncrement = event => {
+    const { key } = event.target.dataset;
+    this.setState(() => {
+      const local = LS.increaseLocalStorageQuantity(key);
+      return { localCart: local };
+    });
+  };
+
+  handleDecrement = event => {
+    const { key } = event.target.dataset;
+    this.setState(() => {
+      const local = LS.decreaseLocalStorageQuantity(key);
+      return { localCart: local };
+    });
+  };
 
   renderItems() {
     const { cart } = this.props;
@@ -138,24 +162,32 @@ class Cart extends LocalStorageService {
           </div>
 
           <div>
-            <Button close onClick={() => this.removeFromLocalStorage(key)} />
+            <button
+              className={styles['cart__removeBtn']}
+              data-key={key}
+              onClick={this.handleDelete}
+            >
+              &times;
+            </button>
             <ListGroupItemHeading>{value.data.value.name}</ListGroupItemHeading>
             <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
             <ListGroupItemText>
               Quantity:
-              <Button
-                onClick={() => this.decreaseLocalStorageQuantity(key)}
+              <button
+                data-key={key}
+                onClick={this.handleDecrement}
                 className={styles['cart__listGroup__btn']}
               >
                 &#8722;
-              </Button>
+              </button>
               {value.quantity}
-              <Button
-                onClick={() => this.increaseLocalStorageQuantity(key)}
+              <button
+                data-key={key}
+                onClick={this.handleIncrement}
                 className={styles['cart__listGroup__btn']}
               >
                 &#43;
-              </Button>
+              </button>
             </ListGroupItemText>
           </div>
         </ListGroupItem>

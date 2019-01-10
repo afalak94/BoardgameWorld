@@ -19,6 +19,23 @@
       background-color: var(--styleBlue);
       color: var(--styleWhite);
 
+      .cart__removeBtn {
+        background-color: var(--styleBlue);
+        color: var(--styleRed);
+        border: none;
+        position: absolute;
+        margin-left: 115px;
+        margin-bottom: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        height: 24px;
+        line-height: 24px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
       .cart__listGroup__imgDiv {
         float: left;
         height: 140px;
@@ -36,8 +53,8 @@
     }
 
     .cart__listGroup__btn {
-      width: 24px;
-      height: 24px;
+      width: 27px;
+      height: 27px;
       margin: 0 10px;
       padding: 0px;
       background-color: var(--styleRed);
@@ -45,6 +62,12 @@
       font-size: 24px;
       line-height: 24px;
       font-weight: bold;
+      vertical-align: middle;
+      border: none;
+      border-radius: 5px;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 
