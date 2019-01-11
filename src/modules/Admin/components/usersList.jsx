@@ -6,8 +6,6 @@ import styles from '../../../main/css/Admin.module.css';
 export default class UsersList extends Component {
   constructor(props) {
     super(props);
-
-    this.deleteUser = this.deleteUser.bind(this);
     this.state = { userList: [] };
   }
 
@@ -24,11 +22,12 @@ export default class UsersList extends Component {
   }
 
   //function that will delete user and fetch a new user list
-  deleteUser(uid) {
+  deleteUser = event => {
+    const { userUid } = event.target.dataset;
     axios
       .get(
         `https://us-central1-react-store-3406f.cloudfunctions.net/deleteUser?text=` +
-          uid,
+          userUid,
         {
           headers: {
             'Access-Control-Allow-Origin': '*'
@@ -39,7 +38,7 @@ export default class UsersList extends Component {
         //console.log(res);
         this.componentDidMount();
       });
-  }
+  };
 
   render() {
     return (
@@ -52,7 +51,8 @@ export default class UsersList extends Component {
                 color='danger'
                 outline
                 className={styles['user__listGroupBtn']}
-                onClick={() => this.deleteUser(user.uid)}
+                onClick={this.deleteUser}
+                data-user-uid={user.uid}
               >
                 Remove
               </Button>

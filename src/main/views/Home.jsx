@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { GameCard, SaleCarousel } from './index';
 import { connect } from 'react-redux';
-import firebase from '../../modules/Firebase/firebase.config';
-import 'firebase/database';
+import { FireBase } from '../../modules/Firebase';
 import { bindActionCreators } from 'redux';
 //import actions
 import { addToCart } from '../../modules/Cart';
 import { addToStore, updateStore } from '../../modules/Listing';
 import styles from '../css/Home.module.css';
 
-class Home extends Component {
+class Home extends FireBase {
   constructor(props) {
     super(props);
 
@@ -17,33 +16,13 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    //get all games from database
-    this.database = firebase.database().ref('boardgames/');
-    this.database.on('value', snap => {
-      //save item data as array of objects with key-value pairs
-      let data = [];
-      snap.forEach(ss => {
-        data.push({ key: ss.key, value: ss.val() });
-      });
-      //copy boardgames from firebase to redux store
-      this.props.addToStore(data);
-
-      //set state with boardgames that are on sale
-      let itemsOnSale = [];
-      data.forEach(item => {
-        if (item.value.onSale === true) {
-          itemsOnSale.push(item);
-        }
-      });
-      this.setState({
-        itemsOnSale: itemsOnSale
-      });
-    });
+    this.pushAllItemsToStore();
+    this.getItemsOnSale();
   }
 
   componentWillUnmount() {
-    //destroy listeners for database and authentication
-    this.database.off();
+    //destroy listener
+    this.items.off();
   }
 
   render() {

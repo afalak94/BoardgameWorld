@@ -9,8 +9,6 @@ export default class CategoryList extends Component {
     super(props);
 
     this.state = { categories: [] };
-
-    this.deleteCategory = this.deleteCategory.bind(this);
   }
 
   componentWillMount() {
@@ -41,10 +39,11 @@ export default class CategoryList extends Component {
     });
   }
 
-  deleteCategory(name) {
+  deleteCategory = event => {
+    const { categoryKey } = event.target.dataset;
     //removing category from firebase by using key
-    this.database.child(name).remove();
-  }
+    this.database.child(categoryKey).remove();
+  };
 
   render() {
     return (
@@ -57,7 +56,10 @@ export default class CategoryList extends Component {
               </div>
 
               <div className={styles['categories__itemRemove']}>
-                <Button onClick={() => this.deleteCategory(category.key)}>
+                <Button
+                  data-category-key={category.key}
+                  onClick={this.deleteCategory}
+                >
                   &times;
                 </Button>
               </div>

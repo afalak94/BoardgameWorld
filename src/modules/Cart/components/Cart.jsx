@@ -1,5 +1,5 @@
 //Cart component
-import React, { Component } from 'react';
+import React from 'react';
 import {
   ListGroup,
   ListGroupItem,
@@ -11,11 +11,8 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/auth';
-import 'firebase/database';
 //firebase service
-//import { FireBase } from '../../Firebase';
+import { FireBase } from '../../Firebase';
 import {
   fetchitems,
   removeitem,
@@ -25,11 +22,10 @@ import {
 import { LS } from '../../../main/services/LocalStorage';
 import styles from '../../../main/css/Cart.module.css';
 
-class Cart extends Component {
+//class extends FireBase class to use firebase logic
+class Cart extends FireBase {
   constructor(props) {
     super(props);
-
-    this.authListener = this.authListener.bind(this);
     this.state = {
       user: [],
       localCart: JSON.parse(localStorage.getItem('cart'))
@@ -37,7 +33,7 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    this.authListener();
+    this.fetchUserCart();
   }
 
   componentWillUnmount() {
@@ -99,10 +95,12 @@ class Cart extends Component {
             </div>
 
             <div>
-              <Button
-                close
+              <button
+                className={styles['cart__removeBtn']}
                 onClick={() => this.props.removeitem(key, this.props.user.uid)}
-              />
+              >
+                &times;
+              </button>
               <ListGroupItemHeading>{value.data.name}</ListGroupItemHeading>
               <ListGroupItemText>{this.itemValue} $</ListGroupItemText>
               <ListGroupItemText>
@@ -196,16 +194,6 @@ class Cart extends Component {
     if (!_.isEmpty(this.itemsInCart)) {
       return this.itemsInCart;
     }
-  }
-
-  //listener for user authentication
-  authListener() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        //when the user is logged in then fetch his cart from firebase
-        this.props.fetchitems(this.props.user.uid);
-      }
-    });
   }
 
   render() {

@@ -12,12 +12,8 @@ export default class ItemList extends Component {
     this.state = {
       items: [],
       categories: [],
-      gotData: false,
-      item: null
+      gotData: false
     };
-
-    this.deleteItem = this.deleteItem.bind(this);
-    this.addNewItem = this.addNewItem.bind(this);
   }
 
   //REMINDER: dont use componentWillMount because it acts unexpectedly
@@ -73,17 +69,13 @@ export default class ItemList extends Component {
     //this.newItemAdded.off();
   }
 
-  deleteItem(name) {
-    //removing item (boardgame) from firebase by using key
-    // const database = firebase.database().ref('boardgames/');
-    // database.on('child_removed', snap => {
-    //   console.log(snap.val());
-    // });
-    this.items.child(name).remove();
-  }
+  deleteItem = event => {
+    const { itemKey } = event.target.dataset;
+    this.items.child(itemKey).remove();
+  };
 
   //function that adds a new item in boardgames to firebase database
-  addNewItem(
+  addNewItem = (
     name,
     score,
     imgUrl,
@@ -92,7 +84,7 @@ export default class ItemList extends Component {
     onSale,
     description,
     category
-  ) {
+  ) => {
     //listener for new child entries
     this.items.on('child_added', snap => {
       //console.log(snap.val());
@@ -125,7 +117,7 @@ export default class ItemList extends Component {
       .database()
       .ref()
       .update(updates);
-  }
+  };
 
   render() {
     return (
@@ -139,7 +131,7 @@ export default class ItemList extends Component {
                 </div>
 
                 <div className={styles['boardgames__itemRemove']}>
-                  <Button onClick={() => this.deleteItem(item.key)}>
+                  <Button data-item-key={item.key} onClick={this.deleteItem}>
                     &times;
                   </Button>
                 </div>

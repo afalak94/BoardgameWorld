@@ -25,30 +25,29 @@ class AdminSection extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.updateInputValue = this.updateInputValue.bind(this);
-    this.addCategory = this.addCategory.bind(this);
     this.state = {
       activeTab: '1',
-      inputValue: ''
+      inputValue: '' //must define because of error
     };
   }
 
-  toggle(tab) {
+  switchManagement = event => {
+    const tab = event.target.id;
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
-  }
+  };
 
-  updateInputValue(e) {
+  updateInputValue = e => {
     this.setState({
       inputValue: e.target.value
     });
-  }
+  };
 
-  addCategory(name) {
+  addCategory = () => {
+    const name = this.state.inputValue;
     //adding a new category to firebase
     this.setState({ inputValue: '' });
     //check if name is valid length
@@ -69,18 +68,10 @@ class AdminSection extends React.Component {
         .ref()
         .update(updates);
     }
-  }
+  };
 
   componentDidMount() {
     window.scrollTo(0, 0);
-
-    // let user = new Promise((resolve, reject) => {
-    //   let userUid = this.props.user;
-    //   userUid ? resolve(userUid) : reject('error');
-    // });
-    // user.then(value => {
-    //   console.log(value);
-    // });
   }
 
   render() {
@@ -96,9 +87,8 @@ class AdminSection extends React.Component {
           <NavItem className={styles['admin__navItem']}>
             <NavLink
               className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => {
-                this.toggle('1');
-              }}
+              onClick={this.switchManagement}
+              id='1'
             >
               Category management
             </NavLink>
@@ -106,9 +96,8 @@ class AdminSection extends React.Component {
           <NavItem className={styles['admin__navItem']}>
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => {
-                this.toggle('2');
-              }}
+              onClick={this.switchManagement}
+              id='2'
             >
               Item management
             </NavLink>
@@ -116,9 +105,8 @@ class AdminSection extends React.Component {
           <NavItem className={styles['admin__navItem']}>
             <NavLink
               className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={() => {
-                this.toggle('3');
-              }}
+              onClick={this.switchManagement}
+              id='3'
             >
               Users management
             </NavLink>
@@ -141,12 +129,9 @@ class AdminSection extends React.Component {
                   <p>(max. 18 letters)</p>
                   <Input
                     value={this.state.inputValue}
-                    onChange={e => this.updateInputValue(e)}
+                    onChange={this.updateInputValue}
                   />
-                  <Button
-                    color='success'
-                    onClick={() => this.addCategory(this.state.inputValue)}
-                  >
+                  <Button color='success' onClick={this.addCategory}>
                     Submit
                   </Button>
                 </div>

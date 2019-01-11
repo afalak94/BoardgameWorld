@@ -16,81 +16,93 @@ export default class AddItemTemplate extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggle1 = this.toggle1.bind(this);
-    this.toggle2 = this.toggle2.bind(this);
-    this.toggle3 = this.toggle3.bind(this);
-    this.commonChange = this.commonChange.bind(this);
-    this.onSaleChange = this.onSaleChange.bind(this);
-
     this.state = {
       dropdownOpen1: false,
       dropdownOpen2: false,
       dropdownOpen3: false,
-      dropdownValue1: null,
-      dropdownValue2: null,
-      dropdownValue3: null,
-      nameValue: '',
-      scoreValue: '',
-      imgUrlValue: '',
-      priceValue: '',
-      salePriceValue: '',
-      onSale: false,
-      descriptionValue: ''
+      onSale: false
     };
-
-    // console.log(this.props.item);
-    // console.log(this.props.categories);
   }
 
-  commonChange(event) {
+  handleSubmit = () => {
+    if (
+      !this.state.nameValue ||
+      !this.state.scoreValue ||
+      !this.state.imgUrlValue ||
+      !this.state.priceValue ||
+      !this.state.salePriceValue ||
+      !this.state.descriptionValue ||
+      !this.state.dropdownValue1 ||
+      !this.state.dropdownValue2 ||
+      !this.state.dropdownValue3
+    ) {
+      alert('All fields are required');
+    } else {
+      this.props.addNewItem(
+        this.state.nameValue,
+        this.state.scoreValue,
+        this.state.imgUrlValue,
+        this.state.priceValue,
+        this.state.salePriceValue,
+        this.state.onSale,
+        this.state.descriptionValue,
+        [
+          this.state.dropdownValue1,
+          this.state.dropdownValue2,
+          this.state.dropdownValue3
+        ]
+      );
+    }
+  };
+
+  commonChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
-    //console.log(this.state.nameValue);
-  }
+  };
 
-  onSaleChange(event) {
+  onSaleChange = event => {
     this.setState({
       [event.target.name]: event.target.checked
     });
-  }
+  };
 
-  //toggle function for each category dropdown menu
-  toggle1() {
+  //toggle functions for each category dropdown menu
+  dropdownToggle1 = () => {
     this.setState({
       dropdownOpen1: !this.state.dropdownOpen1
     });
-  }
-  toggle2() {
+  };
+  dropdownToggle2 = () => {
     this.setState({
       dropdownOpen2: !this.state.dropdownOpen2
     });
-  }
-  toggle3() {
+  };
+  dropdownToggle3 = () => {
     this.setState({
       dropdownOpen3: !this.state.dropdownOpen3
     });
-  }
+  };
 
   //functions that change menu toggler text when the category is selected
-  select1(event) {
+  dropdownSelect1 = event => {
     this.setState({
       dropdownOpen1: !this.state.dropdownOpen1,
       dropdownValue1: event.target.innerText
     });
-  }
-  select2(event) {
+  };
+  dropdownSelect2 = event => {
     this.setState({
       dropdownOpen2: !this.state.dropdownOpen2,
       dropdownValue2: event.target.innerText
     });
-  }
-  select3(event) {
+  };
+  dropdownSelect3 = event => {
     this.setState({
       dropdownOpen3: !this.state.dropdownOpen3,
       dropdownValue3: event.target.innerText
     });
-  }
+  };
 
   render() {
     return (
@@ -161,7 +173,7 @@ export default class AddItemTemplate extends React.Component {
 
           <ButtonDropdown
             isOpen={this.state.dropdownOpen1}
-            toggle={this.toggle1}
+            toggle={this.dropdownToggle1}
           >
             <DropdownToggle caret outline>
               {this.state.dropdownValue1}
@@ -169,7 +181,7 @@ export default class AddItemTemplate extends React.Component {
             <DropdownMenu className={styles['form__categories__menu']}>
               {this.props.categories.map(cat => {
                 return (
-                  <DropdownItem onClick={e => this.select1(e)} key={cat.key}>
+                  <DropdownItem onClick={this.dropdownSelect1} key={cat.key}>
                     {cat.value}
                   </DropdownItem>
                 );
@@ -179,7 +191,7 @@ export default class AddItemTemplate extends React.Component {
 
           <ButtonDropdown
             isOpen={this.state.dropdownOpen2}
-            toggle={this.toggle2}
+            toggle={this.dropdownToggle2}
           >
             <DropdownToggle caret outline>
               {this.state.dropdownValue2}
@@ -187,7 +199,7 @@ export default class AddItemTemplate extends React.Component {
             <DropdownMenu className={styles['form__categories__menu']}>
               {this.props.categories.map(cat => {
                 return (
-                  <DropdownItem onClick={e => this.select2(e)} key={cat.key}>
+                  <DropdownItem onClick={this.dropdownSelect2} key={cat.key}>
                     {cat.value}
                   </DropdownItem>
                 );
@@ -197,7 +209,7 @@ export default class AddItemTemplate extends React.Component {
 
           <ButtonDropdown
             isOpen={this.state.dropdownOpen3}
-            toggle={this.toggle3}
+            toggle={this.dropdownToggle3}
           >
             <DropdownToggle caret outline>
               {this.state.dropdownValue3}
@@ -205,7 +217,7 @@ export default class AddItemTemplate extends React.Component {
             <DropdownMenu className={styles['form__categories__menu']}>
               {this.props.categories.map(cat => {
                 return (
-                  <DropdownItem onClick={e => this.select3(e)} key={cat.key}>
+                  <DropdownItem onClick={this.dropdownSelect3} key={cat.key}>
                     {cat.value}
                   </DropdownItem>
                 );
@@ -218,22 +230,7 @@ export default class AddItemTemplate extends React.Component {
           <Button
             color='success'
             //passing all values to addNewItem function from props
-            onClick={() =>
-              this.props.addNewItem(
-                this.state.nameValue,
-                this.state.scoreValue,
-                this.state.imgUrlValue,
-                this.state.priceValue,
-                this.state.salePriceValue,
-                this.state.onSale,
-                this.state.descriptionValue,
-                [
-                  this.state.dropdownValue1,
-                  this.state.dropdownValue2,
-                  this.state.dropdownValue3
-                ]
-              )
-            }
+            onClick={this.handleSubmit}
           >
             Submit
           </Button>

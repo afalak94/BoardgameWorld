@@ -17,7 +17,7 @@ class LocalStorageService extends Component {
     //if item doesnt exists in localStorage, create it
     if (!exists) {
       const newStorage = [];
-      if (oldStorage !== null) {
+      if (oldStorage) {
         newStorage.push(...oldStorage);
       }
       let item = {
