@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Navbar, Nav, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/auth';
+// import firebase from '../../Firebase/firebase.config';
+// import 'firebase/auth';
+import { FirebaseAuth } from '../../Firebase';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,16 +15,14 @@ class Footer extends Component {
     super(props);
 
     this.returnAuth = this.returnAuth.bind(this);
-    this.logout = this.logout.bind(this);
+
+    //firebase authentication object
+    this.FbAuth = new FirebaseAuth();
   }
 
-  logout() {
-    //delete user data from redux store and redirect to Home
-    let promise = new Promise(() => {
-      firebase.auth().signOut();
-    });
-    promise.then(this.props.addUser(null)).then(this.props.history.push('/'));
-  }
+  handleClick = () => {
+    this.FbAuth.logoutUser(this.props.addUser, this.props.history);
+  };
 
   returnAuth() {
     if (this.props.user) {
@@ -43,7 +42,10 @@ class Footer extends Component {
             Admin section
           </NavLink>
 
-          <NavLink className={styles['footer__user']} onClick={this.logout}>
+          <NavLink
+            className={styles['footer__user']}
+            onClick={this.handleClick}
+          >
             Log out
           </NavLink>
         </div>

@@ -1,39 +1,39 @@
 //Register component
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/auth';
+import { FirebaseAuth } from '../../Firebase';
 import styles from '../../../main/css/Password.module.css';
 
 export class ResetPassword extends Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.resetPW = this.resetPW.bind(this);
-
     this.state = { email: '' };
+    //firebase authentication object
+    this.FbAuth = new FirebaseAuth();
   }
 
-  handleChange(e) {
+  handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  resetPW() {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(this.state.email)
-      .then(() => {
-        // Email sent.
-        alert('Password reset mail has been sent to ' + this.state.email);
-        this.setState({ email: '' });
-      })
-      .catch(error => {
-        // An error happened.
-        alert(error.message);
-        this.setState({ email: '' });
-      });
-  }
+  handleClick = () => {
+    this.FbAuth.resetPW(this.state.email);
+    this.setState({ email: '' });
+    // firebase
+    //   .auth()
+    //   .sendPasswordResetEmail(this.state.email)
+    //   .then(() => {
+    //     // Email sent.
+    //     alert('Password reset mail has been sent to ' + this.state.email);
+    //     this.setState({ email: '' });
+    //   })
+    //   .catch(error => {
+    //     // An error happened.
+    //     alert(error.message);
+    //     this.setState({ email: '' });
+    //   });
+  };
 
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -63,7 +63,7 @@ export class ResetPassword extends Component {
           <Button
             color='success'
             className={styles.password__btn}
-            onClick={() => this.resetPW()}
+            onClick={this.handleClick}
           >
             Send email
           </Button>

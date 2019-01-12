@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styles from '../css/gameCard.module.css';
-import { LS } from '../services/LocalStorage';
+import { LocalStorageService } from '../services/LocalStorage';
 
 export class GameCard extends Component {
   constructor(props) {
@@ -17,6 +17,9 @@ export class GameCard extends Component {
 
     this.renderPrices = this.renderPrices.bind(this);
     this.renderDiscount = this.renderDiscount.bind(this);
+
+    //instantiate LocalStorageService object
+    this.LS = new LocalStorageService();
   }
 
   renderPrices() {
@@ -87,7 +90,7 @@ export class GameCard extends Component {
                   ? //if the user is loged in, add item to his firebase cart
                     () => this.props.addToCart(this.props.game, this.props.user)
                   : //if its not, add item to local storage
-                    () => LS.addToLocalStorage(this.props.game)
+                    () => this.LS.addToLocalStorage(this.props.game)
               }
             >
               Add to Cart

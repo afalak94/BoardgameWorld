@@ -10,38 +10,28 @@ import {
   InputGroup
 } from 'reactstrap';
 import { bindActionCreators } from 'redux';
+import { FirebaseDB } from '../../Firebase';
 import firebase from '../../Firebase/firebase.config';
 import 'firebase/database';
-import 'firebase/auth';
 import _ from 'lodash';
 //import actions
 import { addToCart } from '../../Cart';
 import { connect } from 'react-redux';
-import { addUser } from '../../Authentication';
 import { onCategoryClick, onPriceClick, addToStore } from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
 class Listing extends Component {
   constructor(props) {
     super(props);
-
-    this.authListener = this.authListener.bind(this);
-    this.categoryClicked = this.categoryClicked.bind(this);
     this.state = { categories: [] };
+
+    this.FbDB = new FirebaseDB();
   }
 
   componentDidMount() {
-    //get all games from firebase database
-    this.database = firebase.database().ref('boardgames/');
-    this.database.on('value', snap => {
-      //save item data as array of objects with key-value pairs
-      let data = [];
-      snap.forEach(ss => {
-        data.push({ key: ss.key, value: ss.val() });
-      });
-      //copy boardgames from firebase to redux store
-      this.props.addToStore(data);
-    });
+    /* TRANSFER TO FIREBASEDATABASE */
+
+    this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
 
     //get all categories from firebase database
     this.categories = firebase.database().ref('categories/');
@@ -54,25 +44,13 @@ class Listing extends Component {
       this.setState({
         categories: data
       });
-      // console.log(data);
-      // console.log(this.state.categories);
     });
 
-    this.authListener();
-  }
-
-  componentWillUnmount() {
-    //stop listener for user authentication
-    this.unsubscribe();
-  }
-
-  //listener for user authentication
-  authListener() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.props.addUser(user);
-      }
-    });
+    // console.log(this.FbDB.getCategoriesFromDB());
+    // this.setState(() => {
+    //   const data = this.FbDB.getCategoriesFromDB();
+    //   return { categories: data };
+    // });
   }
 
   renderItems() {
@@ -100,7 +78,8 @@ class Listing extends Component {
           tag='button'
           action
           key={category.key}
-          onClick={() => this.categoryClicked(category.value)}
+          onClick={this.categoryClicked}
+          data-category-value={category.value}
           className={styles['listing__categoryListItem']}
         >
           {category.value}
@@ -110,10 +89,21 @@ class Listing extends Component {
   }
 
   //clear search bar text
-  categoryClicked(category) {
+  categoryClicked = event => {
+    const { categoryValue } = event.target.dataset;
     document.getElementById('searchBar').value = '';
-    this.props.onCategoryClick(category);
-  }
+    this.props.onCategoryClick(categoryValue);
+  };
+
+  allCategoriesClick = () => {
+    this.componentDidMount();
+    document.getElementById('searchBar').value = '';
+  };
+
+  handlePriceClick = event => {
+    const { type } = event.target.dataset;
+    this.props.onPriceClick(type);
+  };
 
   render() {
     return (
@@ -124,10 +114,7 @@ class Listing extends Component {
               className={styles['listing__categoryListItem']}
               tag='button'
               action
-              onClick={() => {
-                this.componentDidMount();
-                document.getElementById('searchBar').value = '';
-              }}
+              onClick={this.allCategoriesClick}
             >
               All categories
             </ListGroupItem>
@@ -141,13 +128,15 @@ class Listing extends Component {
               <div className={styles['listing__priceText']}>Price</div>
               <Button
                 className={styles['listing__filterBtn']}
-                onClick={() => this.props.onPriceClick('ASC')}
+                onClick={this.handlePriceClick}
+                data-type='ASC'
               >
                 Asc
               </Button>
               <Button
                 className={styles['listing__filterBtn']}
-                onClick={() => this.props.onPriceClick('DESC')}
+                onClick={this.handlePriceClick}
+                data-type='DESC'
               >
                 Desc
               </Button>
@@ -170,7 +159,7 @@ function mapStateToProps(state) {
 function mapDispatchtoProps(dispatch) {
   return {
     ...bindActionCreators(
-      { addToStore, addToCart, addUser, onCategoryClick, onPriceClick },
+      { addToStore, addToCart, onCategoryClick, onPriceClick },
       dispatch
     )
   };

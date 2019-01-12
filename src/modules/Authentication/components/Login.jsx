@@ -1,8 +1,7 @@
 //Login component
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/auth';
+import { FirebaseAuth } from '../../Firebase';
 import { connect } from 'react-redux';
 import { addUser } from '../index';
 import { bindActionCreators } from 'redux';
@@ -13,53 +12,31 @@ class Login extends Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.login = this.login.bind(this);
-    this.authListener = this.authListener.bind(this);
-
     this.state = { email: '', password: '' };
+    //firebase authentication object
+    this.FbAuth = new FirebaseAuth();
   }
 
   componentDidMount() {
     //listener for firebase authentication
-    this.authListener();
+    this.unsubscribe = this.FbAuth.adminRedirectListener(
+      this.props.addUser,
+      this.props.history
+    );
     window.scrollTo(0, 0);
-  }
-
-  //listener for user authentication
-  authListener() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.props.addUser(user);
-        if (this.props.user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
-          this.props.history.push('/admin');
-        } else {
-          this.props.history.push('/');
-        }
-      } else {
-        //this.setState({ user: null });
-      }
-      //console.log(this.props.user);
-    });
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  handleChange(e) {
+  handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  login(e) {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .catch(function(error) {
-        // Handle Errors here.
-        console.log(error.message);
-      });
-  }
+  handleClick = () => {
+    this.FbAuth.loginUser(this.state.email, this.state.password);
+  };
 
   render() {
     return (
@@ -92,7 +69,7 @@ class Login extends Component {
           <Button
             color='success'
             className={styles['login__btn']}
-            onClick={this.login}
+            onClick={this.handleClick}
           >
             Log in
           </Button>

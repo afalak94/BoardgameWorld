@@ -1,37 +1,29 @@
 //Register component
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/auth';
+import { FirebaseAuth } from '../../Firebase';
 import styles from '../../../main/css/Register.module.css';
 
 export class Register extends Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.register = this.register.bind(this);
-
     this.state = { email: '', password: '' };
+    //firebase authentication object
+    this.FbAuth = new FirebaseAuth();
   }
 
-  handleChange(e) {
+  handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  register(e) {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        //redirect loged in user to homepage
-        this.props.history.push('/');
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        console.log(error.message);
-      });
-  }
+  handleClick = () => {
+    this.FbAuth.register(
+      this.state.email,
+      this.state.password,
+      this.props.history
+    );
+  };
 
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -68,7 +60,7 @@ export class Register extends Component {
           <Button
             color='success'
             className={styles.register__btn}
-            onClick={this.register}
+            onClick={this.handleClick}
           >
             Register
           </Button>

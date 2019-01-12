@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { addToCart } from '../../modules/Cart/redux/actions';
 import styles from '../css/GameInfo.module.css';
 import { Redirect } from 'react-router';
-import { LS } from '../services/LocalStorage';
+import { LocalStorageService } from '../services/LocalStorage';
 
 class GameInfo extends Component {
   constructor(props) {
@@ -13,6 +13,9 @@ class GameInfo extends Component {
 
     this.renderCategories = this.renderCategories.bind(this);
     this.renderPrice = this.renderPrice.bind(this);
+
+    //instantiate LocalStorageService object
+    this.LS = new LocalStorageService();
   }
 
   renderCategories() {
@@ -94,7 +97,7 @@ class GameInfo extends Component {
             onClick={
               this.props.user
                 ? () => this.props.addToCart(this.boardgame, this.props.user)
-                : () => LS.addToLocalStorage(this.boardgame)
+                : () => this.LS.addToLocalStorage(this.boardgame)
             }
           >
             Add to Cart

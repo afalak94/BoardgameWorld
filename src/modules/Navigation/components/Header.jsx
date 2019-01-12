@@ -15,25 +15,23 @@ import { onNameFilter } from '../index';
 import { bindActionCreators } from 'redux';
 import styles from '../../../main/css/Header.module.css';
 import { addUser } from '../../Authentication';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/auth';
+import { FirebaseAuth } from '../../Firebase';
 
 class Header extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.sendFilter = this.sendFilter.bind(this);
-    this.authListener = this.authListener.bind(this);
     this.state = {
       isOpen: false,
       searchTerm: ''
     };
+
+    //firebase authentication object
+    this.FbAuth = new FirebaseAuth();
   }
 
   componentDidMount() {
-    this.authListener();
+    this.unsubscribe = this.FbAuth.userListener(this.props.addUser);
   }
 
   componentDidUpdate(prevProps) {
@@ -43,39 +41,29 @@ class Header extends Component {
     }
   }
 
-  authListener() {
-    this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // this.setState(() => {
-        //   return { user };
-        // });
-        this.props.addUser(user);
-      } else {
-        // this.setState({ user: null });
-      }
-      // console.log(this.props.user);
-    });
-  }
-
   componentWillUnmount() {
     //destroy listener for authentication
     this.unsubscribe();
   }
 
-  toggle() {
+  toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  }
+  };
 
-  handleChange(e) {
+  handleChange = e => {
     //call sendFilter function in the callback after state has been updated
     this.setState({ searchTerm: e.target.value }, this.sendFilter);
-  }
+  };
 
-  sendFilter() {
+  sendFilter = () => {
     this.props.onNameFilter(this.state.searchTerm);
-  }
+  };
+
+  handleSearchClick = () => {
+    this.props.history.push('/listing');
+  };
 
   render() {
     return (
@@ -89,7 +77,7 @@ class Header extends Component {
             <Nav className='ml-auto' navbar>
               <NavItem className={styles['navbar__userListEl']}>
                 <div className={styles['navbar__user']} id='logged-user'>
-                  {this.props.user ? this.props.user.email : 'Anonymous'}
+                  {this.props.user ? this.props.user.email : 'Guest'}
                 </div>
               </NavItem>
 
@@ -100,10 +88,10 @@ class Header extends Component {
                   type='search'
                   placeholder='Search'
                   aria-label='Search'
-                  onChange={e => this.handleChange(e)}
+                  onChange={this.handleChange}
                   value={this.state.searchTerm}
                   //go to /listing so user can see filtered items
-                  onClick={() => this.props.history.push('/listing')}
+                  onClick={this.handleSearchClick}
                 />
               </NavItem>
 

@@ -13,13 +13,14 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 //firebase service
 import { FireBase } from '../../Firebase';
+import { FirebaseAuth } from '../../Firebase';
 import {
   fetchitems,
   removeitem,
   increaseQuantity,
   decreaseQuantity
 } from '../index';
-import { LS } from '../../../main/services/LocalStorage';
+import { LocalStorageService } from '../../../main/services/LocalStorage';
 import styles from '../../../main/css/Cart.module.css';
 
 //class extends FireBase class to use firebase logic
@@ -30,6 +31,11 @@ class Cart extends FireBase {
       user: [],
       localCart: JSON.parse(localStorage.getItem('cart'))
     };
+
+    //instantiate LocalStorageService object
+    this.LS = new LocalStorageService();
+    //instantiate FirebaseAuth object
+    //
   }
 
   componentDidMount() {
@@ -44,7 +50,7 @@ class Cart extends FireBase {
   handleDelete = event => {
     const { key } = event.target.dataset;
     this.setState(() => {
-      const local = LS.removeFromLocalStorage(key);
+      const local = this.LS.removeFromLocalStorage(key);
       return { localCart: local };
     });
   };
@@ -52,7 +58,7 @@ class Cart extends FireBase {
   handleIncrement = event => {
     const { key } = event.target.dataset;
     this.setState(() => {
-      const local = LS.increaseLocalStorageQuantity(key);
+      const local = this.LS.increaseLocalStorageQuantity(key);
       return { localCart: local };
     });
   };
@@ -60,7 +66,7 @@ class Cart extends FireBase {
   handleDecrement = event => {
     const { key } = event.target.dataset;
     this.setState(() => {
-      const local = LS.decreaseLocalStorageQuantity(key);
+      const local = this.LS.decreaseLocalStorageQuantity(key);
       return { localCart: local };
     });
   };

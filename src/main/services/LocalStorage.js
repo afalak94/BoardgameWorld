@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-class LocalStorageService extends Component {
+export class LocalStorageService extends Component {
   addToLocalStorage = data => {
     //function that adds item to localStorage
     let exists = false;
@@ -56,4 +56,4 @@ class LocalStorageService extends Component {
 }
 
 //exporting instance of a class LocalStorageService
-export const LS = new LocalStorageService();
+//export const LS = new LocalStorageService();
