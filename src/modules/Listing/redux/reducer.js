@@ -47,3 +47,13 @@ export const boardgamesReducer = (state = [], action) => {
       return state;
   }
 };
+
+export const categoriesReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'STORE_CATEGORIES':
+      return action.payload;
+
+    default:
+      return state;
+  }
+};

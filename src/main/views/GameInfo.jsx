@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addToCart } from '../../modules/Cart/redux/actions';
+import { addToCart } from '../../modules/Firebase';
 import styles from '../css/GameInfo.module.css';
 import { Redirect } from 'react-router';
 import { LocalStorageService } from '../services/LocalStorage';
@@ -17,6 +17,14 @@ class GameInfo extends Component {
     //instantiate LocalStorageService object
     this.LS = new LocalStorageService();
   }
+
+  handleClick = () => {
+    this.props.user
+      ? //if the user is loged in, add item to his firebase cart
+        this.props.addToCart(this.props.game, this.props.user)
+      : //if its not, add item to local storage
+        this.LS.addToLocalStorage(this.props.game);
+  };
 
   renderCategories() {
     //console.log(this.boardgame.value.category);

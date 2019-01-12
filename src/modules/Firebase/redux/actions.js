@@ -1,4 +1,4 @@
-import firebase from '../../Firebase/firebase.config';
+import firebase from '../firebase.config';
 import 'firebase/database';
 import 'firebase/auth';
 

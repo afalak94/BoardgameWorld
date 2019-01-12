@@ -22,6 +22,14 @@ export class GameCard extends Component {
     this.LS = new LocalStorageService();
   }
 
+  handleClick = () => {
+    this.props.user
+      ? //if the user is loged in, add item to his firebase cart
+        this.props.addToCart(this.props.game, this.props.user)
+      : //if its not, add item to local storage
+        this.LS.addToLocalStorage(this.props.game);
+  };
+
   renderPrices() {
     if (this.props.game.value.onSale === false) {
       return (
@@ -85,13 +93,7 @@ export class GameCard extends Component {
             </Button>
             <Button
               className={styles['gameCard__btn']}
-              onClick={
-                this.props.user
-                  ? //if the user is loged in, add item to his firebase cart
-                    () => this.props.addToCart(this.props.game, this.props.user)
-                  : //if its not, add item to local storage
-                    () => this.LS.addToLocalStorage(this.props.game)
-              }
+              onClick={this.handleClick}
             >
               Add to Cart
             </Button>

@@ -1,10 +1,8 @@
 import React from 'react';
 import { GameCard, SaleCarousel } from './index';
 import { connect } from 'react-redux';
-import { FireBase } from '../../modules/Firebase';
 import { bindActionCreators } from 'redux';
-//import actions
-import { addToCart } from '../../modules/Cart';
+import { FireBase, FirebaseDB, addToCart } from '../../modules/Firebase';
 import { addToStore, updateStore } from '../../modules/Listing';
 import styles from '../css/Home.module.css';
 
@@ -13,10 +11,13 @@ class Home extends FireBase {
     super(props);
 
     this.state = { itemsOnSale: [] };
+    this.FbDB = new FirebaseDB();
   }
 
   componentDidMount() {
-    this.pushAllItemsToStore();
+    this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+
+    //TODO: implement selector for items on sale from boardgames array in store
     this.getItemsOnSale();
   }
 

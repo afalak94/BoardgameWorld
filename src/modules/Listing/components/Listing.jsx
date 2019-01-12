@@ -10,47 +10,31 @@ import {
   InputGroup
 } from 'reactstrap';
 import { bindActionCreators } from 'redux';
-import { FirebaseDB } from '../../Firebase';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/database';
+import { FirebaseDB, addToCart } from '../../Firebase';
 import _ from 'lodash';
-//import actions
-import { addToCart } from '../../Cart';
 import { connect } from 'react-redux';
-import { onCategoryClick, onPriceClick, addToStore } from '../index';
+import {
+  onCategoryClick,
+  onPriceClick,
+  addToStore,
+  addCategories
+} from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
 class Listing extends Component {
   constructor(props) {
     super(props);
-    this.state = { categories: [] };
 
+    //create instance of firebase database service
     this.FbDB = new FirebaseDB();
   }
 
   componentDidMount() {
-    /* TRANSFER TO FIREBASEDATABASE */
-
+    //save items to redux store
     this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
 
-    //get all categories from firebase database
-    this.categories = firebase.database().ref('categories/');
-    this.categories.on('value', snap => {
-      //save categories data as array of objects with key-value pairs
-      let data = [];
-      snap.forEach(ss => {
-        data.push({ key: ss.key, value: ss.val() });
-      });
-      this.setState({
-        categories: data
-      });
-    });
-
-    // console.log(this.FbDB.getCategoriesFromDB());
-    // this.setState(() => {
-    //   const data = this.FbDB.getCategoriesFromDB();
-    //   return { categories: data };
-    // });
+    //save categories to redux store
+    this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
   }
 
   renderItems() {
@@ -72,23 +56,26 @@ class Listing extends Component {
   }
 
   renderCategories() {
-    return this.state.categories.map(category => {
+    const { categories } = this.props;
+    this.categories = _.map(categories, (value, key) => {
       return (
         <ListGroupItem
           tag='button'
           action
-          key={category.key}
+          key={key}
           onClick={this.categoryClicked}
-          data-category-value={category.value}
+          data-category-value={value.value}
           className={styles['listing__categoryListItem']}
         >
-          {category.value}
+          {value.value}
         </ListGroupItem>
       );
     });
+    if (!_.isEmpty(this.categories)) {
+      return this.categories;
+    }
   }
 
-  //clear search bar text
   categoryClicked = event => {
     const { categoryValue } = event.target.dataset;
     document.getElementById('searchBar').value = '';
@@ -152,14 +139,15 @@ class Listing extends Component {
 function mapStateToProps(state) {
   return {
     boardgames: state.boardgames[state.boardgames.length - 1],
-    user: state.user[0]
+    user: state.user[0],
+    categories: state.categories
   };
 }
 
 function mapDispatchtoProps(dispatch) {
   return {
     ...bindActionCreators(
-      { addToStore, addToCart, onCategoryClick, onPriceClick },
+      { addToStore, addToCart, onCategoryClick, onPriceClick, addCategories },
       dispatch
     )
   };

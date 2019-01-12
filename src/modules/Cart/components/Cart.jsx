@@ -1,5 +1,5 @@
 //Cart component
-import React from 'react';
+import React, { Component } from 'react';
 import {
   ListGroup,
   ListGroupItem,
@@ -11,35 +11,33 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-//firebase service
-import { FireBase } from '../../Firebase';
-import { FirebaseAuth } from '../../Firebase';
+import { FirebaseAuth, FirebaseDB } from '../../Firebase';
 import {
   fetchitems,
   removeitem,
   increaseQuantity,
   decreaseQuantity
-} from '../index';
+} from '../../Firebase';
 import { LocalStorageService } from '../../../main/services/LocalStorage';
 import styles from '../../../main/css/Cart.module.css';
 
-//class extends FireBase class to use firebase logic
-class Cart extends FireBase {
+class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: [],
       localCart: JSON.parse(localStorage.getItem('cart'))
     };
 
     //instantiate LocalStorageService object
     this.LS = new LocalStorageService();
-    //instantiate FirebaseAuth object
-    //
+    //instantiate Firebase authentication object
+    this.FbAuth = new FirebaseAuth();
+    //instantiate firebase database object
+    this.FbDB = new FirebaseDB();
   }
 
   componentDidMount() {
-    this.fetchUserCart();
+    this.unsubscribe = this.FbAuth.fetchUserCart(this.props.fetchitems);
   }
 
   componentWillUnmount() {
@@ -47,7 +45,8 @@ class Cart extends FireBase {
     this.unsubscribe();
   }
 
-  handleDelete = event => {
+  /* GUEST HANDLERS */
+  handleGuestDelete = event => {
     const { key } = event.target.dataset;
     this.setState(() => {
       const local = this.LS.removeFromLocalStorage(key);
@@ -55,7 +54,7 @@ class Cart extends FireBase {
     });
   };
 
-  handleIncrement = event => {
+  handleGuestIncrement = event => {
     const { key } = event.target.dataset;
     this.setState(() => {
       const local = this.LS.increaseLocalStorageQuantity(key);
@@ -63,15 +62,35 @@ class Cart extends FireBase {
     });
   };
 
-  handleDecrement = event => {
+  handleGuestDecrement = event => {
     const { key } = event.target.dataset;
     this.setState(() => {
       const local = this.LS.decreaseLocalStorageQuantity(key);
       return { localCart: local };
     });
   };
+  /* GUEST HANDLERS */
 
-  renderItems() {
+  /* USER HANDLERS */
+  //Meybe create functions in FB database service and dispatch actions from there
+  handleUserDelete = event => {
+    const { itemKey } = event.target.dataset;
+    this.props.removeitem(itemKey, this.props.user.uid);
+  };
+
+  handleUserIncrement = event => {
+    const { itemKey } = event.target.dataset;
+    this.props.increaseQuantity(itemKey, this.props.user.uid);
+  };
+
+  handleUserDecrement = event => {
+    const { itemKey } = event.target.dataset;
+    this.props.decreaseQuantity(itemKey, this.props.user.uid);
+  };
+
+  /* USER HANDLERS */
+
+  renderUserItems() {
     const { cart } = this.props;
     this.total = 0;
     this.numOfItems = 0;
@@ -103,7 +122,8 @@ class Cart extends FireBase {
             <div>
               <button
                 className={styles['cart__removeBtn']}
-                onClick={() => this.props.removeitem(key, this.props.user.uid)}
+                onClick={this.handleUserDelete}
+                data-item-key={key}
               >
                 &times;
               </button>
@@ -112,18 +132,16 @@ class Cart extends FireBase {
               <ListGroupItemText>
                 Quantity:
                 <Button
-                  onClick={() =>
-                    this.props.decreaseQuantity(key, this.props.user.uid)
-                  }
+                  onClick={this.handleUserDecrement}
+                  data-item-key={key}
                   className={styles['cart__listGroup__btn']}
                 >
                   &#8722;
                 </Button>
                 {value.quantity}
                 <Button
-                  onClick={() =>
-                    this.props.increaseQuantity(key, this.props.user.uid)
-                  }
+                  onClick={this.handleUserIncrement}
+                  data-item-key={key}
                   className={styles['cart__listGroup__btn']}
                 >
                   &#43;
@@ -169,7 +187,7 @@ class Cart extends FireBase {
             <button
               className={styles['cart__removeBtn']}
               data-key={key}
-              onClick={this.handleDelete}
+              onClick={this.handleGuestDelete}
             >
               &times;
             </button>
@@ -179,7 +197,7 @@ class Cart extends FireBase {
               Quantity:
               <button
                 data-key={key}
-                onClick={this.handleDecrement}
+                onClick={this.handleGuestDecrement}
                 className={styles['cart__listGroup__btn']}
               >
                 &#8722;
@@ -187,7 +205,7 @@ class Cart extends FireBase {
               {value.quantity}
               <button
                 data-key={key}
-                onClick={this.handleIncrement}
+                onClick={this.handleGuestIncrement}
                 className={styles['cart__listGroup__btn']}
               >
                 &#43;
@@ -206,7 +224,7 @@ class Cart extends FireBase {
     return (
       <div className={styles['cart__wrapper']}>
         <ListGroup className={styles['cart__listGroup']}>
-          {this.props.user ? this.renderItems() : this.renderLocalItems()}
+          {this.props.user ? this.renderUserItems() : this.renderLocalItems()}
         </ListGroup>
 
         <Jumbotron className={styles['cart__summary__jumbotron']}>

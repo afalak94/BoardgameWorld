@@ -6,19 +6,17 @@ import {
   NavItem,
   NavLink,
   Row,
-  Col,
-  Button,
-  Input
+  Col
 } from 'reactstrap';
 import classnames from 'classnames';
 import CategoryList from './categoryList';
 import ItemList from './itemList';
 import UsersList from './usersList';
-import firebase from '../../Firebase/firebase.config';
-import 'firebase/database';
-import 'firebase/auth';
+import { FirebaseDB } from '../../Firebase';
 //import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addCategories } from '../../Listing';
 import styles from '../../../main/css/Admin.module.css';
 
 class AdminSection extends React.Component {
@@ -26,9 +24,10 @@ class AdminSection extends React.Component {
     super(props);
 
     this.state = {
-      activeTab: '1',
-      inputValue: '' //must define because of error
+      activeTab: '1'
     };
+
+    this.FbDB = new FirebaseDB();
   }
 
   switchManagement = event => {
@@ -37,36 +36,6 @@ class AdminSection extends React.Component {
       this.setState({
         activeTab: tab
       });
-    }
-  };
-
-  updateInputValue = e => {
-    this.setState({
-      inputValue: e.target.value
-    });
-  };
-
-  addCategory = () => {
-    const name = this.state.inputValue;
-    //adding a new category to firebase
-    this.setState({ inputValue: '' });
-    //check if name is valid length
-    if (name.length < 1 || name.length > 18) {
-      alert('Invalid category name length');
-    } else {
-      // Get a key for a new Post.
-      const newPostKey = firebase
-        .database()
-        .ref()
-        .child('categories')
-        .push().key;
-      //update a new category to firebase
-      let updates = {};
-      updates['/categories/' + newPostKey] = name;
-      return firebase
-        .database()
-        .ref()
-        .update(updates);
     }
   };
 
@@ -118,25 +87,10 @@ class AdminSection extends React.Component {
           className={styles['admin__tabContent']}
         >
           <TabPane tabId='1'>
-            <Row style={{ width: 1500 }}>
-              <Col sm={{ size: 'auto' }}>
-                <CategoryList />
-              </Col>
-
-              <Col sm={{ size: 'auto' }}>
-                <div className={styles['category__input__wrapper']}>
-                  <h3>Add a new category</h3>
-                  <p>(max. 18 letters)</p>
-                  <Input
-                    value={this.state.inputValue}
-                    onChange={this.updateInputValue}
-                  />
-                  <Button color='success' onClick={this.addCategory}>
-                    Submit
-                  </Button>
-                </div>
-              </Col>
-            </Row>
+            <CategoryList
+              addCategories={this.props.addCategories}
+              categories={this.props.categories}
+            />
           </TabPane>
 
           <TabPane tabId='2'>
@@ -158,11 +112,18 @@ class AdminSection extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user[0]
+    user: state.user[0],
+    categories: state.categories
+  };
+}
+
+function mapDispatchtoProps(dispatch) {
+  return {
+    ...bindActionCreators({ addCategories }, dispatch)
   };
 }
 
 export const AdminConn = connect(
   mapStateToProps,
-  null
+  mapDispatchtoProps
 )(AdminSection);

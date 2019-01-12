@@ -27,3 +27,7 @@ export function addToStore(games) {
 export function updateStore(game) {
   return { type: 'UPDATE_STORE', payload: game };
 }
+
+export function addCategories(categories) {
+  return { type: 'STORE_CATEGORIES', payload: categories };
+}

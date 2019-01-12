@@ -6,12 +6,24 @@ import 'firebase/auth';
 // import { bindActionCreators } from 'redux';
 // import { addUser } from '../../Authentication';
 
+/* TODO: learn how to dispatch actions from here so there is no need
+for passing them in parameters */
 export class FirebaseAuth extends Component {
   userListener(addUser) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         addUser(user);
         // store.dispatch(addUser);
+      }
+    });
+    return unsubscribe;
+  }
+
+  fetchUserCart(fetchitems) {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        //when the user is logged in then fetch his cart from firebase
+        fetchitems(user.uid);
       }
     });
     return unsubscribe;
