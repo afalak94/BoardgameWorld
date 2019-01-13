@@ -1,6 +1,7 @@
 import firebase from '../firebase.config';
 import 'firebase/database';
 import 'firebase/auth';
+import axios from 'axios';
 
 //saves item to firebase db from current user
 export const addToCart = (newitem, user) => async dispatch => {
@@ -93,4 +94,35 @@ export const decreaseQuantity = (itemId, user) => async dispatch => {
       return currentQuantity - 1;
     }
   });
+};
+
+export const fetchUsers = () => async dispatch => {
+  //getting the list of all users
+  axios
+    .get(`https://us-central1-react-store-3406f.cloudfunctions.net/getAllUsers`)
+    .then(res => {
+      //console.log(res.data);
+      //this.setState({ userList: res.data });
+      dispatch({
+        type: 'FETCH_USERS',
+        payload: res.data
+      });
+    });
+};
+
+export const deleteUser = (userUid, fetchUsers) => async dispatch => {
+  axios
+    .get(
+      `https://us-central1-react-store-3406f.cloudfunctions.net/deleteUser?text=` +
+        userUid,
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
+      }
+    )
+    .then(() => {
+      //fetch users again to refresh users list in users management
+      fetchUsers();
+    });
 };

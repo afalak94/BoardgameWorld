@@ -3,5 +3,8 @@ export {
   removeitem,
   fetchitems,
   increaseQuantity,
-  decreaseQuantity
+  decreaseQuantity,
+  fetchUsers,
+  deleteUser
 } from './actions';
+export { usersReducer } from './reducer';

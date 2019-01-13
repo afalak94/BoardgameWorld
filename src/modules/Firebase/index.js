@@ -6,5 +6,8 @@ export {
   removeitem,
   fetchitems,
   increaseQuantity,
-  decreaseQuantity
+  decreaseQuantity,
+  fetchUsers,
+  deleteUser,
+  usersReducer
 } from './redux/index';

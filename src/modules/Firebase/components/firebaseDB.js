@@ -85,4 +85,71 @@ export class FirebaseDB extends Component {
       .child(key)
       .remove();
   }
+
+  deleteItem(key) {
+    //removing category from firebase by using key
+    firebase
+      .database()
+      .ref('boardgames/')
+      .child(key)
+      .remove();
+  }
+
+  //function that adds a new item in boardgames to firebase database
+  addNewItem = (
+    name,
+    score,
+    imgUrl,
+    price,
+    salePrice,
+    onSale,
+    description,
+    category
+  ) => {
+    if (
+      !name ||
+      !score ||
+      !imgUrl ||
+      !price ||
+      !salePrice ||
+      !description ||
+      !category
+    ) {
+      alert('All fields are required');
+    } else {
+      //listener for new child entries
+      firebase
+        .database()
+        .ref('boardgames/')
+        .on('child_added', snap => {
+          //console.log(snap.val());
+        });
+      // Item data
+      const itemData = {
+        name: name,
+        score: score,
+        imgUrl: imgUrl,
+        price: price,
+        salePrice: salePrice,
+        onSale: onSale,
+        description: description,
+        category: category
+      };
+      // Get a key for a new Post.
+      const newItemKey = firebase
+        .database()
+        .ref()
+        .child('boardgames')
+        .push().key;
+
+      // Write the new item's data
+      const updates = {};
+      updates['/boardgames/' + newItemKey] = itemData;
+
+      return firebase
+        .database()
+        .ref()
+        .update(updates);
+    }
+  };
 }

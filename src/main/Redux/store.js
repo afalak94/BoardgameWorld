@@ -3,13 +3,15 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { cartReducer } from '../../modules/Cart';
 import reduxThunk from 'redux-thunk';
 import { boardgamesReducer, categoriesReducer } from '../../modules/Listing';
+import { usersReducer } from '../../modules/Firebase';
 import authReducer from '../../modules/Authentication/redux/reducer';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
   boardgames: boardgamesReducer,
   user: authReducer,
-  categories: categoriesReducer
+  categories: categoriesReducer,
+  allUsers: usersReducer
 });
 
 const initialState = {};

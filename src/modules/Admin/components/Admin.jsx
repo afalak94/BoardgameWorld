@@ -12,11 +12,11 @@ import classnames from 'classnames';
 import CategoryList from './categoryList';
 import ItemList from './itemList';
 import UsersList from './usersList';
-import { FirebaseDB } from '../../Firebase';
+import { FirebaseDB, fetchUsers, deleteUser } from '../../Firebase';
 //import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addCategories } from '../../Listing';
+import { addCategories, addToStore } from '../../Listing';
 import styles from '../../../main/css/Admin.module.css';
 
 class AdminSection extends React.Component {
@@ -96,13 +96,21 @@ class AdminSection extends React.Component {
           <TabPane tabId='2'>
             <Row style={{ width: 1500 }}>
               <Col sm={{ size: 'auto' }}>
-                <ItemList />
+                <ItemList
+                  addToStore={this.props.addToStore}
+                  boardgames={this.props.boardgames}
+                  categories={this.props.categories}
+                />
               </Col>
             </Row>
           </TabPane>
 
           <TabPane tabId='3'>
-            <UsersList />
+            <UsersList
+              fetchUsers={this.props.fetchUsers}
+              allUsers={this.props.allUsers}
+              deleteUser={this.props.deleteUser}
+            />
           </TabPane>
         </TabContent>
       </div>
@@ -113,13 +121,18 @@ class AdminSection extends React.Component {
 function mapStateToProps(state) {
   return {
     user: state.user[0],
-    categories: state.categories
+    categories: state.categories,
+    boardgames: state.boardgames[state.boardgames.length - 1],
+    allUsers: state.allUsers
   };
 }
 
 function mapDispatchtoProps(dispatch) {
   return {
-    ...bindActionCreators({ addCategories }, dispatch)
+    ...bindActionCreators(
+      { addCategories, addToStore, fetchUsers, deleteUser },
+      dispatch
+    )
   };
 }
 

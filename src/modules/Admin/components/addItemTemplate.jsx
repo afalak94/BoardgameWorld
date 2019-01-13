@@ -10,6 +10,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
+import { FirebaseDB } from '../../Firebase';
 import styles from '../../../main/css/Admin.module.css';
 
 export default class AddItemTemplate extends React.Component {
@@ -22,37 +23,26 @@ export default class AddItemTemplate extends React.Component {
       dropdownOpen3: false,
       onSale: false
     };
+
+    this.FbDB = new FirebaseDB();
   }
 
   handleSubmit = () => {
-    if (
-      !this.state.nameValue ||
-      !this.state.scoreValue ||
-      !this.state.imgUrlValue ||
-      !this.state.priceValue ||
-      !this.state.salePriceValue ||
-      !this.state.descriptionValue ||
-      !this.state.dropdownValue1 ||
-      !this.state.dropdownValue2 ||
-      !this.state.dropdownValue3
-    ) {
-      alert('All fields are required');
-    } else {
-      this.props.addNewItem(
-        this.state.nameValue,
-        this.state.scoreValue,
-        this.state.imgUrlValue,
-        this.state.priceValue,
-        this.state.salePriceValue,
-        this.state.onSale,
-        this.state.descriptionValue,
-        [
-          this.state.dropdownValue1,
-          this.state.dropdownValue2,
-          this.state.dropdownValue3
-        ]
-      );
-    }
+    //firebase service method
+    this.FbDB.addNewItem(
+      this.state.nameValue,
+      this.state.scoreValue,
+      this.state.imgUrlValue,
+      this.state.priceValue,
+      this.state.salePriceValue,
+      this.state.onSale,
+      this.state.descriptionValue,
+      [
+        this.state.dropdownValue1 || '',
+        this.state.dropdownValue2 || '',
+        this.state.dropdownValue3 || ''
+      ]
+    );
   };
 
   commonChange = event => {
@@ -106,7 +96,7 @@ export default class AddItemTemplate extends React.Component {
 
   render() {
     return (
-      <Form className={styles['item__form']}>
+      <Form className={styles['item__form']} id='addItem'>
         <h3>Add new boardgame</h3>
         <FormGroup className={styles['form__name']}>
           <Label>Name</Label>
