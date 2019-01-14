@@ -6,5 +6,6 @@ export {
   addCategories,
   onNameFilter,
   boardgamesReducer,
-  categoriesReducer
+  categoriesReducer,
+  nameSelector
 } from './redux/index';

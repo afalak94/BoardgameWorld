@@ -5,13 +5,15 @@ import reduxThunk from 'redux-thunk';
 import { boardgamesReducer, categoriesReducer } from '../../modules/Listing';
 import { usersReducer } from '../../modules/Firebase';
 import { authReducer } from '../../modules/Authentication';
+import { searchTermReducer } from '../../modules/Navigation';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
   boardgames: boardgamesReducer,
   user: authReducer,
   categories: categoriesReducer,
-  allUsers: usersReducer
+  allUsers: usersReducer,
+  searchTerm: searchTermReducer
 });
 
 const initialState = {};

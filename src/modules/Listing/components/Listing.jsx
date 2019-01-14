@@ -13,6 +13,8 @@ import { bindActionCreators } from 'redux';
 import { FirebaseDB, addToCart } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import { nameSelector } from '../index';
+import { updateSearchTerm } from '../../Navigation';
 import {
   onCategoryClick,
   onPriceClick,
@@ -38,8 +40,9 @@ class Listing extends Component {
   }
 
   renderItems() {
-    const { boardgames } = this.props;
-    this.items = _.map(boardgames, (value, key) => {
+    console.log(this.props.selectedBoardgames);
+    const { selectedBoardgames } = this.props;
+    this.items = _.map(selectedBoardgames, (value, key) => {
       return (
         <Col xs='4' key={key}>
           <GameCard
@@ -79,6 +82,7 @@ class Listing extends Component {
   categoryClicked = event => {
     const { categoryValue } = event.target.dataset;
     document.getElementById('searchBar').value = '';
+    this.props.updateSearchTerm('');
     this.props.onCategoryClick(categoryValue);
   };
 
@@ -138,16 +142,24 @@ class Listing extends Component {
 
 function mapStateToProps(state) {
   return {
-    boardgames: state.boardgames[state.boardgames.length - 1],
+    boardgames: state.boardgames[0],
     user: state.user[0],
-    categories: state.categories
+    categories: state.categories,
+    selectedBoardgames: nameSelector(state)
   };
 }
 
 function mapDispatchtoProps(dispatch) {
   return {
     ...bindActionCreators(
-      { addToStore, addToCart, onCategoryClick, onPriceClick, addCategories },
+      {
+        addToStore,
+        addToCart,
+        onCategoryClick,
+        onPriceClick,
+        addCategories,
+        updateSearchTerm
+      },
       dispatch
     )
   };

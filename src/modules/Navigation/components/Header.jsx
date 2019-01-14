@@ -12,6 +12,7 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { onNameFilter } from '../../Listing';
+import { updateSearchTerm } from '../index';
 import { bindActionCreators } from 'redux';
 import styles from '../../../main/css/Header.module.css';
 import { addUser } from '../../Authentication';
@@ -55,6 +56,8 @@ class Header extends Component {
   handleChange = e => {
     //call sendFilter function in the callback after state has been updated
     this.setState({ searchTerm: e.target.value }, this.sendFilter);
+    //update redux store
+    this.props.updateSearchTerm(e.target.value);
   };
 
   sendFilter = () => {
@@ -131,7 +134,7 @@ function mapStateToProps(state) {
 
 function mapDispatchtoProps(dispatch) {
   return {
-    ...bindActionCreators({ onNameFilter, addUser }, dispatch)
+    ...bindActionCreators({ onNameFilter, addUser, updateSearchTerm }, dispatch)
   };
 }
 
