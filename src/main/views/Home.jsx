@@ -3,7 +3,7 @@ import { GameCard, SaleCarousel } from './index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FireBase, FirebaseDB, addToCart } from '../../modules/Firebase';
-import { addToStore, updateStore } from '../../modules/Listing';
+import { addToStore } from '../../modules/Listing';
 import styles from '../css/Home.module.css';
 
 class Home extends FireBase {
@@ -71,7 +71,7 @@ function mapStateToProps(state) {
 function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
-    ...bindActionCreators({ addToStore, addToCart, updateStore }, dispatch)
+    ...bindActionCreators({ addToStore, addToCart }, dispatch)
   };
 }
 

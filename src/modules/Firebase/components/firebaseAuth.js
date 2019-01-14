@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/auth';
-// import store from '../../../main/Redux/store';
+// import store from '../../../main/Redux/store'; // => produces No reducer provided for key "allUsers" error
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 // import { addUser } from '../../Authentication';

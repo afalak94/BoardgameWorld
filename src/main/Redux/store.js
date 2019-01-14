@@ -4,7 +4,7 @@ import { cartReducer } from '../../modules/Cart';
 import reduxThunk from 'redux-thunk';
 import { boardgamesReducer, categoriesReducer } from '../../modules/Listing';
 import { usersReducer } from '../../modules/Firebase';
-import authReducer from '../../modules/Authentication/redux/reducer';
+import { authReducer } from '../../modules/Authentication';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
@@ -22,4 +22,5 @@ const store = createStore(
   composeEnhancers(applyMiddleware(reduxThunk))
 );
 
+// export const dispatch = store.dispatch;
 export default store;

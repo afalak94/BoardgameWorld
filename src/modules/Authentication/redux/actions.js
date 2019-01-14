@@ -1,6 +1,8 @@
-export const addUser = user => async dispatch => {
-  dispatch({
-    type: 'STORE_USER',
+import { STORE_USER } from './types';
+
+export function addUser(user) {
+  return {
+    type: STORE_USER,
     payload: user
-  });
-};
+  };
+}

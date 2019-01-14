@@ -1,2 +1,2 @@
-export * from './actions';
-export * from './reducer';
+export { addUser } from './actions';
+export { authReducer } from './reducer';

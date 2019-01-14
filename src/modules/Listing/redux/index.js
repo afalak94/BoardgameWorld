@@ -1,8 +1,8 @@
 export {
   addToStore,
-  updateStore,
   onCategoryClick,
   onPriceClick,
+  onNameFilter,
   addCategories
 } from './actions';
 export { boardgamesReducer, categoriesReducer } from './reducer';

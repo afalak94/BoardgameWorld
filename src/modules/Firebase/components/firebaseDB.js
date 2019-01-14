@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/database';
+// import { addCategories, addToStore } from '../../Listing';
+// import store from '../../../main/Redux/store'; // => produces No reducer provided for key "allUsers" error
 
 /* TODO: learn how to dispatch actions from here so there is no need
 for passing them in parameters */
@@ -29,6 +31,7 @@ export class FirebaseDB extends Component {
         data.push({ key: ss.key, value: ss.val() });
       });
       //console.log(data);
+      // dispatch(addCategories(data));
       addCategories(data);
     });
   }

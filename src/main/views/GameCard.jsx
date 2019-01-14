@@ -53,12 +53,14 @@ export class GameCard extends Component {
 
   renderDiscount() {
     //calculate discount percent and display it on sale items
-    if (this.props.game.value.onSale === true) {
-      let discount =
-        (1 -
-          parseFloat(this.props.game.value.salePrice) /
-            parseFloat(this.props.game.value.price)) *
-        100;
+    const { value } = this.props.game;
+    if (!value) {
+      return null;
+    }
+
+    const { onSale, salePrice, price } = value;
+    if (onSale === true) {
+      let discount = (1 - parseFloat(salePrice) / parseFloat(price)) * 100;
       return (
         <div className={styles['gameCard__saleOverlay']}>
           <span>-{Math.floor(discount)} %</span>

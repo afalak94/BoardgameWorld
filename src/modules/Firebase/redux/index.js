@@ -6,5 +6,5 @@ export {
   decreaseQuantity,
   fetchUsers,
   deleteUser
-} from './actions';
+} from './thunks';
 export { usersReducer } from './reducer';

@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { onNameFilter } from '../index';
+import { onNameFilter } from '../../Listing';
 import { bindActionCreators } from 'redux';
 import styles from '../../../main/css/Header.module.css';
 import { addUser } from '../../Authentication';
