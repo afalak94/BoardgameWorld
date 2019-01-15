@@ -9,13 +9,13 @@ export default class CategoryList extends Component {
     super(props);
 
     this.state = { categories: [], inputValue: '' };
-    this.renderCategories = this.renderCategories.bind(this);
-
     this.FbDB = new FirebaseDB();
   }
 
   componentDidMount() {
-    this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
+    // this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
+    // console.log(this.props);
+    this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
   }
 
   updateInputValue = e => {
@@ -35,7 +35,7 @@ export default class CategoryList extends Component {
     this.setState({ inputValue: '' });
   };
 
-  renderCategories() {
+  renderCategories = () => {
     const { categories } = this.props;
     this.categories = _.map(categories, (value, key) => {
       return (
@@ -53,7 +53,7 @@ export default class CategoryList extends Component {
     if (!_.isEmpty(this.categories)) {
       return this.categories;
     }
-  }
+  };
 
   render() {
     return (

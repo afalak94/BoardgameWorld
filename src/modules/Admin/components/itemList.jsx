@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { FirebaseDB } from '../../Firebase';
-import AddItemTemplate from './addItemTemplate';
+import AddItemTemplate from './AddItemTemplate';
 import _ from 'lodash';
 import styles from '../../../main/css/Admin.module.css';
 
@@ -14,7 +14,8 @@ export default class ItemList extends Component {
 
   //REMINDER: dont use componentWillMount because it acts unexpectedly
   componentDidMount() {
-    this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+    // this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+    this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
   }
 
   handleClick = event => {

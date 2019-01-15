@@ -32,7 +32,7 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.FbAuth.userListener(this.props.addUser);
+    this.unsubscribe = this.FbAuth.userListener(this.props.dispatch);
   }
 
   componentDidUpdate(prevProps) {
@@ -54,18 +54,21 @@ class Header extends Component {
   };
 
   handleChange = e => {
+    const { dispatch } = this.props;
     //call sendFilter function in the callback after state has been updated
     this.setState({ searchTerm: e.target.value }, this.sendFilter);
     //update redux store
-    this.props.updateSearchTerm(e.target.value);
+    dispatch(updateSearchTerm(e.target.value));
   };
 
   sendFilter = () => {
-    this.props.onNameFilter(this.state.searchTerm);
+    const { dispatch } = this.props;
+    dispatch(onNameFilter(this.state.searchTerm));
   };
 
   handleSearchClick = () => {
-    this.props.history.push('/listing');
+    const { history } = this.props;
+    history.push('/listing');
   };
 
   render() {
@@ -125,20 +128,27 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user[0],
-    boardgames: state.boardgames[0]
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     user: state.user[0],
+//     boardgames: state.boardgames[0]
+//   };
+// }
 
 function mapDispatchtoProps(dispatch) {
   return {
-    ...bindActionCreators({ onNameFilter, addUser, updateSearchTerm }, dispatch)
+    ...bindActionCreators({ onNameFilter, addUser, updateSearchTerm }),
+    dispatch
   };
 }
 
 export const HeaderConn = connect(
-  mapStateToProps,
+  // mapStateToProps,
+  state => {
+    return {
+      user: state.user[0],
+      boardgames: state.boardgames[0]
+    };
+  },
   mapDispatchtoProps
 )(withRouter(Header));

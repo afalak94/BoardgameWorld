@@ -1,47 +1,50 @@
 import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/auth';
-// import store from '../../../main/Redux/store'; // => produces No reducer provided for key "allUsers" error
-// import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { addUser } from '../../Authentication';
+import { addUser } from '../../Authentication';
+import { fetchitems } from '../../Firebase';
 
-/* TODO: learn how to dispatch actions from here so there is no need
-for passing them in parameters */
 export class FirebaseAuth extends Component {
-  userListener(addUser) {
+  userListener(dispatch, history) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        addUser(user);
-        // store.dispatch(addUser);
-      }
-    });
-    return unsubscribe;
-  }
+        dispatch(addUser(user));
 
-  fetchUserCart(fetchitems) {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        //when the user is logged in then fetch his cart from firebase
-        fetchitems(user.uid);
-      }
-    });
-    return unsubscribe;
-  }
-
-  adminRedirectListener(addUser, history) {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        addUser(user);
-        if (user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
-          history.push('/admin');
-        } else {
+        if (history) {
+          if (user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
+            history.push('/admin');
+            return;
+          }
           history.push('/');
         }
       }
     });
     return unsubscribe;
   }
+
+  fetchUserCart(dispatch) {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        //when the user is logged in then fetch his cart from firebase
+        dispatch(fetchitems(user.uid));
+      }
+    });
+    return unsubscribe;
+  }
+
+  // adminRedirectListener(dispatch, history) {
+  //   const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       dispatch(addUser(user));
+  //       if (user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
+  //         history.push('/admin');
+  //       } else {
+  //         history.push('/');
+  //       }
+  //     }
+  //   });
+  //   return unsubscribe;
+  // }
 
   register(email, password, history) {
     firebase
@@ -66,12 +69,12 @@ export class FirebaseAuth extends Component {
       });
   }
 
-  logoutUser(addUser, history) {
+  logoutUser(dispatch, history) {
     //delete user data from redux store and redirect to Home
     let promise = new Promise(() => {
       firebase.auth().signOut();
     });
-    promise.then(addUser(null)).then(history.push('/'));
+    promise.then(dispatch(addUser(null))).then(history.push('/'));
   }
 
   resetPW(email) {
@@ -88,15 +91,3 @@ export class FirebaseAuth extends Component {
       });
   }
 }
-
-// function mapDispatchtoProps(dispatch) {
-//   return {
-//     //bind both action creators
-//     ...bindActionCreators({ addUser }, dispatch)
-//   };
-// }
-
-// export const FirebaseAuthConn = connect(
-//   null,
-//   mapDispatchtoProps
-// )(FirebaseAuth);

@@ -1,13 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Navbar, Nav, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-// import firebase from '../../Firebase/firebase.config';
-// import 'firebase/auth';
 import { FirebaseAuth } from '../../Firebase';
 import { withRouter } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { addUser } from '../../Authentication/redux/actions';
 import styles from '../../../main/css/Footer.module.css';
 
 class Footer extends Component {
@@ -21,7 +17,7 @@ class Footer extends Component {
   }
 
   handleClick = () => {
-    this.FbAuth.logoutUser(this.props.addUser, this.props.history);
+    this.FbAuth.logoutUser(this.props.dispatch, this.props.history);
   };
 
   returnAuth() {
@@ -94,19 +90,13 @@ class Footer extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user[0]
-  };
-}
-
-function mapDispatchtoProps(dispatch) {
-  return {
-    ...bindActionCreators({ addUser }, dispatch)
-  };
-}
-
 export const FooterConn = connect(
-  mapStateToProps,
-  mapDispatchtoProps
+  state => {
+    return {
+      user: state.user[0]
+    };
+  },
+  dispatch => {
+    return { dispatch };
+  }
 )(withRouter(Footer));

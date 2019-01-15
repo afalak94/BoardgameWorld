@@ -9,18 +9,12 @@ import {
   Button,
   InputGroup
 } from 'reactstrap';
-import { bindActionCreators } from 'redux';
-import { FirebaseDB, addToCart } from '../../Firebase';
+import { FirebaseDB } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { nameSelector } from '../index';
 import { updateSearchTerm } from '../../Navigation';
-import {
-  onCategoryClick,
-  onPriceClick,
-  addToStore,
-  addCategories
-} from '../index';
+import { onCategoryClick, onPriceClick } from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
 class Listing extends Component {
@@ -33,14 +27,16 @@ class Listing extends Component {
 
   componentDidMount() {
     //save items to redux store
-    this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+    // this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+    this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
 
     //save categories to redux store
-    this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
+    // this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
+    this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
   }
 
-  renderItems() {
-    console.log(this.props.selectedBoardgames);
+  renderItems = () => {
+    //console.log(this.props.selectedBoardgames);
     const { selectedBoardgames } = this.props;
     this.items = _.map(selectedBoardgames, (value, key) => {
       return (
@@ -48,7 +44,7 @@ class Listing extends Component {
           <GameCard
             game={value}
             user={this.props.user}
-            addToCart={this.props.addToCart}
+            dispatch={this.props.dispatch}
           />
         </Col>
       );
@@ -56,9 +52,9 @@ class Listing extends Component {
     if (!_.isEmpty(this.items)) {
       return this.items;
     }
-  }
+  };
 
-  renderCategories() {
+  renderCategories = () => {
     const { categories } = this.props;
     this.categories = _.map(categories, (value, key) => {
       return (
@@ -77,13 +73,13 @@ class Listing extends Component {
     if (!_.isEmpty(this.categories)) {
       return this.categories;
     }
-  }
+  };
 
   categoryClicked = event => {
     const { categoryValue } = event.target.dataset;
     document.getElementById('searchBar').value = '';
-    this.props.updateSearchTerm('');
-    this.props.onCategoryClick(categoryValue);
+    this.props.dispatch(updateSearchTerm(''));
+    this.props.dispatch(onCategoryClick(categoryValue));
   };
 
   allCategoriesClick = () => {
@@ -93,7 +89,7 @@ class Listing extends Component {
 
   handlePriceClick = event => {
     const { type } = event.target.dataset;
-    this.props.onPriceClick(type);
+    this.props.dispatch(onPriceClick(type));
   };
 
   render() {
@@ -149,23 +145,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchtoProps(dispatch) {
-  return {
-    ...bindActionCreators(
-      {
-        addToStore,
-        addToCart,
-        onCategoryClick,
-        onPriceClick,
-        addCategories,
-        updateSearchTerm
-      },
-      dispatch
-    )
-  };
-}
-
 export const ListingConn = connect(
   mapStateToProps,
-  mapDispatchtoProps
+  dispatch => {
+    return { dispatch };
+  }
 )(Listing);

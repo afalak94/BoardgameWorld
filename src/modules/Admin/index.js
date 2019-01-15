@@ -1,1 +1,1 @@
-export { AdminConn as AdminSection } from './components/Admin.jsx';
+export { AdminConn as AdminSection } from './views/Admin.jsx';

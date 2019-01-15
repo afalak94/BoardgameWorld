@@ -9,6 +9,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styles from '../css/gameCard.module.css';
+import { addToCart } from '../../modules/Firebase';
 import { LocalStorageService } from '../services/LocalStorage';
 
 export class GameCard extends Component {
@@ -23,11 +24,12 @@ export class GameCard extends Component {
   }
 
   handleClick = () => {
+    const { dispatch, game, user } = this.props;
     this.props.user
       ? //if the user is loged in, add item to his firebase cart
-        this.props.addToCart(this.props.game, this.props.user)
+        dispatch(addToCart(game, user))
       : //if its not, add item to local storage
-        this.LS.addToLocalStorage(this.props.game);
+        this.LS.addToLocalStorage(game);
   };
 
   renderPrices() {

@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { FirebaseAuth } from '../../Firebase';
 import { connect } from 'react-redux';
-import { addUser } from '../index';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import styles from '../../../main/css/Login.module.css';
 
@@ -18,9 +16,8 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    //listener for firebase authentication
-    this.unsubscribe = this.FbAuth.adminRedirectListener(
-      this.props.addUser,
+    this.unsubscribe = this.FbAuth.userListener(
+      this.props.dispatch,
       this.props.history
     );
     window.scrollTo(0, 0);
@@ -87,19 +84,13 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user[0]
-  };
-}
-
-function mapDispatchtoProps(dispatch) {
-  return {
-    ...bindActionCreators({ addUser }, dispatch)
-  };
-}
-
 export const LoginConn = connect(
-  mapStateToProps,
-  mapDispatchtoProps
+  state => {
+    return {
+      user: state.user[0]
+    };
+  },
+  dispatch => {
+    return { dispatch };
+  }
 )(Login);

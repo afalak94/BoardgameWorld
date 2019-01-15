@@ -37,7 +37,7 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.FbAuth.fetchUserCart(this.props.fetchitems);
+    this.unsubscribe = this.FbAuth.fetchUserCart(this.props.dispatch);
   }
 
   componentWillUnmount() {
@@ -75,22 +75,21 @@ class Cart extends Component {
   //Meybe create functions in FB database service and dispatch actions from there
   handleUserDelete = event => {
     const { itemKey } = event.target.dataset;
-    this.props.removeitem(itemKey, this.props.user.uid);
+    this.props.dispatch(removeitem(itemKey, this.props.user.uid));
   };
 
   handleUserIncrement = event => {
     const { itemKey } = event.target.dataset;
-    this.props.increaseQuantity(itemKey, this.props.user.uid);
+    this.props.dispatch(increaseQuantity(itemKey, this.props.user.uid));
   };
 
   handleUserDecrement = event => {
     const { itemKey } = event.target.dataset;
-    this.props.decreaseQuantity(itemKey, this.props.user.uid);
+    this.props.dispatch(decreaseQuantity(itemKey, this.props.user.uid));
   };
-
   /* USER HANDLERS */
 
-  renderUserItems() {
+  renderUserItems = () => {
     const { cart } = this.props;
     this.total = 0;
     this.numOfItems = 0;
@@ -155,9 +154,9 @@ class Cart extends Component {
     if (!_.isEmpty(this.itemsInCart)) {
       return this.itemsInCart;
     }
-  }
+  };
 
-  renderLocalItems() {
+  renderLocalItems = () => {
     this.total = 0;
     this.numOfItems = 0;
     this.itemsInCart = _.map(this.state.localCart, (value, key) => {
@@ -218,7 +217,7 @@ class Cart extends Component {
     if (!_.isEmpty(this.itemsInCart)) {
       return this.itemsInCart;
     }
-  }
+  };
 
   render() {
     return (
@@ -265,10 +264,13 @@ function mapStateToProps(state) {
 function mapDispatchtoProps(dispatch) {
   return {
     //bind both action creators
-    ...bindActionCreators(
-      { fetchitems, removeitem, increaseQuantity, decreaseQuantity },
-      dispatch
-    )
+    ...bindActionCreators({
+      fetchitems,
+      removeitem,
+      increaseQuantity,
+      decreaseQuantity
+    }),
+    dispatch
   };
 }
 

@@ -9,14 +9,12 @@ import {
   Col
 } from 'reactstrap';
 import classnames from 'classnames';
-import CategoryList from './categoryList';
-import ItemList from './itemList';
-import UsersList from './usersList';
-import { FirebaseDB, fetchUsers, deleteUser } from '../../Firebase';
+import CategoryList from '../components/CategoryList';
+import ItemList from '../components/ItemList';
+import UsersList from '../components/UsersList';
+import { FirebaseDB } from '../../Firebase';
 //import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { addCategories, addToStore } from '../../Listing';
 import styles from '../../../main/css/Admin.module.css';
 
 class AdminSection extends React.Component {
@@ -41,6 +39,7 @@ class AdminSection extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    //console.log(this.props);
   }
 
   render() {
@@ -88,8 +87,8 @@ class AdminSection extends React.Component {
         >
           <TabPane tabId='1'>
             <CategoryList
-              addCategories={this.props.addCategories}
               categories={this.props.categories}
+              dispatch={this.props.dispatch}
             />
           </TabPane>
 
@@ -97,9 +96,9 @@ class AdminSection extends React.Component {
             <Row style={{ width: 1500 }}>
               <Col sm={{ size: 'auto' }}>
                 <ItemList
-                  addToStore={this.props.addToStore}
                   boardgames={this.props.boardgames}
                   categories={this.props.categories}
+                  dispatch={this.props.dispatch}
                 />
               </Col>
             </Row>
@@ -107,9 +106,10 @@ class AdminSection extends React.Component {
 
           <TabPane tabId='3'>
             <UsersList
-              fetchUsers={this.props.fetchUsers}
+              // fetchUsers={this.props.fetchUsers}
               allUsers={this.props.allUsers}
-              deleteUser={this.props.deleteUser}
+              dispatch={this.props.dispatch}
+              // deleteUser={this.props.deleteUser}
             />
           </TabPane>
         </TabContent>
@@ -127,16 +127,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchtoProps(dispatch) {
-  return {
-    ...bindActionCreators(
-      { addCategories, addToStore, fetchUsers, deleteUser },
-      dispatch
-    )
-  };
-}
-
 export const AdminConn = connect(
   mapStateToProps,
-  mapDispatchtoProps
+  dispatch => {
+    return { dispatch };
+  }
 )(AdminSection);

@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import _ from 'lodash';
+import { fetchUsers, deleteUser } from '../../Firebase';
 import styles from '../../../main/css/Admin.module.css';
 
 export default class UsersList extends Component {
   componentDidMount() {
-    this.props.fetchUsers();
+    this.props.dispatch(fetchUsers());
   }
 
   //function that will delete user and fetch a new user list
   handleClick = event => {
+    const { dispatch } = this.props;
     const { userUid } = event.target.dataset;
-    this.props.deleteUser(userUid, this.props.fetchUsers);
+    dispatch(deleteUser(userUid, dispatch));
   };
 
   renderUsers() {

@@ -111,7 +111,7 @@ export const fetchUsers = () => async dispatch => {
     });
 };
 
-export const deleteUser = (userUid, fetchUsers) => async () => {
+export const deleteUser = (userUid, dispatch) => async () => {
   axios
     .get(
       `https://us-central1-react-store-3406f.cloudfunctions.net/deleteUser?text=` +
@@ -124,6 +124,6 @@ export const deleteUser = (userUid, fetchUsers) => async () => {
     )
     .then(() => {
       //fetch users again to refresh users list in users management
-      fetchUsers();
+      dispatch(fetchUsers());
     });
 };

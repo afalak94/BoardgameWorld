@@ -1,62 +1,50 @@
 import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/database';
-// import { addCategories, addToStore } from '../../Listing';
-// import store from '../../../main/Redux/store'; // => produces No reducer provided for key "allUsers" error
+import { addCategories, addToStore } from '../../Listing';
 
-/* TODO: learn how to dispatch actions from here so there is no need
-for passing them in parameters */
+/* TODO: find out why dispatch happens twice every time */
 export class FirebaseDB extends Component {
-  saveItemsFromDBToStore(addToStore) {
-    //get all games from firebase database
-    this.database = firebase.database().ref('boardgames/');
-    this.database.on('value', snap => {
-      //save item data as array of objects with key-value pairs
+  saveDataFromDBToStore(branch, dispatch) {
+    const keys = { boardgames: 'boardgames/', categories: 'categories/' };
+    const dataType = keys[branch];
+    //get all data from wanted firebase database branch (boardgames or categories)
+    this.data = firebase.database().ref(dataType);
+    this.data.on('value', snap => {
+      //save categories data as array of objects with key-value pairs
       let data = [];
       snap.forEach(ss => {
         data.push({ key: ss.key, value: ss.val() });
       });
-      //copy boardgames from firebase to redux store
-      addToStore(data);
+      if (dataType === 'boardgames/') {
+        dispatch(addToStore(data));
+        return;
+      }
+      dispatch(addCategories(data));
     });
   }
 
-  saveCategoriesFromDBToStore(addCategories) {
-    //get all categories from firebase database
-    this.categories = firebase.database().ref('categories/');
-    this.categories.on('value', async snap => {
-      //save categories data as array of objects with key-value pairs
-      let data = [];
-      await snap.forEach(ss => {
-        data.push({ key: ss.key, value: ss.val() });
-      });
-      //console.log(data);
-      // dispatch(addCategories(data));
-      addCategories(data);
-    });
-  }
-
-  saveItemsOnSaleToStore(addItemsOnSale) {
-    //get all items from database
-    firebase
-      .database()
-      .ref('boardgames/')
-      .on('value', snap => {
-        //save item data as array of objects with key-value pairs
-        let data = [];
-        snap.forEach(ss => {
-          data.push({ key: ss.key, value: ss.val() });
-        });
-        //set state with boardgames that are on sale
-        let itemsOnSale = [];
-        data.forEach(item => {
-          if (item.value.onSale === true) {
-            itemsOnSale.push(item);
-          }
-        });
-        addItemsOnSale(itemsOnSale);
-      });
-  }
+  // saveItemsOnSaleToStore(addItemsOnSale) {
+  //   //get all items from database
+  //   firebase
+  //     .database()
+  //     .ref('boardgames/')
+  //     .on('value', snap => {
+  //       //save item data as array of objects with key-value pairs
+  //       let data = [];
+  //       snap.forEach(ss => {
+  //         data.push({ key: ss.key, value: ss.val() });
+  //       });
+  //       //set state with boardgames that are on sale
+  //       let itemsOnSale = [];
+  //       data.forEach(item => {
+  //         if (item.value.onSale === true) {
+  //           itemsOnSale.push(item);
+  //         }
+  //       });
+  //       addItemsOnSale(itemsOnSale);
+  //     });
+  // }
 
   addCategory(name) {
     //adding a new category to firebase

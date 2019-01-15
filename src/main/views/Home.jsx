@@ -1,9 +1,7 @@
 import React from 'react';
 import { GameCard, SaleCarousel } from './index';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { FireBase, FirebaseDB, addToCart } from '../../modules/Firebase';
-import { addToStore } from '../../modules/Listing';
+import { FireBase, FirebaseDB } from '../../modules/Firebase';
 import styles from '../css/Home.module.css';
 
 class Home extends FireBase {
@@ -15,7 +13,8 @@ class Home extends FireBase {
   }
 
   componentDidMount() {
-    this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+    // this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
+    this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
 
     //TODO: implement selector for items on sale from boardgames array in store
     this.getItemsOnSale();
@@ -50,7 +49,7 @@ class Home extends FireBase {
                 key={game.key}
                 game={game}
                 user={this.props.user}
-                addToCart={this.props.addToCart}
+                dispatch={this.props.dispatch}
               />
             );
           })}
@@ -68,14 +67,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchtoProps(dispatch) {
-  return {
-    //bind both action creators
-    ...bindActionCreators({ addToStore, addToCart }, dispatch)
-  };
-}
-
 export const HomeConn = connect(
   mapStateToProps,
-  mapDispatchtoProps
+  dispatch => {
+    return { dispatch };
+  }
 )(Home);
