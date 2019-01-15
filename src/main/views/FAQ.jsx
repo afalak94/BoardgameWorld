@@ -3,10 +3,6 @@ import React, { Component } from 'react';
 import styles from '../css/FAQ.module.css';
 
 export class FAQ extends Component {
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
-
   render() {
     return (
       <div className={styles.faq}>

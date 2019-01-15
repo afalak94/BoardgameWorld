@@ -11,22 +11,11 @@ class GameInfo extends Component {
   constructor(props) {
     super(props);
 
-    this.renderCategories = this.renderCategories.bind(this);
-    this.renderPrice = this.renderPrice.bind(this);
-
     //instantiate LocalStorageService object
     this.LS = new LocalStorageService();
   }
 
-  handleClick = () => {
-    this.props.user
-      ? //if the user is loged in, add item to his firebase cart
-        this.props.addToCart(this.props.game, this.props.user)
-      : //if its not, add item to local storage
-        this.LS.addToLocalStorage(this.props.game);
-  };
-
-  renderCategories() {
+  renderCategories = () => {
     //console.log(this.boardgame.value.category);
     return this.boardgame.value.category.map((category, index) => {
       return (
@@ -35,9 +24,9 @@ class GameInfo extends Component {
         </li>
       );
     });
-  }
+  };
 
-  renderPrice() {
+  renderPrice = () => {
     //console.log(this.boardgame.value.onSale);
     if (this.boardgame.value.onSale === false) {
       return (
@@ -55,7 +44,14 @@ class GameInfo extends Component {
         </div>
       );
     }
-  }
+  };
+
+  handleClick = () => {
+    const { user, addToCart } = this.props;
+    user
+      ? addToCart(this.boardgame, user)
+      : this.LS.addToLocalStorage(this.boardgame);
+  };
 
   render() {
     //redirect to /listing if redux store doesnt contain games yet
@@ -100,14 +96,7 @@ class GameInfo extends Component {
 
         <div className={styles['gameinfo__buy']}>
           {this.renderPrice()}
-          <Button
-            color='success'
-            onClick={
-              this.props.user
-                ? () => this.props.addToCart(this.boardgame, this.props.user)
-                : () => this.LS.addToLocalStorage(this.boardgame)
-            }
-          >
+          <Button color='success' onClick={this.handleClick}>
             Add to Cart
           </Button>
         </div>
@@ -116,7 +105,6 @@ class GameInfo extends Component {
   }
 }
 
-//connect to redux store cart and enable addToCart function
 function mapStateToProps(state) {
   return {
     user: state.user[0],
@@ -126,7 +114,6 @@ function mapStateToProps(state) {
 
 function mapDispatchtoProps(dispatch) {
   return {
-    //bind both action creators
     ...bindActionCreators({ addToCart }, dispatch)
   };
 }

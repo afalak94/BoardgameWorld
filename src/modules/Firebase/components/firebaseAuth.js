@@ -17,6 +17,8 @@ export class FirebaseAuth extends Component {
           }
           history.push('/');
         }
+      } else {
+        dispatch(addUser({ uid: 'none', email: 'Guest' }));
       }
     });
     return unsubscribe;
@@ -74,7 +76,9 @@ export class FirebaseAuth extends Component {
     let promise = new Promise(() => {
       firebase.auth().signOut();
     });
-    promise.then(dispatch(addUser(null))).then(history.push('/'));
+    promise
+      .then(dispatch(addUser({ uid: 'none', email: 'Guest' })))
+      .then(history.push('/'));
   }
 
   resetPW(email) {

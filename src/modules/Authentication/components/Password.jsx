@@ -20,24 +20,7 @@ export class ResetPassword extends Component {
   handleClick = () => {
     this.FbAuth.resetPW(this.state.email);
     this.setState({ email: '' });
-    // firebase
-    //   .auth()
-    //   .sendPasswordResetEmail(this.state.email)
-    //   .then(() => {
-    //     // Email sent.
-    //     alert('Password reset mail has been sent to ' + this.state.email);
-    //     this.setState({ email: '' });
-    //   })
-    //   .catch(error => {
-    //     // An error happened.
-    //     alert(error.message);
-    //     this.setState({ email: '' });
-    //   });
   };
-
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
 
   render() {
     return (

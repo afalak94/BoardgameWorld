@@ -20,7 +20,6 @@ class Login extends Component {
       this.props.dispatch,
       this.props.history
     );
-    window.scrollTo(0, 0);
   }
 
   componentWillUnmount() {

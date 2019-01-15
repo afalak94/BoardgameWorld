@@ -37,11 +37,6 @@ class AdminSection extends React.Component {
     }
   };
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-    //console.log(this.props);
-  }
-
   render() {
     //admin section can only be entered if admin clicks on Admin section btn in footer
     //manual routing wont work in any case
