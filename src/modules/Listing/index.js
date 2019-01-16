@@ -1,11 +1,13 @@
 export { ListingConn as Listing } from './components/Listing.jsx';
 export {
   addToStore,
-  onCategoryClick,
-  onPriceClick,
   addCategories,
-  onNameFilter,
+  selectCategory,
+  selectPriceOrder,
   boardgamesReducer,
   categoriesReducer,
-  nameSelector
+  selectedCategoryReducer,
+  priceReducer,
+  mainSelector,
+  saleGamesSelector
 } from './redux/index';

@@ -1,9 +1,13 @@
 export {
   addToStore,
-  onCategoryClick,
-  onPriceClick,
-  onNameFilter,
-  addCategories
+  addCategories,
+  selectCategory,
+  selectPriceOrder
 } from './actions';
-export { boardgamesReducer, categoriesReducer } from './reducer';
-export { nameSelector } from './selectors';
+export {
+  boardgamesReducer,
+  categoriesReducer,
+  selectedCategoryReducer,
+  priceReducer
+} from './reducer';
+export { mainSelector, saleGamesSelector } from './selectors';

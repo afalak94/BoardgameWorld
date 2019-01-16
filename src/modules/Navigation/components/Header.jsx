@@ -11,7 +11,6 @@ import {
 } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { onNameFilter } from '../../Listing';
 import { updateSearchTerm } from '../index';
 import { bindActionCreators } from 'redux';
 import styles from '../../../main/css/Header.module.css';
@@ -23,8 +22,7 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      isOpen: false,
-      searchTerm: ''
+      isOpen: false
     };
 
     //firebase authentication object
@@ -33,13 +31,6 @@ class Header extends Component {
 
   componentDidMount() {
     this.unsubscribe = this.FbAuth.userListener(this.props.dispatch);
-  }
-
-  componentDidUpdate(prevProps) {
-    //clear search bar text on route change
-    if (this.props.location !== prevProps.location) {
-      this.setState({ searchTerm: '' });
-    }
   }
 
   componentWillUnmount() {
@@ -55,15 +46,8 @@ class Header extends Component {
 
   handleChange = e => {
     const { dispatch } = this.props;
-    //call sendFilter function in the callback after state has been updated
-    this.setState({ searchTerm: e.target.value }, this.sendFilter);
     //update redux store
     dispatch(updateSearchTerm(e.target.value));
-  };
-
-  sendFilter = () => {
-    const { dispatch } = this.props;
-    dispatch(onNameFilter(this.state.searchTerm));
   };
 
   handleSearchClick = () => {
@@ -95,7 +79,7 @@ class Header extends Component {
                   placeholder='Search'
                   aria-label='Search'
                   onChange={this.handleChange}
-                  value={this.state.searchTerm}
+                  value={this.props.term}
                   //go to /listing so user can see filtered items
                   onClick={this.handleSearchClick}
                 />
@@ -128,16 +112,9 @@ class Header extends Component {
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     user: state.user[0],
-//     boardgames: state.boardgames[0]
-//   };
-// }
-
 function mapDispatchtoProps(dispatch) {
   return {
-    ...bindActionCreators({ onNameFilter, addUser, updateSearchTerm }),
+    ...bindActionCreators({ addUser, updateSearchTerm }),
     dispatch
   };
 }
@@ -147,7 +124,8 @@ export const HeaderConn = connect(
   state => {
     return {
       user: state.user[0],
-      boardgames: state.boardgames[0]
+      boardgames: state.boardgames[0],
+      term: state.searchTerm
     };
   },
   mapDispatchtoProps

@@ -2,7 +2,12 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { cartReducer } from '../../modules/Cart';
 import reduxThunk from 'redux-thunk';
-import { boardgamesReducer, categoriesReducer } from '../../modules/Listing';
+import {
+  boardgamesReducer,
+  categoriesReducer,
+  selectedCategoryReducer,
+  priceReducer
+} from '../../modules/Listing';
 import { usersReducer } from '../../modules/Firebase';
 import { authReducer } from '../../modules/Authentication';
 import { searchTermReducer } from '../../modules/Navigation';
@@ -13,7 +18,9 @@ const rootReducer = combineReducers({
   user: authReducer,
   categories: categoriesReducer,
   allUsers: usersReducer,
-  searchTerm: searchTermReducer
+  searchTerm: searchTermReducer,
+  selectedCategory: selectedCategoryReducer,
+  price: priceReducer
 });
 
 const initialState = {};

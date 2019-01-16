@@ -12,9 +12,8 @@ import {
 import { FirebaseDB } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { nameSelector } from '../index';
-import { updateSearchTerm } from '../../Navigation';
-import { onCategoryClick, onPriceClick } from '../index';
+import { bindActionCreators } from 'redux';
+import { selectCategory, selectPriceOrder, mainSelector } from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
 class Listing extends Component {
@@ -34,8 +33,8 @@ class Listing extends Component {
 
   renderItems = () => {
     //console.log(this.props.selectedBoardgames); => implemented only name selector for now
-    const { boardgames } = this.props;
-    this.items = _.map(boardgames, (value, key) => {
+    const { selectedBoardgames } = this.props;
+    this.items = _.map(selectedBoardgames, (value, key) => {
       return (
         <Col xs='4' key={key}>
           <GameCard game={value} user={this.props.user} FbDB={this.FbDB} />
@@ -69,21 +68,13 @@ class Listing extends Component {
   };
 
   categoryClicked = event => {
-    const { dispatch } = this.props;
     const { categoryValue } = event.target.dataset;
-    document.getElementById('searchBar').value = '';
-    dispatch(updateSearchTerm(''));
-    dispatch(onCategoryClick(categoryValue));
-  };
-
-  allCategoriesClick = () => {
-    this.componentDidMount();
-    document.getElementById('searchBar').value = '';
+    this.props.dispatch(selectCategory(categoryValue));
   };
 
   handlePriceClick = event => {
     const { type } = event.target.dataset;
-    this.props.dispatch(onPriceClick(type));
+    this.props.dispatch(selectPriceOrder(type));
   };
 
   render() {
@@ -95,7 +86,8 @@ class Listing extends Component {
               className={styles['listing__categoryListItem']}
               tag='button'
               action
-              onClick={this.allCategoriesClick}
+              data-category-value=''
+              onClick={this.categoryClicked}
             >
               All categories
             </ListGroupItem>
@@ -110,14 +102,14 @@ class Listing extends Component {
               <Button
                 className={styles['listing__filterBtn']}
                 onClick={this.handlePriceClick}
-                data-type='ASC'
+                data-type='asc'
               >
                 Asc
               </Button>
               <Button
                 className={styles['listing__filterBtn']}
                 onClick={this.handlePriceClick}
-                data-type='DESC'
+                data-type='desc'
               >
                 Desc
               </Button>
@@ -135,13 +127,18 @@ function mapStateToProps(state) {
     boardgames: state.boardgames[state.boardgames.length - 1],
     user: state.user[0],
     categories: state.categories,
-    selectedBoardgames: nameSelector(state)
+    selectedBoardgames: mainSelector(state)
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    ...bindActionCreators({ selectCategory, selectPriceOrder }),
+    dispatch
   };
 }
 
 export const ListingConn = connect(
   mapStateToProps,
-  dispatch => {
-    return { dispatch };
-  }
+  mapDispatchToProps
 )(Listing);
