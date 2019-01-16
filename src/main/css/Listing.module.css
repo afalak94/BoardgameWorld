@@ -27,19 +27,22 @@
 
   .listing__clearBtn {
     position: relative;
-    height: 46px;
-    width: 48px;
-    margin: 0 0px 0 -50px !important;
+    height: 44px;
+    width: 44px;
+    margin: 2px 0px 0 -48px !important;
     float: left;
     color: var(--styleWhite);
     font-size: 30px;
     padding: 0px;
+    border: none;
+    border-radius: 10px;
     &:hover {
-      background-color: var(--styleRed);
+      background-color: var(--styleBlue);
     }
   }
 
   .listing__breadcrumb {
+    margin-left: -50px;
     height: 48px !important;
     background-color: var(--styleRed) !important;
     color: var(--styleWhite) !important;
@@ -48,35 +51,32 @@
 
     ol {
       height: 38px !important;
+      /* padding-left: 60px; */
       background-color: var(--styleRed) !important;
       color: var(--styleWhite) !important;
       border-radius: 10px !important;
+    }
+
+    span {
+      height: 48px;
+      line-height: 48px;
+      margin-top: -14px;
     }
   }
 }
 
 .listing__priceBtnGroup {
-  margin: 50px 0 0 945px;
+  margin: 40px 0 0 935px;
   width: 300px;
+  height: 48px;
   font-family: var(--font3);
-  font-weight: 600;
-
-  .listing__priceText {
-    background-color: var(--styleRed) !important;
-    color: var(--styleWhite) !important;
-    border: 2px solid var(--styleBlue);
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 80px;
-    line-height: 38px;
-  }
 
   .listing__filterBtn {
     background-color: var(--styleRed) !important;
     color: var(--styleWhite) !important;
     border: 2px solid var(--styleBlue);
-    width: 60px;
-    font-weight: 600;
+    width: 100px;
+    margin-left: 10px;
   }
 }
 

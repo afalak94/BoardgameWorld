@@ -33,7 +33,7 @@ const routing = (
                 <Route path='/password' component={ResetPassword} exact />
                 <Route path='/cart' component={Cart} exact />
                 <Route path='/game/:id' component={GameInfo} exact />
-                <ProtectedRoute path='/admin' component={AdminSection} exact />
+                <ProtectedRoute path='/admin' component={AdminSection} />
 
                 <Route component={Notfound} />
               </Switch>

@@ -1,20 +1,11 @@
 import React from 'react';
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col
-} from 'reactstrap';
-import classnames from 'classnames';
+import { TabContent, Nav, NavItem, NavLink } from 'reactstrap';
 import CategoryList from '../components/CategoryList';
 import ItemList from '../components/ItemList';
 import UsersList from '../components/UsersList';
 import { FirebaseDB } from '../../Firebase';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
+import { Link, Route, BrowserRouter } from 'react-router-dom';
 import styles from '../../../main/css/Admin.module.css';
 
 class AdminSection extends React.Component {
@@ -28,80 +19,77 @@ class AdminSection extends React.Component {
     this.FbDB = new FirebaseDB();
   }
 
-  switchManagement = event => {
-    const tab = event.target.id;
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
-
   render() {
+    const { match } = this.props;
     return (
       <div className={styles['admin__nav']}>
         <Nav tabs className={styles['admin__nav--position']}>
           <NavItem className={styles['admin__navItem']}>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={this.switchManagement}
-              id='1'
-            >
+            <NavLink to={`${match.url}/categories`} id='1' tag={Link}>
               Category management
             </NavLink>
           </NavItem>
           <NavItem className={styles['admin__navItem']}>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={this.switchManagement}
-              id='2'
-            >
+            <NavLink to={`${match.url}/items`} id='2' tag={Link}>
               Item management
             </NavLink>
           </NavItem>
           <NavItem className={styles['admin__navItem']}>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={this.switchManagement}
-              id='3'
-            >
+            <NavLink to={`${match.url}/users`} id='3' tag={Link}>
               Users management
             </NavLink>
           </NavItem>
         </Nav>
 
-        <TabContent
-          activeTab={this.state.activeTab}
-          className={styles['admin__tabContent']}
-        >
-          <TabPane tabId='1'>
-            <CategoryList
-              categories={this.props.categories}
-              dispatch={this.props.dispatch}
+        <BrowserRouter>
+          <TabContent className={styles['admin__tabContent']}>
+            <Route
+              path={`${match.path}/categories`}
+              render={props => (
+                <CategoryList
+                  {...props}
+                  categories={this.props.categories}
+                  dispatch={this.props.dispatch}
+                />
+              )}
             />
-          </TabPane>
 
-          <TabPane tabId='2'>
-            <Row style={{ width: 1500 }}>
-              <Col sm={{ size: 'auto' }}>
+            <Route
+              path={`${match.path}/items`}
+              render={props => (
                 <ItemList
+                  {...props}
                   boardgames={this.props.boardgames}
                   categories={this.props.categories}
                   dispatch={this.props.dispatch}
                 />
-              </Col>
-            </Row>
-          </TabPane>
-
-          <TabPane tabId='3'>
-            <UsersList
-              // fetchUsers={this.props.fetchUsers}
-              allUsers={this.props.allUsers}
-              dispatch={this.props.dispatch}
-              // deleteUser={this.props.deleteUser}
+              )}
             />
-          </TabPane>
-        </TabContent>
+
+            <Route
+              path={`${match.path}/users`}
+              render={props => (
+                <UsersList
+                  {...props}
+                  allUsers={this.props.allUsers}
+                  dispatch={this.props.dispatch}
+                />
+              )}
+            />
+
+            <Route
+              exact
+              path={match.path}
+              render={props => (
+                <CategoryList
+                  {...props}
+                  categories={this.props.categories}
+                  dispatch={this.props.dispatch}
+                />
+              )}
+            />
+          </TabContent>
+        </BrowserRouter>
       </div>
     );
   }

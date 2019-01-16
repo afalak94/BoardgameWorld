@@ -126,20 +126,19 @@ class Listing extends Component {
 
           <div>
             <InputGroup className={styles['listing__priceBtnGroup']}>
-              <div className={styles['listing__priceText']}>Price</div>
               <Button
                 className={styles['listing__filterBtn']}
                 onClick={this.handlePriceClick}
                 data-type='asc'
               >
-                Asc
+                Price Asc
               </Button>
               <Button
                 className={styles['listing__filterBtn']}
                 onClick={this.handlePriceClick}
                 data-type='desc'
               >
-                Desc
+                Price Desc
               </Button>
             </InputGroup>
           </div>
