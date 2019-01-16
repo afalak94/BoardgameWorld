@@ -27,25 +27,18 @@ class Listing extends Component {
 
   componentDidMount() {
     //save items to redux store
-    // this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
     this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
-
     //save categories to redux store
-    // this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
     this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
   }
 
   renderItems = () => {
-    //console.log(this.props.selectedBoardgames);
-    const { selectedBoardgames } = this.props;
-    this.items = _.map(selectedBoardgames, (value, key) => {
+    //console.log(this.props.selectedBoardgames); => implemented only name selector for now
+    const { boardgames } = this.props;
+    this.items = _.map(boardgames, (value, key) => {
       return (
         <Col xs='4' key={key}>
-          <GameCard
-            game={value}
-            user={this.props.user}
-            dispatch={this.props.dispatch}
-          />
+          <GameCard game={value} user={this.props.user} FbDB={this.FbDB} />
         </Col>
       );
     });
@@ -76,10 +69,11 @@ class Listing extends Component {
   };
 
   categoryClicked = event => {
+    const { dispatch } = this.props;
     const { categoryValue } = event.target.dataset;
     document.getElementById('searchBar').value = '';
-    this.props.dispatch(updateSearchTerm(''));
-    this.props.dispatch(onCategoryClick(categoryValue));
+    dispatch(updateSearchTerm(''));
+    dispatch(onCategoryClick(categoryValue));
   };
 
   allCategoriesClick = () => {
@@ -138,7 +132,7 @@ class Listing extends Component {
 
 function mapStateToProps(state) {
   return {
-    boardgames: state.boardgames[0],
+    boardgames: state.boardgames[state.boardgames.length - 1],
     user: state.user[0],
     categories: state.categories,
     selectedBoardgames: nameSelector(state)

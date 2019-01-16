@@ -2,7 +2,8 @@ import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/auth';
 import { addUser } from '../../Authentication';
-import { fetchitems } from '../../Firebase';
+import { fetchitems, fetchUsers, FirebaseTypes } from '../../Firebase';
+import axios from 'axios';
 
 export class FirebaseAuth extends Component {
   userListener(dispatch, history) {
@@ -10,6 +11,7 @@ export class FirebaseAuth extends Component {
       if (user) {
         dispatch(addUser(user));
 
+        //if the history object has been provided, push to a new route
         if (history) {
           if (user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
             history.push('/admin');
@@ -18,7 +20,7 @@ export class FirebaseAuth extends Component {
           history.push('/');
         }
       } else {
-        dispatch(addUser({ uid: 'none', email: 'Guest' }));
+        dispatch(addUser({ uid: 'guest', email: 'Guest' }));
       }
     });
     return unsubscribe;
@@ -34,19 +36,43 @@ export class FirebaseAuth extends Component {
     return unsubscribe;
   }
 
-  // adminRedirectListener(dispatch, history) {
-  //   const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-  //     if (user) {
-  //       dispatch(addUser(user));
-  //       if (user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
-  //         history.push('/admin');
-  //       } else {
-  //         history.push('/');
-  //       }
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }
+  fetchAllUsers(dispatch) {
+    //getting the list of all users
+    axios
+      .get(
+        `https://us-central1-react-store-3406f.cloudfunctions.net/getAllUsers`
+      )
+      .then(res => {
+        //console.log(res.data);
+        //this.setState({ userList: res.data });
+        dispatch({
+          type: FirebaseTypes.FETCH_USERS,
+          payload: res.data
+        });
+      });
+  }
+
+  deleteUser(userUid, dispatch) {
+    //protect admin user
+    if (userUid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
+      return;
+    }
+
+    axios
+      .get(
+        `https://us-central1-react-store-3406f.cloudfunctions.net/deleteUser?text=` +
+          userUid,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      )
+      .then(() => {
+        //fetch users again to refresh users list in users management
+        dispatch(fetchUsers());
+      });
+  }
 
   register(email, password, history) {
     firebase

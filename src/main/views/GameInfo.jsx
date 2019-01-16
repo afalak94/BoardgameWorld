@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { addToCart } from '../../modules/Firebase';
+import { FirebaseDB } from '../../modules/Firebase';
 import styles from '../css/GameInfo.module.css';
 import { Redirect } from 'react-router';
 import { LocalStorageService } from '../services/LocalStorage';
@@ -13,6 +12,7 @@ class GameInfo extends Component {
 
     //instantiate LocalStorageService object
     this.LS = new LocalStorageService();
+    this.FbDB = new FirebaseDB();
   }
 
   renderCategories = () => {
@@ -47,9 +47,9 @@ class GameInfo extends Component {
   };
 
   handleClick = () => {
-    const { user, addToCart } = this.props;
-    user
-      ? addToCart(this.boardgame, user)
+    const { user } = this.props;
+    user.uid !== 'guest'
+      ? this.FbDB.addItemToUsersCart(this.boardgame, user)
       : this.LS.addToLocalStorage(this.boardgame);
   };
 
@@ -112,13 +112,7 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchtoProps(dispatch) {
-  return {
-    ...bindActionCreators({ addToCart }, dispatch)
-  };
-}
-
 export const GameInfoConn = connect(
   mapStateToProps,
-  mapDispatchtoProps
+  null
 )(GameInfo);

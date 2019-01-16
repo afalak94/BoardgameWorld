@@ -9,15 +9,8 @@ import {
   Button
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import { FirebaseAuth, FirebaseDB } from '../../Firebase';
-import {
-  fetchitems,
-  removeitem,
-  increaseQuantity,
-  decreaseQuantity
-} from '../../Firebase';
 import { LocalStorageService } from '../../../main/services/LocalStorage';
 import styles from '../../../main/css/Cart.module.css';
 
@@ -45,49 +38,43 @@ class Cart extends Component {
     this.unsubscribe();
   }
 
-  /* GUEST HANDLERS */
-  handleGuestDelete = event => {
-    const { key } = event.target.dataset;
+  handleGuestActions = event => {
+    const { key, name } = event.target.dataset;
+    switch (name) {
+      case 'delete':
+        this.local = this.LS.removeFromLocalStorage(key);
+        break;
+      case 'decrease':
+        this.local = this.LS.decreaseLocalStorageQuantity(key);
+        break;
+      case 'increase':
+        this.local = this.LS.increaseLocalStorageQuantity(key);
+        break;
+      default:
+        break;
+    }
     this.setState(() => {
-      const local = this.LS.removeFromLocalStorage(key);
-      return { localCart: local };
+      // const local = this.LS.decreaseLocalStorageQuantity(key);
+      return { localCart: this.local };
     });
   };
 
-  handleGuestIncrement = event => {
-    const { key } = event.target.dataset;
-    this.setState(() => {
-      const local = this.LS.increaseLocalStorageQuantity(key);
-      return { localCart: local };
-    });
+  handleUserActions = event => {
+    const { itemKey, name } = event.target.dataset;
+    switch (name) {
+      case 'delete':
+        this.FbDB.removeItemFromUsersCart(itemKey, this.props.user.uid);
+        break;
+      case 'decrease':
+        this.FbDB.decreaseItemQuantity(itemKey, this.props.user.uid);
+        break;
+      case 'increase':
+        this.FbDB.increaseItemQuantity(itemKey, this.props.user.uid);
+        break;
+      default:
+        break;
+    }
   };
-
-  handleGuestDecrement = event => {
-    const { key } = event.target.dataset;
-    this.setState(() => {
-      const local = this.LS.decreaseLocalStorageQuantity(key);
-      return { localCart: local };
-    });
-  };
-  /* GUEST HANDLERS */
-
-  /* USER HANDLERS */
-  //Meybe create functions in FB database service and dispatch actions from there
-  handleUserDelete = event => {
-    const { itemKey } = event.target.dataset;
-    this.props.dispatch(removeitem(itemKey, this.props.user.uid));
-  };
-
-  handleUserIncrement = event => {
-    const { itemKey } = event.target.dataset;
-    this.props.dispatch(increaseQuantity(itemKey, this.props.user.uid));
-  };
-
-  handleUserDecrement = event => {
-    const { itemKey } = event.target.dataset;
-    this.props.dispatch(decreaseQuantity(itemKey, this.props.user.uid));
-  };
-  /* USER HANDLERS */
 
   renderUserItems = () => {
     const { cart } = this.props;
@@ -121,8 +108,9 @@ class Cart extends Component {
             <div>
               <button
                 className={styles['cart__removeBtn']}
-                onClick={this.handleUserDelete}
+                onClick={this.handleUserActions}
                 data-item-key={key}
+                data-name='delete'
               >
                 &times;
               </button>
@@ -131,16 +119,18 @@ class Cart extends Component {
               <ListGroupItemText>
                 Quantity:
                 <Button
-                  onClick={this.handleUserDecrement}
+                  onClick={this.handleUserActions}
                   data-item-key={key}
+                  data-name='decrease'
                   className={styles['cart__listGroup__btn']}
                 >
                   &#8722;
                 </Button>
                 {value.quantity}
                 <Button
-                  onClick={this.handleUserIncrement}
+                  onClick={this.handleUserActions}
                   data-item-key={key}
+                  data-name='increase'
                   className={styles['cart__listGroup__btn']}
                 >
                   &#43;
@@ -186,7 +176,8 @@ class Cart extends Component {
             <button
               className={styles['cart__removeBtn']}
               data-key={key}
-              onClick={this.handleGuestDelete}
+              data-name='delete'
+              onClick={this.handleGuestActions}
             >
               &times;
             </button>
@@ -196,7 +187,8 @@ class Cart extends Component {
               Quantity:
               <button
                 data-key={key}
-                onClick={this.handleGuestDecrement}
+                data-name='decrease'
+                onClick={this.handleGuestActions}
                 className={styles['cart__listGroup__btn']}
               >
                 &#8722;
@@ -204,7 +196,8 @@ class Cart extends Component {
               {value.quantity}
               <button
                 data-key={key}
-                onClick={this.handleGuestIncrement}
+                data-name='increase'
+                onClick={this.handleGuestActions}
                 className={styles['cart__listGroup__btn']}
               >
                 &#43;
@@ -223,7 +216,9 @@ class Cart extends Component {
     return (
       <div className={styles['cart__wrapper']}>
         <ListGroup className={styles['cart__listGroup']}>
-          {this.props.user ? this.renderUserItems() : this.renderLocalItems()}
+          {this.props.user.uid !== 'guest'
+            ? this.renderUserItems()
+            : this.renderLocalItems()}
         </ListGroup>
 
         <Jumbotron className={styles['cart__summary__jumbotron']}>
@@ -261,20 +256,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchtoProps(dispatch) {
-  return {
-    //bind both action creators
-    ...bindActionCreators({
-      fetchitems,
-      removeitem,
-      increaseQuantity,
-      decreaseQuantity
-    }),
-    dispatch
-  };
-}
-
 export const CartConn = connect(
   mapStateToProps,
-  mapDispatchtoProps
+  dispatch => {
+    return { dispatch };
+  }
 )(Cart);

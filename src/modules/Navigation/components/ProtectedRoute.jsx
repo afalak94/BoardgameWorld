@@ -26,7 +26,7 @@ class ProtectedRoute extends React.Component {
         {...path}
         render={() => {
           //no one is loged in yet so wait for user authentication
-          if (user.uid === 'guest') {
+          if (user.uid === 'none') {
             return <Route />;
           }
           //someone has logged in -> check if user is admin
@@ -35,7 +35,7 @@ class ProtectedRoute extends React.Component {
           }
           //check if user is not admin -> redirect to home
           if (
-            user.uid === 'none' ||
+            user.uid === 'guest' ||
             user.uid !== '6qXBbupnZsQkpp5vj5ZmteGF1qs1'
           ) {
             return <Redirect to='/' />;

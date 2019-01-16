@@ -2,8 +2,8 @@ import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/database';
 import { addCategories, addToStore } from '../../Listing';
+import { FirebaseTypes } from '../index';
 
-/* TODO: find out why dispatch happens twice every time */
 export class FirebaseDB extends Component {
   saveDataFromDBToStore(branch, dispatch) {
     const keys = { boardgames: 'boardgames/', categories: 'categories/' };
@@ -21,6 +21,95 @@ export class FirebaseDB extends Component {
         return;
       }
       dispatch(addCategories(data));
+    });
+  }
+
+  addItemToUsersCart(newitem, user) {
+    let updates = {};
+    firebase
+      .database()
+      .ref('carts/' + user.uid + '/' + newitem.key)
+      .once('value')
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          //if item in cart exists alredy, update its quantity
+          let quantity = snapshot.val().quantity;
+          updates['/carts/' + user.uid + '/' + newitem.key + '/quantity'] =
+            quantity + 1;
+          firebase
+            .database()
+            .ref()
+            .update(updates);
+        } else {
+          //if item in cart doesnt exist, create it
+          let data = {
+            quantity: 1,
+            data: newitem.value
+          };
+          updates['/carts/' + user.uid + '/' + newitem.key] = data;
+          firebase
+            .database()
+            .ref()
+            .update(updates);
+        }
+      });
+  }
+
+  removeItemFromUsersCart(removeitemId, user) {
+    firebase
+      .database()
+      .ref('/carts')
+      .child(user)
+      .child(removeitemId)
+      .remove();
+  }
+
+  fetchUsersItems(user, dispatch) {
+    firebase
+      .database()
+      .ref('/carts')
+      .child(user)
+      .on('value', snapshot => {
+        dispatch({
+          type: FirebaseTypes.FETCH_ITEMS,
+          payload: snapshot.val()
+        });
+      });
+  }
+
+  increaseItemQuantity(itemId, user) {
+    const quantity = firebase
+      .database()
+      .ref('/carts')
+      .child(user)
+      .child(itemId)
+      .child('quantity');
+
+    quantity.transaction(currentQuantity => {
+      return currentQuantity + 1;
+    });
+  }
+
+  decreaseItemQuantity(itemId, user) {
+    const quantity = firebase
+      .database()
+      .ref('/carts')
+      .child(user)
+      .child(itemId)
+      .child('quantity');
+
+    quantity.transaction(currentQuantity => {
+      //delete item if its quantity should drop to zero
+      if (currentQuantity === 1) {
+        firebase
+          .database()
+          .ref('/carts')
+          .child(user)
+          .child(itemId)
+          .remove();
+      } else {
+        return currentQuantity - 1;
+      }
     });
   }
 

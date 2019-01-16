@@ -49,7 +49,7 @@ class Home extends FireBase {
                 key={game.key}
                 game={game}
                 user={this.props.user}
-                dispatch={this.props.dispatch}
+                FbDB={this.FbDB}
               />
             );
           })}
@@ -69,7 +69,5 @@ function mapStateToProps(state) {
 
 export const HomeConn = connect(
   mapStateToProps,
-  dispatch => {
-    return { dispatch };
-  }
+  null
 )(Home);

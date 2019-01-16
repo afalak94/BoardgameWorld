@@ -21,16 +21,16 @@ class Footer extends Component {
   };
 
   returnAuth() {
-    if (this.props.user && this.props.user.uid !== 'none') {
+    if (this.props.user && this.props.user.uid !== 'guest') {
       return (
         <div>
           <NavLink
-            // disabled={
-            //   //check if admin is logged in
-            //   this.props.user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1'
-            //     ? false
-            //     : true
-            // }
+            disabled={
+              //check if admin is logged in
+              this.props.user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1'
+                ? false
+                : true
+            }
             className={styles['footer__links--color']}
             tag={Link}
             to='/admin'

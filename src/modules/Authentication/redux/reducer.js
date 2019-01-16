@@ -1,7 +1,7 @@
 import { STORE_USER } from './types';
 
 export const authReducer = (
-  state = [{ uid: 'guest', email: 'Guest' }],
+  state = [{ uid: 'none', email: 'Guest' }],
   action
 ) => {
   switch (action.type) {
