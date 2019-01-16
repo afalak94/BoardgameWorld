@@ -18,6 +18,43 @@
   }
 }
 
+.listing__filters {
+  position: absolute;
+  margin: 42px 0 0 65px;
+  width: 600px;
+  height: 48px;
+  font-family: var(--font3);
+
+  .listing__clearBtn {
+    position: relative;
+    height: 46px;
+    width: 48px;
+    margin: 0 0px 0 -50px !important;
+    float: left;
+    color: var(--styleWhite);
+    font-size: 30px;
+    padding: 0px;
+    &:hover {
+      background-color: var(--styleRed);
+    }
+  }
+
+  .listing__breadcrumb {
+    height: 48px !important;
+    background-color: var(--styleRed) !important;
+    color: var(--styleWhite) !important;
+    border-radius: 10px !important;
+    border: 3px solid var(--styleBlue);
+
+    ol {
+      height: 38px !important;
+      background-color: var(--styleRed) !important;
+      color: var(--styleWhite) !important;
+      border-radius: 10px !important;
+    }
+  }
+}
+
 .listing__priceBtnGroup {
   margin: 50px 0 0 945px;
   width: 300px;
@@ -25,8 +62,9 @@
   font-weight: 600;
 
   .listing__priceText {
-    background-color: var(--styleBlue) !important;
-    color: var(--styleRed) !important;
+    background-color: var(--styleRed) !important;
+    color: var(--styleWhite) !important;
+    border: 2px solid var(--styleBlue);
     border-radius: 5px;
     margin-right: 10px;
     width: 80px;
@@ -34,8 +72,9 @@
   }
 
   .listing__filterBtn {
-    background-color: var(--styleBlue);
-    color: var(--styleRed);
+    background-color: var(--styleRed) !important;
+    color: var(--styleWhite) !important;
+    border: 2px solid var(--styleBlue);
     width: 60px;
     font-weight: 600;
   }

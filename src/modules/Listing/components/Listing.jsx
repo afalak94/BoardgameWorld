@@ -7,12 +7,15 @@ import {
   ListGroup,
   ListGroupItem,
   Button,
-  InputGroup
+  InputGroup,
+  Breadcrumb,
+  BreadcrumbItem
 } from 'reactstrap';
 import { FirebaseDB } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { updateSearchTerm } from '../../Navigation';
 import { selectCategory, selectPriceOrder, mainSelector } from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
@@ -77,7 +80,15 @@ class Listing extends Component {
     this.props.dispatch(selectPriceOrder(type));
   };
 
+  handleFiltersClick = () => {
+    const { dispatch } = this.props;
+    dispatch(selectCategory(''));
+    dispatch(selectPriceOrder(''));
+    dispatch(updateSearchTerm(''));
+  };
+
   render() {
+    const { term, selectedCategory, priceFilter } = this.props;
     return (
       <Row>
         <Col xs='3'>
@@ -96,6 +107,23 @@ class Listing extends Component {
         </Col>
 
         <Col xs='9'>
+          <div className={styles['listing__filters']}>
+            <Button
+              outline
+              className={styles['listing__clearBtn']}
+              onClick={this.handleFiltersClick}
+            >
+              &times;
+            </Button>
+            <Breadcrumb tag='nav' className={styles['listing__breadcrumb']}>
+              <BreadcrumbItem tag='span'>Search: {term}</BreadcrumbItem>
+              <BreadcrumbItem tag='span'>
+                Category: {selectedCategory}
+              </BreadcrumbItem>
+              <BreadcrumbItem tag='span'>Price: {priceFilter}</BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+
           <div>
             <InputGroup className={styles['listing__priceBtnGroup']}>
               <div className={styles['listing__priceText']}>Price</div>
@@ -124,16 +152,22 @@ class Listing extends Component {
 
 function mapStateToProps(state) {
   return {
-    boardgames: state.boardgames[state.boardgames.length - 1],
     user: state.user[0],
     categories: state.categories,
-    selectedBoardgames: mainSelector(state)
+    selectedBoardgames: mainSelector(state),
+    term: state.searchTerm,
+    selectedCategory: state.selectedCategory,
+    priceFilter: state.price
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    ...bindActionCreators({ selectCategory, selectPriceOrder }),
+    ...bindActionCreators({
+      selectCategory,
+      selectPriceOrder,
+      updateSearchTerm
+    }),
     dispatch
   };
 }

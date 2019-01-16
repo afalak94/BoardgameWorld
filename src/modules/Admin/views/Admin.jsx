@@ -13,8 +13,8 @@ import CategoryList from '../components/CategoryList';
 import ItemList from '../components/ItemList';
 import UsersList from '../components/UsersList';
 import { FirebaseDB } from '../../Firebase';
-//import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+// import { Link } from 'react-router-dom';
 import styles from '../../../main/css/Admin.module.css';
 
 class AdminSection extends React.Component {
@@ -38,12 +38,6 @@ class AdminSection extends React.Component {
   };
 
   render() {
-    //admin section can only be entered if admin clicks on Admin section btn in footer
-    //manual routing wont work in any case
-    // if (!this.props.user) {
-    //   return <Redirect to='/' />;
-    // }
-
     return (
       <div className={styles['admin__nav']}>
         <Nav tabs className={styles['admin__nav--position']}>
