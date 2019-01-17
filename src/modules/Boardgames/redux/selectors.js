@@ -33,23 +33,21 @@ const priceSelector = createSelector(
 );
 
 //main selector that combines name, price and search term selectors
-export const mainSelector = state => {
-  return createSelector(
-    [priceSelector, categorySelector],
-    (games, category) => {
-      //console.log(category);
-      if (!games) {
-        return null;
-      }
-      if (!category) {
-        return games;
-      }
-      return games.filter(game =>
-        game.value.category.some(cat => cat === category)
-      );
+export const mainSelector = createSelector(
+  [priceSelector, categorySelector],
+  (games, category) => {
+    //console.log(category);
+    if (!games) {
+      return null;
     }
-  )(state);
-};
+    if (!category) {
+      return games;
+    }
+    return games.filter(game =>
+      game.value.category.some(cat => cat === category)
+    );
+  }
+);
 
 //selector for sale games that are displayed on Home view
 export const saleGamesSelector = createSelector(
