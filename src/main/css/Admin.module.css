@@ -8,25 +8,28 @@
   border-radius: 10px;
 
   .admin__nav--position {
-    margin-left: 400px;
+    margin-left: 380px;
     border: none !important;
   }
 
   .admin__navItem {
     background-color: var(--styleBlue);
-    color: var(--styleRed);
     width: 250px;
-    font-weight: bold !important;
+    border: 2px solid var(--styleRed);
+    border-radius: 10px;
     font-family: var(--font3);
+    margin: 0 10px;
+
+    a {
+      color: var(--styleWhite) !important;
+      &:hover {
+        border: none;
+      }
+    }
 
     &:hover {
       cursor: pointer;
-    }
-
-    .active {
-      color: var(--styleRed) !important;
-      background-color: var(--styleBlue) !important;
-      font-weight: bold !important;
+      border: 2px solid var(--styleWhite);
     }
   }
 }

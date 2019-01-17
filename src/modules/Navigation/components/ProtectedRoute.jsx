@@ -40,11 +40,11 @@ class ProtectedRoute extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return { user: state.user[0] };
-}
-
 export const ProtectedConn = connect(
-  mapStateToProps,
+  state => {
+    return {
+      user: state.user[0]
+    };
+  },
   null
 )(ProtectedRoute);

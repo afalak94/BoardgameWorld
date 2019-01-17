@@ -46,53 +46,54 @@ export default class AddItemTemplate extends React.Component {
   };
 
   commonChange = event => {
+    const { type } = event.target;
+    if (type === 'checkbox') {
+      this.setState({
+        [event.target.name]: event.target.checked
+      });
+      return;
+    }
     this.setState({
       [event.target.name]: event.target.value
     });
   };
 
-  onSaleChange = event => {
+  //function that changes menu toggler text when the category is selected
+  dropdownSelect = event => {
+    const { category, dropdown, value } = event.target.dataset;
     this.setState({
-      [event.target.name]: event.target.checked
+      [dropdown]: !this.state[dropdown],
+      [value]: category
     });
   };
 
-  //toggle functions for each category dropdown menu
+  //TODO: learn how to combine handlers into sigle function, data atributes do not
+  //work, probably because of reactstrap elements again
   dropdownToggle1 = () => {
     this.setState({
       dropdownOpen1: !this.state.dropdownOpen1
     });
   };
+
   dropdownToggle2 = () => {
     this.setState({
       dropdownOpen2: !this.state.dropdownOpen2
     });
   };
+
   dropdownToggle3 = () => {
     this.setState({
       dropdownOpen3: !this.state.dropdownOpen3
     });
   };
 
-  //functions that change menu toggler text when the category is selected
-  dropdownSelect1 = event => {
-    this.setState({
-      dropdownOpen1: !this.state.dropdownOpen1,
-      dropdownValue1: event.target.innerText
-    });
-  };
-  dropdownSelect2 = event => {
-    this.setState({
-      dropdownOpen2: !this.state.dropdownOpen2,
-      dropdownValue2: event.target.innerText
-    });
-  };
-  dropdownSelect3 = event => {
-    this.setState({
-      dropdownOpen3: !this.state.dropdownOpen3,
-      dropdownValue3: event.target.innerText
-    });
-  };
+  // dropdownToggle = event => {
+  //   const { name } = event.target.dataset;
+  //   console.log(name);
+  //   this.setState({
+  //     [name]: !this.state[name]
+  //   });
+  // };
 
   render() {
     return (
@@ -119,6 +120,7 @@ export default class AddItemTemplate extends React.Component {
           <Label>Price</Label>
           <Input
             name='priceValue'
+            type='text'
             onChange={this.commonChange}
             style={{ float: 'left' }}
           />
@@ -129,6 +131,7 @@ export default class AddItemTemplate extends React.Component {
 
           <Input
             name='salePriceValue'
+            type='text'
             onChange={this.commonChange}
             style={{ float: 'left' }}
           />
@@ -141,7 +144,7 @@ export default class AddItemTemplate extends React.Component {
               <Input
                 type='checkbox'
                 name='onSale'
-                onChange={this.onSaleChange}
+                onChange={this.commonChange}
               />{' '}
               Check if item is on SALE
             </Label>
@@ -164,6 +167,7 @@ export default class AddItemTemplate extends React.Component {
           <ButtonDropdown
             isOpen={this.state.dropdownOpen1}
             toggle={this.dropdownToggle1}
+            // data-name='dropdownOpen1' //unable to pass dataset info
           >
             <DropdownToggle caret outline>
               {this.state.dropdownValue1}
@@ -171,7 +175,13 @@ export default class AddItemTemplate extends React.Component {
             <DropdownMenu className={styles['form__categories__menu']}>
               {this.props.categories.map(cat => {
                 return (
-                  <DropdownItem onClick={this.dropdownSelect1} key={cat.key}>
+                  <DropdownItem
+                    onClick={this.dropdownSelect}
+                    data-category={cat.value}
+                    data-dropdown='dropdownOpen1'
+                    data-value='dropdownValue1'
+                    key={cat.key}
+                  >
                     {cat.value}
                   </DropdownItem>
                 );
@@ -182,6 +192,7 @@ export default class AddItemTemplate extends React.Component {
           <ButtonDropdown
             isOpen={this.state.dropdownOpen2}
             toggle={this.dropdownToggle2}
+            data-name='dropdownOpen2'
           >
             <DropdownToggle caret outline>
               {this.state.dropdownValue2}
@@ -189,7 +200,13 @@ export default class AddItemTemplate extends React.Component {
             <DropdownMenu className={styles['form__categories__menu']}>
               {this.props.categories.map(cat => {
                 return (
-                  <DropdownItem onClick={this.dropdownSelect2} key={cat.key}>
+                  <DropdownItem
+                    onClick={this.dropdownSelect}
+                    key={cat.key}
+                    data-category={cat.value}
+                    data-dropdown='dropdownOpen2'
+                    data-value='dropdownValue2'
+                  >
                     {cat.value}
                   </DropdownItem>
                 );
@@ -200,6 +217,7 @@ export default class AddItemTemplate extends React.Component {
           <ButtonDropdown
             isOpen={this.state.dropdownOpen3}
             toggle={this.dropdownToggle3}
+            data-name='dropdownOpen3'
           >
             <DropdownToggle caret outline>
               {this.state.dropdownValue3}
@@ -207,7 +225,13 @@ export default class AddItemTemplate extends React.Component {
             <DropdownMenu className={styles['form__categories__menu']}>
               {this.props.categories.map(cat => {
                 return (
-                  <DropdownItem onClick={this.dropdownSelect3} key={cat.key}>
+                  <DropdownItem
+                    onClick={this.dropdownSelect}
+                    key={cat.key}
+                    data-category={cat.value}
+                    data-dropdown='dropdownOpen3'
+                    data-value='dropdownValue3'
+                  >
                     {cat.value}
                   </DropdownItem>
                 );

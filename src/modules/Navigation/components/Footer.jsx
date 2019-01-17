@@ -10,18 +10,18 @@ class Footer extends Component {
   constructor(props) {
     super(props);
 
-    this.returnAuth = this.returnAuth.bind(this);
-
     //firebase authentication object
     this.FbAuth = new FirebaseAuth();
   }
 
   handleClick = () => {
-    this.FbAuth.logoutUser(this.props.dispatch, this.props.history);
+    const { dispatch, history } = this.props;
+    this.FbAuth.logoutUser(dispatch, history);
   };
 
-  returnAuth() {
-    if (this.props.user && this.props.user.uid !== 'guest') {
+  returnAuth = () => {
+    const { user } = this.props;
+    if (user && user.uid !== 'guest') {
       return (
         <div>
           <NavLink
@@ -46,27 +46,26 @@ class Footer extends Component {
           </NavLink>
         </div>
       );
-    } else {
-      return (
-        <Fragment>
-          <NavLink
-            className={styles['footer__links--color']}
-            tag={Link}
-            to='/login'
-          >
-            Login
-          </NavLink>
-          <NavLink
-            className={styles['footer__links--color']}
-            tag={Link}
-            to='/register'
-          >
-            Register
-          </NavLink>
-        </Fragment>
-      );
     }
-  }
+    return (
+      <Fragment>
+        <NavLink
+          className={styles['footer__links--color']}
+          tag={Link}
+          to='/login'
+        >
+          Login
+        </NavLink>
+        <NavLink
+          className={styles['footer__links--color']}
+          tag={Link}
+          to='/register'
+        >
+          Register
+        </NavLink>
+      </Fragment>
+    );
+  };
 
   render() {
     return (

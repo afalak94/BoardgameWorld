@@ -19,9 +19,9 @@ export class FirebaseAuth extends Component {
           }
           history.push('/');
         }
-      } else {
-        dispatch(addUser({ uid: 'guest', email: 'Guest' }));
+        return;
       }
+      dispatch(addUser({ uid: 'guest', email: 'Guest' }));
     });
     return unsubscribe;
   }

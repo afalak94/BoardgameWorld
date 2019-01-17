@@ -1,6 +1,6 @@
 //Listing container
 import React, { Component } from 'react';
-import { GameCard } from '../../../main/views';
+import { GameCard } from '../../../main';
 import {
   Col,
   Row,
@@ -36,11 +36,11 @@ class Listing extends Component {
 
   renderItems = () => {
     //console.log(this.props.selectedBoardgames); => implemented only name selector for now
-    const { selectedBoardgames } = this.props;
+    const { selectedBoardgames, user } = this.props;
     this.items = _.map(selectedBoardgames, (value, key) => {
       return (
         <Col xs='4' key={key}>
-          <GameCard game={value} user={this.props.user} FbDB={this.FbDB} />
+          <GameCard game={value} user={user} FbDB={this.FbDB} />
         </Col>
       );
     });

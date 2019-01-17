@@ -16,6 +16,7 @@ export default class ItemList extends Component {
   componentDidMount() {
     // this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
     this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
+    this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
   }
 
   handleClick = event => {
@@ -23,7 +24,7 @@ export default class ItemList extends Component {
     this.FbDB.deleteItem(itemKey);
   };
 
-  renderItems() {
+  renderItems = () => {
     const { boardgames } = this.props;
     this.items = _.map(boardgames, (value, key) => {
       return (
@@ -43,7 +44,7 @@ export default class ItemList extends Component {
     if (!_.isEmpty(this.items)) {
       return this.items;
     }
-  }
+  };
 
   render() {
     return (

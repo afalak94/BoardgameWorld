@@ -8,15 +8,12 @@ import {
   Button
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import styles from '../css/gameCard.module.css';
-import { LocalStorageService } from '../services/LocalStorage';
+import styles from '../../../main/css/gameCard.module.css';
+import { LocalStorageService } from '../../../main/services/LocalStorage';
 
 export class GameCard extends Component {
   constructor(props) {
     super(props);
-
-    this.renderPrices = this.renderPrices.bind(this);
-    this.renderDiscount = this.renderDiscount.bind(this);
 
     //instantiate LocalStorageService object
     this.LS = new LocalStorageService();
@@ -31,28 +28,27 @@ export class GameCard extends Component {
         this.LS.addToLocalStorage(game);
   };
 
-  renderPrices() {
+  renderPrices = () => {
     if (this.props.game.value.onSale === false) {
       return (
         <div style={{ fontSize: 20 }}>
           <div>Price: {this.props.game.value.price} $</div>
         </div>
       );
-    } else {
-      return (
-        <div className={styles['gameCard__price']}>
-          <div className={styles['gameCard__price--regular']}>
-            Old price: {this.props.game.value.price} $
-          </div>
-          <div className={styles['gameCard__price--sale']}>
-            <span>SALE: {this.props.game.value.salePrice} $</span>
-          </div>
-        </div>
-      );
     }
-  }
+    return (
+      <div className={styles['gameCard__price']}>
+        <div className={styles['gameCard__price--regular']}>
+          Old price: {this.props.game.value.price} $
+        </div>
+        <div className={styles['gameCard__price--sale']}>
+          <span>SALE: {this.props.game.value.salePrice} $</span>
+        </div>
+      </div>
+    );
+  };
 
-  renderDiscount() {
+  renderDiscount = () => {
     //calculate discount percent and display it on sale items
     const { value } = this.props.game;
     if (!value) {
@@ -68,28 +64,29 @@ export class GameCard extends Component {
         </div>
       );
     }
-  }
+  };
 
   render() {
+    const { key, value } = this.props.game;
     return (
       <div>
         <Card className={styles['gameCard--size']}>
           {this.renderDiscount()}
           <CardImg
             top
-            src={this.props.game.value.imgUrl}
+            src={value.imgUrl}
             alt='Card image cap'
             className={styles['gameCard__img']}
           />
           <CardBody className={styles['gameCard__body']}>
             <CardTitle className={styles['gameCard__title']}>
-              {this.props.game.value.name}
+              {value.name}
             </CardTitle>
-            <CardSubtitle>Score: {this.props.game.value.score}</CardSubtitle>
+            <CardSubtitle>Score: {value.score}</CardSubtitle>
             {this.renderPrices()}
             <Button
               tag={Link}
-              to={'/game/' + this.props.game.key}
+              to={'/game/' + key}
               className={styles['gameCard__btn']}
             >
               View more

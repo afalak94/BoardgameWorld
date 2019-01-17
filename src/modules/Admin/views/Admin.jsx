@@ -44,6 +44,7 @@ class AdminSection extends React.Component {
         <BrowserRouter>
           <TabContent className={styles['admin__tabContent']}>
             <Route
+              exact
               path={`${match.path}/categories`}
               render={props => (
                 <CategoryList
@@ -55,6 +56,7 @@ class AdminSection extends React.Component {
             />
 
             <Route
+              exact
               path={`${match.path}/items`}
               render={props => (
                 <ItemList
@@ -67,6 +69,7 @@ class AdminSection extends React.Component {
             />
 
             <Route
+              exact
               path={`${match.path}/users`}
               render={props => (
                 <UsersList

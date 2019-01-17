@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import { FirebaseDB } from '../../modules/Firebase';
-import styles from '../css/GameInfo.module.css';
+import { FirebaseDB } from '../../Firebase';
+import styles from '../../../main/css/GameInfo.module.css';
 import { Redirect } from 'react-router';
-import { LocalStorageService } from '../services/LocalStorage';
+import { LocalStorageService } from '../../../main/services/LocalStorage';
 
 class GameInfo extends Component {
   constructor(props) {
     super(props);
 
-    //instantiate LocalStorageService object
+    //instantiate service objects
     this.LS = new LocalStorageService();
     this.FbDB = new FirebaseDB();
   }
@@ -27,23 +27,16 @@ class GameInfo extends Component {
   };
 
   renderPrice = () => {
-    //console.log(this.boardgame.value.onSale);
-    if (this.boardgame.value.onSale === false) {
-      return (
-        <div className={styles['gameinfo__price']}>
-          Price: {this.boardgame.value.price} $
-        </div>
-      );
-    } else {
-      return (
-        <div className={styles['gameinfo__price']}>
-          <div className={styles['gameinfo__oldPrice']}>
-            Old price: {this.boardgame.value.price} $
-          </div>
-          <div>SALE: {this.boardgame.value.salePrice} $</div>
-        </div>
-      );
+    const { onSale, price, salePrice } = this.boardgame.value;
+    if (onSale === false) {
+      return <div className={styles['gameinfo__price']}>Price: {price} $</div>;
     }
+    return (
+      <div className={styles['gameinfo__price']}>
+        <div className={styles['gameinfo__oldPrice']}>Old price: {price} $</div>
+        <div>SALE: {salePrice} $</div>
+      </div>
+    );
   };
 
   handleClick = () => {
@@ -54,44 +47,39 @@ class GameInfo extends Component {
   };
 
   render() {
+    const { boardgames, match } = this.props;
     //redirect to /listing if redux store doesnt contain games yet
-    if (!this.props.boardgames) {
+    if (!boardgames) {
       return <Redirect to='/listing' />;
-    } else {
-      //find the boardgame from redux store with the coresponding key
-      this.props.boardgames.forEach(game => {
-        if (game.key === this.props.match.params.id) {
-          this.boardgame = game;
-        }
-      });
     }
+    //find the boardgame from redux store with the coresponding key
+    boardgames.forEach(game => {
+      if (game.key === match.params.id) {
+        this.boardgame = game;
+      }
+    });
 
+    const { imgUrl, name, score, description } = this.boardgame.value;
     return (
       <div className={styles['gameinfo__wrapper']}>
         <div className={styles['gameinfo__imgContainer']}>
-          <img
-            className={styles['gameinfo__img']}
-            src={this.boardgame.value.imgUrl}
-            alt='info'
-          />
+          <img className={styles['gameinfo__img']} src={imgUrl} alt='info' />
         </div>
 
         <div className={styles['gameinfo__info']}>
           <div className={styles['gameinfo__name']}>
-            {this.boardgame.value.name}
+            {name}
             <div className={styles['gameinfo__categories']}>
               <ul>{this.renderCategories()}</ul>
             </div>
           </div>
           <div className={styles['gameinfo__score']}>
-            <div className={styles['gameinfo__scoreNum']}>
-              {this.boardgame.value.score}
-            </div>
+            <div className={styles['gameinfo__scoreNum']}>{score}</div>
           </div>
         </div>
 
         <div className={styles['gameinfo__description']}>
-          <h4>{this.boardgame.value.description}</h4>
+          <h4>{description}</h4>
         </div>
 
         <div className={styles['gameinfo__buy']}>
@@ -108,7 +96,7 @@ class GameInfo extends Component {
 function mapStateToProps(state) {
   return {
     user: state.user[0],
-    boardgames: state.boardgames[state.boardgames.length - 1]
+    boardgames: state.boardgames[0]
   };
 }
 

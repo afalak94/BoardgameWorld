@@ -7,7 +7,7 @@ import {
   categoriesReducer,
   selectedCategoryReducer,
   priceReducer
-} from '../../modules/Listing';
+} from '../../modules/Boardgames';
 import { usersReducer } from '../../modules/Firebase';
 import { authReducer } from '../../modules/Authentication';
 import { searchTermReducer } from '../../modules/Navigation';

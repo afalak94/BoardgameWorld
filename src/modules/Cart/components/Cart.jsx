@@ -61,15 +61,16 @@ class Cart extends Component {
 
   handleUserActions = event => {
     const { itemKey, name } = event.target.dataset;
+    const { uid } = this.props.user;
     switch (name) {
       case 'delete':
-        this.FbDB.removeItemFromUsersCart(itemKey, this.props.user.uid);
+        this.FbDB.removeItemFromUsersCart(itemKey, uid);
         break;
       case 'decrease':
-        this.FbDB.decreaseItemQuantity(itemKey, this.props.user.uid);
+        this.FbDB.decreaseItemQuantity(itemKey, uid);
         break;
       case 'increase':
-        this.FbDB.increaseItemQuantity(itemKey, this.props.user.uid);
+        this.FbDB.increaseItemQuantity(itemKey, uid);
         break;
       default:
         break;
@@ -84,7 +85,7 @@ class Cart extends Component {
     this.itemsInCart = _.map(cart, (value, key) => {
       //calculate total price from all items in the cart
       //add regular or sale price
-      if (value) {
+      if (value && value !== 'empty') {
         if (String(value.data.onSale) === 'true') {
           this.total += parseFloat(value.data.salePrice, 10) * value.quantity;
           this.itemValue = value.data.salePrice;

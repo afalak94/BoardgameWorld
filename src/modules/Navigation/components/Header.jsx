@@ -56,6 +56,7 @@ class Header extends Component {
   };
 
   render() {
+    const { user, term } = this.props;
     return (
       <div>
         <Navbar className={styles['navbar--color']} expand='md'>
@@ -67,7 +68,7 @@ class Header extends Component {
             <Nav className='ml-auto' navbar>
               <NavItem className={styles['navbar__userListEl']}>
                 <div className={styles['navbar__user']} id='logged-user'>
-                  {this.props.user ? this.props.user.email : 'Guest'}
+                  {user ? user.email : 'Guest'}
                 </div>
               </NavItem>
 
@@ -79,7 +80,7 @@ class Header extends Component {
                   placeholder='Search'
                   aria-label='Search'
                   onChange={this.handleChange}
-                  value={this.props.term}
+                  value={term}
                   //go to /listing so user can see filtered items
                   onClick={this.handleSearchClick}
                 />

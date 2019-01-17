@@ -1,4 +1,4 @@
-export { ListingConn as Listing } from './components/Listing.jsx';
+export { ListingConn as Listing } from './views/Listing.jsx';
 export {
   addToStore,
   addCategories,

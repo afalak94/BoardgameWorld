@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { GameCard, SaleCarousel } from './index';
+import { GameCard, SaleCarousel } from '../index';
 import { connect } from 'react-redux';
 import { FirebaseDB } from '../../modules/Firebase';
-import { saleGamesSelector } from '../../modules/Listing';
+import { saleGamesSelector } from '../../modules/Boardgames';
 import _ from 'lodash';
 import styles from '../css/Home.module.css';
 
@@ -23,7 +23,7 @@ class Home extends Component {
       return (
         <GameCard
           className={styles['saleGames_card']}
-          key={value.key}
+          key={key}
           game={value}
           user={this.props.user}
           FbDB={this.FbDB}
@@ -57,14 +57,12 @@ class Home extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user[0],
-    saleGames: saleGamesSelector(state)
-  };
-}
-
 export const HomeConn = connect(
-  mapStateToProps,
+  state => {
+    return {
+      user: state.user[0],
+      saleGames: saleGamesSelector(state)
+    };
+  },
   null
 )(Home);

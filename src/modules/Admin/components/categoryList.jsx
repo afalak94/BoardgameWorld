@@ -13,8 +13,6 @@ export default class CategoryList extends Component {
   }
 
   componentDidMount() {
-    // this.FbDB.saveCategoriesFromDBToStore(this.props.addCategories);
-    // console.log(this.props);
     this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
   }
 

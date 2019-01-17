@@ -1,4 +1,4 @@
-export { LoginConn as Login } from './components/Login.jsx';
-export { ResetPassword } from './components/Password.jsx';
-export { Register } from './components/Register.jsx';
+export { LoginConn as Login } from './views/Login.jsx';
+export { ResetPassword } from './views/Password.jsx';
+export { Register } from './views/Register.jsx';
 export { addUser, authReducer } from './redux';
