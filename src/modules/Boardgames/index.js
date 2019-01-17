@@ -11,3 +11,4 @@ export {
   mainSelector,
   saleGamesSelector
 } from './redux/index';
+export { initialBoardgame, initialCategories } from './consts/initialValues';

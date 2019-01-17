@@ -1,6 +1,7 @@
 import { ListingTypes } from './types';
+import { initialBoardgame, initialCategories } from '../index';
 
-export const boardgamesReducer = (state = [], action) => {
+export const boardgamesReducer = (state = [[initialBoardgame]], action) => {
   switch (action.type) {
     case ListingTypes.STORE_GAMES:
       return [action.payload];
@@ -10,7 +11,7 @@ export const boardgamesReducer = (state = [], action) => {
   }
 };
 
-export const categoriesReducer = (state = [], action) => {
+export const categoriesReducer = (state = initialCategories, action) => {
   switch (action.type) {
     case ListingTypes.STORE_CATEGORIES:
       return action.payload;
