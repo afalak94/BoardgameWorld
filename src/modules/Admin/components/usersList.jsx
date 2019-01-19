@@ -16,7 +16,7 @@ export default class UsersList extends Component {
     dispatch(deleteUser(userUid, dispatch));
   };
 
-  renderUsers() {
+  renderUsers = () => {
     const { allUsers } = this.props;
     this.users = _.map(allUsers, (value, key) => {
       return (
@@ -37,7 +37,7 @@ export default class UsersList extends Component {
     if (!_.isEmpty(this.users)) {
       return this.users;
     }
-  }
+  };
 
   render() {
     return <div className={styles['user__wrapper']}>{this.renderUsers()}</div>;

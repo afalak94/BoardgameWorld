@@ -1,5 +1,5 @@
-export { FirebaseAuth } from './components/firebaseAuth';
-export { FirebaseDB } from './components/firebaseDB';
+export { FirebaseAuth } from './service/firebaseAuth';
+export { FirebaseDB } from './service/firebaseDB';
 export {
   fetchitems,
   fetchUsers,

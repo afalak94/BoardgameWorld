@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Button,
   Form,
@@ -11,9 +11,10 @@ import {
   DropdownItem
 } from 'reactstrap';
 import { FirebaseDB } from '../../Firebase';
+import { MyToggler } from './MyToggler';
 import styles from '../../../main/css/Admin.module.css';
 
-export default class AddItemTemplate extends React.Component {
+export default class AddItemTemplate extends Component {
   constructor(props) {
     super(props);
 
@@ -28,38 +29,46 @@ export default class AddItemTemplate extends React.Component {
   }
 
   handleSubmit = () => {
+    const {
+      nameValue,
+      scoreValue,
+      imgUrlValue,
+      priceValue,
+      salePriceValue,
+      onSale,
+      descriptionValue,
+      dropdownValue1,
+      dropdownValue2,
+      dropdownValue3
+    } = this.state;
     //firebase service method
     this.FbDB.addNewItem(
-      this.state.nameValue,
-      this.state.scoreValue,
-      this.state.imgUrlValue,
-      this.state.priceValue,
-      this.state.salePriceValue,
-      this.state.onSale,
-      this.state.descriptionValue,
-      [
-        this.state.dropdownValue1 || '',
-        this.state.dropdownValue2 || '',
-        this.state.dropdownValue3 || ''
-      ]
+      nameValue,
+      scoreValue,
+      imgUrlValue,
+      priceValue,
+      salePriceValue,
+      onSale,
+      descriptionValue,
+      [dropdownValue1 || '', dropdownValue2 || '', dropdownValue3 || '']
     );
   };
 
   commonChange = event => {
-    const { type } = event.target;
+    const { type, name, checked, value } = event.target;
     if (type === 'checkbox') {
       this.setState({
-        [event.target.name]: event.target.checked
+        [name]: checked
       });
       return;
     }
     this.setState({
-      [event.target.name]: event.target.value
+      [name]: value
     });
   };
 
   //function that changes menu toggler text when the category is selected
-  dropdownSelect = event => {
+  dropdownSelectValue = event => {
     const { category, dropdown, value } = event.target.dataset;
     this.setState({
       [dropdown]: !this.state[dropdown],
@@ -67,33 +76,17 @@ export default class AddItemTemplate extends React.Component {
     });
   };
 
-  //TODO: learn how to combine handlers into sigle function, data atributes do not
-  //work, probably because of reactstrap elements again
-  dropdownToggle1 = () => {
+  //combined toggler for three dropdown buttons, they are wraped inside MyToggler component
+  //because data atributes do not work with some reactstrap elements like this one
+  dropdownToggle = id => {
     this.setState({
-      dropdownOpen1: !this.state.dropdownOpen1
+      [id]: !this.state[id]
     });
   };
 
-  dropdownToggle2 = () => {
-    this.setState({
-      dropdownOpen2: !this.state.dropdownOpen2
-    });
-  };
-
-  dropdownToggle3 = () => {
-    this.setState({
-      dropdownOpen3: !this.state.dropdownOpen3
-    });
-  };
-
-  // dropdownToggle = event => {
-  //   const { name } = event.target.dataset;
-  //   console.log(name);
-  //   this.setState({
-  //     [name]: !this.state[name]
-  //   });
-  // };
+  //reactstrap component ButtonDropdown requires to have toggle atribute, but it has a value of
+  //doNothing. Togglers are instead combined with wrapper component MyToggler that use dropdownToggle
+  doNothing = () => {};
 
   render() {
     return (
@@ -164,80 +157,83 @@ export default class AddItemTemplate extends React.Component {
         <FormGroup className={styles['form__categories']}>
           <Label>Categories</Label>
 
-          <ButtonDropdown
-            isOpen={this.state.dropdownOpen1}
-            toggle={this.dropdownToggle1}
-            // data-name='dropdownOpen1' //unable to pass dataset info
-          >
-            <DropdownToggle caret outline>
-              {this.state.dropdownValue1}
-            </DropdownToggle>
-            <DropdownMenu className={styles['form__categories__menu']}>
-              {this.props.categories.map(cat => {
-                return (
-                  <DropdownItem
-                    onClick={this.dropdownSelect}
-                    data-category={cat.value}
-                    data-dropdown='dropdownOpen1'
-                    data-value='dropdownValue1'
-                    key={cat.key}
-                  >
-                    {cat.value}
-                  </DropdownItem>
-                );
-              })}
-            </DropdownMenu>
-          </ButtonDropdown>
+          <MyToggler onClick={this.dropdownToggle} id='dropdownOpen1'>
+            <ButtonDropdown
+              isOpen={this.state.dropdownOpen1}
+              toggle={this.doNothing}
+            >
+              <DropdownToggle caret outline>
+                {this.state.dropdownValue1}
+              </DropdownToggle>
+              <DropdownMenu className={styles['form__categories__menu']}>
+                {this.props.categories.map(cat => {
+                  return (
+                    <DropdownItem
+                      onClick={this.dropdownSelectValue}
+                      data-category={cat.value}
+                      data-dropdown='dropdownOpen1'
+                      data-value='dropdownValue1'
+                      key={cat.key}
+                    >
+                      {cat.value}
+                    </DropdownItem>
+                  );
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
+          </MyToggler>
 
-          <ButtonDropdown
-            isOpen={this.state.dropdownOpen2}
-            toggle={this.dropdownToggle2}
-            data-name='dropdownOpen2'
-          >
-            <DropdownToggle caret outline>
-              {this.state.dropdownValue2}
-            </DropdownToggle>
-            <DropdownMenu className={styles['form__categories__menu']}>
-              {this.props.categories.map(cat => {
-                return (
-                  <DropdownItem
-                    onClick={this.dropdownSelect}
-                    key={cat.key}
-                    data-category={cat.value}
-                    data-dropdown='dropdownOpen2'
-                    data-value='dropdownValue2'
-                  >
-                    {cat.value}
-                  </DropdownItem>
-                );
-              })}
-            </DropdownMenu>
-          </ButtonDropdown>
+          <MyToggler onClick={this.dropdownToggle} id='dropdownOpen2'>
+            <ButtonDropdown
+              isOpen={this.state.dropdownOpen2}
+              toggle={this.doNothing}
+            >
+              <DropdownToggle caret outline>
+                {this.state.dropdownValue2}
+              </DropdownToggle>
+              <DropdownMenu className={styles['form__categories__menu']}>
+                {this.props.categories.map(cat => {
+                  return (
+                    <DropdownItem
+                      onClick={this.dropdownSelectValue}
+                      key={cat.key}
+                      data-category={cat.value}
+                      data-dropdown='dropdownOpen2'
+                      data-value='dropdownValue2'
+                    >
+                      {cat.value}
+                    </DropdownItem>
+                  );
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
+          </MyToggler>
 
-          <ButtonDropdown
-            isOpen={this.state.dropdownOpen3}
-            toggle={this.dropdownToggle3}
-            data-name='dropdownOpen3'
-          >
-            <DropdownToggle caret outline>
-              {this.state.dropdownValue3}
-            </DropdownToggle>
-            <DropdownMenu className={styles['form__categories__menu']}>
-              {this.props.categories.map(cat => {
-                return (
-                  <DropdownItem
-                    onClick={this.dropdownSelect}
-                    key={cat.key}
-                    data-category={cat.value}
-                    data-dropdown='dropdownOpen3'
-                    data-value='dropdownValue3'
-                  >
-                    {cat.value}
-                  </DropdownItem>
-                );
-              })}
-            </DropdownMenu>
-          </ButtonDropdown>
+          <MyToggler onClick={this.dropdownToggle} id='dropdownOpen3'>
+            <ButtonDropdown
+              isOpen={this.state.dropdownOpen3}
+              toggle={this.doNothing}
+            >
+              <DropdownToggle caret outline>
+                {this.state.dropdownValue3}
+              </DropdownToggle>
+              <DropdownMenu className={styles['form__categories__menu']}>
+                {this.props.categories.map(cat => {
+                  return (
+                    <DropdownItem
+                      onClick={this.dropdownSelectValue}
+                      key={cat.key}
+                      data-category={cat.value}
+                      data-dropdown='dropdownOpen3'
+                      data-value='dropdownValue3'
+                    >
+                      {cat.value}
+                    </DropdownItem>
+                  );
+                })}
+              </DropdownMenu>
+            </ButtonDropdown>
+          </MyToggler>
         </FormGroup>
 
         <FormGroup className={styles['form__submit']}>

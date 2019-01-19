@@ -2,7 +2,7 @@ import { Component } from 'react';
 import firebase from '../firebase.config';
 import 'firebase/auth';
 import { addUser } from '../../Authentication';
-import { fetchitems, fetchUsers, FirebaseTypes } from '../../Firebase';
+import { fetchitems, fetchUsers, FirebaseTypes } from '..';
 import axios from 'axios';
 
 export class FirebaseAuth extends Component {
@@ -43,8 +43,6 @@ export class FirebaseAuth extends Component {
         `https://us-central1-react-store-3406f.cloudfunctions.net/getAllUsers`
       )
       .then(res => {
-        //console.log(res.data);
-        //this.setState({ userList: res.data });
         dispatch({
           type: FirebaseTypes.FETCH_USERS,
           payload: res.data

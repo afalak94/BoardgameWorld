@@ -1,2 +1,2 @@
-export { CartConn as Cart } from './components/Cart';
+export { CartConn as Cart } from './views/Cart';
 export * from './redux/index';

@@ -14,9 +14,9 @@ export default class ItemList extends Component {
 
   //REMINDER: dont use componentWillMount because it acts unexpectedly
   componentDidMount() {
-    // this.FbDB.saveItemsFromDBToStore(this.props.addToStore);
-    this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
-    this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
+    const { dispatch } = this.props;
+    this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
+    this.FbDB.saveDataFromDBToStore('categories', dispatch);
   }
 
   handleClick = event => {
