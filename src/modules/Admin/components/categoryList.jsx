@@ -8,7 +8,7 @@ export default class CategoryList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { categories: [], inputValue: '' };
+    this.state = { inputValue: '' };
     this.FbDB = new FirebaseDB();
   }
 

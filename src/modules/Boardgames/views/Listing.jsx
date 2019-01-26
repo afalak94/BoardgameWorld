@@ -14,24 +14,17 @@ import {
 import { FirebaseDB } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { updateSearchTerm } from '../../Navigation';
 import { selectCategory, selectPriceOrder, mainSelector } from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
 class Listing extends Component {
-  constructor(props) {
-    super(props);
-
-    //create instance of firebase database service
-    this.FbDB = new FirebaseDB();
-  }
-
   componentDidMount() {
+    const { dispatch } = this.props;
     //save items to redux store
-    this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
+    this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
     //save categories to redux store
-    this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);
+    this.FbDB.saveDataFromDBToStore('categories', dispatch);
   }
 
   renderItems = () => {
@@ -71,13 +64,15 @@ class Listing extends Component {
   };
 
   categoryClicked = event => {
+    const { dispatch } = this.props;
     const { categoryValue } = event.target.dataset;
-    this.props.dispatch(selectCategory(categoryValue));
+    dispatch(selectCategory(categoryValue));
   };
 
   handlePriceClick = event => {
+    const { dispatch } = this.props;
     const { type } = event.target.dataset;
-    this.props.dispatch(selectPriceOrder(type));
+    dispatch(selectPriceOrder(type));
   };
 
   handleFiltersClick = () => {
@@ -88,6 +83,9 @@ class Listing extends Component {
   };
 
   render() {
+    //create instance of firebase database service
+    this.FbDB = new FirebaseDB();
+
     const { term, selectedCategory, priceFilter } = this.props;
     return (
       <Row>
@@ -160,18 +158,9 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators({
-      selectCategory,
-      selectPriceOrder,
-      updateSearchTerm
-    }),
-    dispatch
-  };
-}
-
 export const ListingConn = connect(
   mapStateToProps,
-  mapDispatchToProps
+  dispatch => {
+    return { dispatch };
+  }
 )(Listing);

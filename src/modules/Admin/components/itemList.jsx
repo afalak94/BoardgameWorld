@@ -6,14 +6,9 @@ import _ from 'lodash';
 import styles from '../../../main/css/Admin.module.css';
 
 export default class ItemList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.FbDB = new FirebaseDB();
-  }
-
   //REMINDER: dont use componentWillMount because it acts unexpectedly
   componentDidMount() {
+    this.FbDB = new FirebaseDB();
     const { dispatch } = this.props;
     this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
     this.FbDB.saveDataFromDBToStore('categories', dispatch);

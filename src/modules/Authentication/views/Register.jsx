@@ -26,13 +26,14 @@ export class Register extends Component {
   };
 
   render() {
+    const { email, password } = this.state;
     return (
       <div className={styles.register__form}>
         <Form>
           <FormGroup>
             <Label for='exampleEmail'>Email</Label>
             <Input
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
               type='email'
               name='email'
@@ -44,7 +45,7 @@ export class Register extends Component {
           <FormGroup>
             <Label for='examplePassword'>Password</Label>
             <Input
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
               type='password'
               name='password'

@@ -12,13 +12,6 @@ import styles from '../../../main/css/gameCard.module.css';
 import { LocalStorageService } from '../../../main/services/LocalStorage';
 
 export class GameCard extends Component {
-  constructor(props) {
-    super(props);
-
-    //instantiate LocalStorageService object
-    this.LS = new LocalStorageService();
-  }
-
   handleClick = () => {
     const { game, user } = this.props;
     this.props.user.uid !== 'guest'
@@ -29,20 +22,21 @@ export class GameCard extends Component {
   };
 
   renderPrices = () => {
-    if (this.props.game.value.onSale === false) {
+    const { value } = this.props.game;
+    if (value.onSale === false) {
       return (
         <div style={{ fontSize: 20 }}>
-          <div>Price: {this.props.game.value.price} $</div>
+          <div>Price: {value.price} $</div>
         </div>
       );
     }
     return (
       <div className={styles['gameCard__price']}>
         <div className={styles['gameCard__price--regular']}>
-          Old price: {this.props.game.value.price} $
+          Old price: {value.price} $
         </div>
         <div className={styles['gameCard__price--sale']}>
-          <span>SALE: {this.props.game.value.salePrice} $</span>
+          <span>SALE: {value.salePrice} $</span>
         </div>
       </div>
     );
@@ -67,6 +61,9 @@ export class GameCard extends Component {
   };
 
   render() {
+    //instantiate LocalStorageService object
+    this.LS = new LocalStorageService();
+
     const { key, value } = this.props.game;
     return (
       <div>

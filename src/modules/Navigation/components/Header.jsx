@@ -12,9 +12,7 @@ import {
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateSearchTerm } from '../index';
-import { bindActionCreators } from 'redux';
 import styles from '../../../main/css/Header.module.css';
-import { addUser } from '../../Authentication';
 import { FirebaseAuth } from '../../Firebase';
 
 class Header extends Component {
@@ -113,13 +111,6 @@ class Header extends Component {
   }
 }
 
-function mapDispatchtoProps(dispatch) {
-  return {
-    ...bindActionCreators({ addUser, updateSearchTerm }),
-    dispatch
-  };
-}
-
 export const HeaderConn = connect(
   // mapStateToProps,
   state => {
@@ -129,5 +120,7 @@ export const HeaderConn = connect(
       term: state.searchTerm
     };
   },
-  mapDispatchtoProps
+  dispatch => {
+    return { dispatch };
+  }
 )(withRouter(Header));

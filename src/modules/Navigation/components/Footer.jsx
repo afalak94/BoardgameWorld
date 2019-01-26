@@ -7,13 +7,6 @@ import { connect } from 'react-redux';
 import styles from '../../../main/css/Footer.module.css';
 
 class Footer extends Component {
-  constructor(props) {
-    super(props);
-
-    //firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-  }
-
   handleClick = () => {
     const { dispatch, history } = this.props;
     this.FbAuth.logoutUser(dispatch, history);
@@ -68,6 +61,9 @@ class Footer extends Component {
   };
 
   render() {
+    //firebase authentication object
+    this.FbAuth = new FirebaseAuth();
+
     return (
       <div className={styles['footer']}>
         <Navbar expand='md'>

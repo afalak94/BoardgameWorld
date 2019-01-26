@@ -31,17 +31,19 @@ class Login extends Component {
   };
 
   handleClick = () => {
-    this.FbAuth.loginUser(this.state.email, this.state.password);
+    const { email, password } = this.state;
+    this.FbAuth.loginUser(email, password);
   };
 
   render() {
+    const { email, password } = this.state;
     return (
       <div className={styles['login__form']}>
         <Form>
           <FormGroup>
             <Label for='exampleEmail'>Email</Label>
             <Input
-              value={this.state.email}
+              value={email}
               onChange={this.handleChange}
               type='email'
               name='email'
@@ -53,7 +55,7 @@ class Login extends Component {
           <FormGroup>
             <Label for='examplePassword'>Password</Label>
             <Input
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
               type='password'
               name='password'

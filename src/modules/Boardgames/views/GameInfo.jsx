@@ -1,22 +1,48 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import { FirebaseDB } from '../../Firebase';
 import styles from '../../../main/css/GameInfo.module.css';
-import { Redirect } from 'react-router';
+// import { Redirect } from 'react-router';
+import { FirebaseDB } from '../../Firebase';
 import { LocalStorageService } from '../../../main/services/LocalStorage';
 
 class GameInfo extends Component {
   constructor(props) {
     super(props);
 
+    //find the boardgame from redux store with the coresponding key
+    const { boardgames, dispatch } = this.props;
+    this.locateBoardgame(boardgames);
+
     //instantiate service objects
     this.LS = new LocalStorageService();
     this.FbDB = new FirebaseDB();
+
+    this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
   }
+
+  //when user refreshes page, redux store is updated again and component can locate game
+  componentWillReceiveProps(nextProps) {
+    this.locateBoardgame(nextProps.boardgames);
+  }
+
+  locateBoardgame = props => {
+    const { match } = this.props;
+    for (let game of props) {
+      if (game.key === match.params.id) {
+        this.boardgame = game;
+        return;
+      }
+      //if there is no matching game key yet, return null that will render "Loading..."
+      this.boardgame = null;
+    }
+  };
 
   renderCategories = () => {
     //console.log(this.boardgame.value.category);
+    if (!this.boardgame) {
+      return null;
+    }
     return this.boardgame.value.category.map((category, index) => {
       return (
         <li className={styles['gameinfo__categoryItem']} key={index}>
@@ -47,17 +73,9 @@ class GameInfo extends Component {
   };
 
   render() {
-    const { boardgames, match } = this.props;
-    //redirect to /listing if redux store doesnt contain games yet
-    if (!boardgames) {
-      return <Redirect to='/listing' />;
+    if (!this.boardgame) {
+      return <h1>Loading...</h1>;
     }
-    //find the boardgame from redux store with the coresponding key
-    boardgames.forEach(game => {
-      if (game.key === match.params.id) {
-        this.boardgame = game;
-      }
-    });
 
     const { imgUrl, name, score, description } = this.boardgame.value;
     return (

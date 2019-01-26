@@ -214,10 +214,12 @@ class Cart extends Component {
   };
 
   render() {
+    const { user } = this.props;
+
     return (
       <div className={styles['cart__wrapper']}>
         <ListGroup className={styles['cart__listGroup']}>
-          {this.props.user.uid !== 'guest'
+          {user.uid !== 'guest'
             ? this.renderUserItems()
             : this.renderLocalItems()}
         </ListGroup>
@@ -225,7 +227,7 @@ class Cart extends Component {
         <Jumbotron className={styles['cart__summary__jumbotron']}>
           <h1 className={styles['cart__summary__header']}>Cart summary</h1>
           <div className={styles['cart__summary__user']}>
-            User: {this.props.user ? this.props.user.email : 'Guest'}
+            User: {user ? user.email : 'Guest'}
           </div>
           {this.itemsInCart ? (
             <div className={styles['cart__summary__number']}>

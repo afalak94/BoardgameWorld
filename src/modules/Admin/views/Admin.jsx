@@ -9,17 +9,8 @@ import { Link, Route, BrowserRouter } from 'react-router-dom';
 import styles from '../../../main/css/Admin.module.css';
 
 class AdminSection extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeTab: '1'
-    };
-
-    this.FbDB = new FirebaseDB();
-  }
-
   render() {
+    this.FbDB = new FirebaseDB();
     const { match } = this.props;
     return (
       <div className={styles['admin__nav']}>
