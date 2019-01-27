@@ -1,6 +1,5 @@
 //Listing container
 import React, { Component } from 'react';
-import { GameCard } from '../../../main';
 import {
   Col,
   Row,
@@ -15,7 +14,12 @@ import { FirebaseDB } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { updateSearchTerm } from '../../Navigation';
-import { selectCategory, selectPriceOrder, mainSelector } from '../index';
+import {
+  selectCategory,
+  selectPriceOrder,
+  mainSelector,
+  GameCard
+} from '../index';
 import styles from '../../../main/css/Listing.module.css';
 
 class Listing extends Component {

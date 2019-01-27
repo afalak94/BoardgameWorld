@@ -1,4 +1,6 @@
 export { ListingConn as Listing } from './views/Listing.jsx';
+export { locateGameByKey } from './consts/locateGameByKey';
+export { GameCard } from './components/GameCard';
 export {
   addToStore,
   addCategories,

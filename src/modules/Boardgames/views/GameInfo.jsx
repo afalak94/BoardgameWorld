@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import styles from '../../../main/css/GameInfo.module.css';
-// import { Redirect } from 'react-router';
+import { locateGameByKey } from '../index';
 import { FirebaseDB } from '../../Firebase';
 import { LocalStorageService } from '../../../main/services/LocalStorage';
 
@@ -11,32 +11,20 @@ class GameInfo extends Component {
     super(props);
 
     //find the boardgame from redux store with the coresponding key
-    const { boardgames, dispatch } = this.props;
-    this.locateBoardgame(boardgames);
+    this.boardgame = locateGameByKey(this.props);
 
     //instantiate service objects
     this.LS = new LocalStorageService();
     this.FbDB = new FirebaseDB();
 
+    const { dispatch } = this.props;
     this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
   }
 
   //when user refreshes page, redux store is updated again and component can locate game
   componentWillReceiveProps(nextProps) {
-    this.locateBoardgame(nextProps.boardgames);
+    this.boardgame = locateGameByKey(nextProps);
   }
-
-  locateBoardgame = props => {
-    const { match } = this.props;
-    for (let game of props) {
-      if (game.key === match.params.id) {
-        this.boardgame = game;
-        return;
-      }
-      //if there is no matching game key yet, return null that will render "Loading..."
-      this.boardgame = null;
-    }
-  };
 
   renderCategories = () => {
     //console.log(this.boardgame.value.category);
@@ -111,14 +99,12 @@ class GameInfo extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user[0],
-    boardgames: state.boardgames[0]
-  };
-}
-
 export const GameInfoConn = connect(
-  mapStateToProps,
+  state => {
+    return {
+      user: state.user[0],
+      boardgames: state.boardgames[0]
+    };
+  },
   null
 )(GameInfo);

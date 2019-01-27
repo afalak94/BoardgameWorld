@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { GameCard, SaleCarousel } from '../index';
+import { SaleCarousel } from '../index';
 import { connect } from 'react-redux';
 import { FirebaseDB } from '../../modules/Firebase';
-import { saleGamesSelector } from '../../modules/Boardgames';
+import { saleGamesSelector, GameCard } from '../../modules/Boardgames';
 import _ from 'lodash';
 import styles from '../css/Home.module.css';
 
