@@ -1,6 +1,7 @@
-//FAQ component
+// FAQ component
 import React, { Component } from 'react';
-import styles from '../css/FAQ.module.css';
+
+const styles = require('../css/FAQ.module.css');
 
 export class FAQ extends Component {
   render() {

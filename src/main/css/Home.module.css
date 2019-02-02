@@ -41,15 +41,4 @@
   .saleGames_card {
     grid-area: card;
   }
-
-  /* display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 20px;
-  margin-top: 10px;
-
-  div {
-    flex: 1;
-  } */
 }

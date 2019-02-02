@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './main/css/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Home, FAQ, GameInfo, Notfound } from './main';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
+import './main/css/index.css';
+import { Home, FAQ, GameInfo, Notfound } from './main';
 import store from './main/Redux/store';
 import { Listing } from './modules/Boardgames';
 import { Login, ResetPassword, Register } from './modules/Authentication';

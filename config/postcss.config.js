@@ -1,12 +1,16 @@
-// module.exports = {
-//   plugins: [
-//     require('postcss-import'),
-//     require('postcss-url'),
-//     //require('postcss-nesting'),
-//     require('autoprefixer'),
-//     require('postcss-preset-env')({
-//       browsers: 'last 2 versions',
-//       stage: 0
-//     })
-//   ]
-// };
+export let config = {
+  plugins: [
+    require('precss'),
+    require('postcss-flexbugs-fixes'),
+    require('postcss-nesting'),
+    require('postcss-css-variables'),
+    require('postcss-preset-env')({
+      autoprefixer: {
+        flexbox: 'no-2009'
+      },
+      stage: 3
+    })
+  ]
+};
+
+module.exports = config;

@@ -1,0 +1,6 @@
+// .prettierrc.yaml
+
+parser: TypeScript
+singleQuote: true
+trailingComma: all
+semi: true

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
-//images
-import scythe from '../../main/assets/images/scythe-carousel.jpg';
-import azul from '../../main/assets/images/azul-carousel.jpg';
-import mars from '../../main/assets/images/mars-carousel.jpg';
+// images
+const scythe = require('../../main/assets/images/scythe-carousel.jpg');
+const azul = require('../../main/assets/images/azul-carousel.jpg');
+const mars = require('../../main/assets/images/mars-carousel.jpg');
 
 export class SaleCarousel extends Component {
   render() {

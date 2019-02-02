@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from '../css/notFound.module.css';
+
+const styles = require('../css/notFound.module.css');
 
 export const Notfound = () => {
   return (

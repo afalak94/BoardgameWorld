@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from '../../../main/css/GameInfo.module.css';
 import { locateGameByKey } from '../index';
 import { FirebaseDB } from '../../Firebase';
-import { LocalStorageService } from '../../../main/services/LocalStorage';
+import { LocalStorageService } from '../../../main';
 
 class GameInfo extends Component {
   constructor(props) {

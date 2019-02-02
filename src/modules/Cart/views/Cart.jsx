@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { FirebaseAuth, FirebaseDB } from '../../Firebase';
-import { LocalStorageService } from '../../../main/services/LocalStorage';
+import { LocalStorageService } from '../../../main';
 import styles from '../../../main/css/Cart.module.css';
 
 class Cart extends Component {

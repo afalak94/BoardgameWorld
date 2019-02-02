@@ -1,23 +1,39 @@
-import React, { Component } from 'react';
-import { SaleCarousel } from '../index';
+import React, { Component, ReactNode } from 'react';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { FirebaseDB } from '../../modules/Firebase';
-import { saleGamesSelector, GameCard } from '../../modules/Boardgames';
 import _ from 'lodash';
-import styles from '../css/Home.module.css';
 
-class Home extends Component {
-  constructor(props) {
+import { SaleCarousel } from '../index';
+import { User } from '../../modules/Authentication';
+import { FirebaseDB, FirebaseDBTypes } from '../../modules/Firebase';
+import {
+  saleGamesSelector,
+  GameCard,
+  Boardgame
+} from '../../modules/Boardgames';
+const styles = require('../css/Home.module.css');
+
+interface Props {
+  saleGames: Boardgame[];
+  dispatch: Dispatch;
+  user: User;
+}
+
+class Home extends Component<Props> {
+  public FbDB: FirebaseDBTypes;
+  public saleItems: ReactNode;
+
+  constructor(props: Props) {
     super(props);
 
-    this.FbDB = new FirebaseDB();
+    this.FbDB = new FirebaseDB(null);
   }
 
   componentDidMount() {
     this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);
   }
 
-  renderSaleGames = () => {
+  renderSaleGames = (): ReactNode => {
     const { saleGames } = this.props;
     this.saleItems = _.map(saleGames, (value, key) => {
       return (
@@ -33,6 +49,7 @@ class Home extends Component {
     if (!_.isEmpty(this.saleItems)) {
       return this.saleItems;
     }
+    return null;
   };
 
   render() {
@@ -57,12 +74,12 @@ class Home extends Component {
   }
 }
 
+const mapStateToProps = (state: any): any => ({
+  user: state.user[0],
+  saleGames: saleGamesSelector(state)
+});
+
 export const HomeConn = connect(
-  state => {
-    return {
-      user: state.user[0],
-      saleGames: saleGamesSelector(state)
-    };
-  },
+  mapStateToProps,
   null
 )(Home);

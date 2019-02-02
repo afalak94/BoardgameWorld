@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import styles from '../../../main/css/gameCard.module.css';
-import { LocalStorageService } from '../../../main/services/LocalStorage';
+import { LocalStorageService } from '../../../main';
 
 export class GameCard extends Component {
   handleClick = () => {
