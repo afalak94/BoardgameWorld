@@ -82,7 +82,7 @@ export class FirebaseAuth extends Component {
       })
       .catch(error => {
         // Handle Errors here.
-        console.log(error.message);
+        alert(error.message);
       });
   }
 
@@ -91,7 +91,7 @@ export class FirebaseAuth extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(error => {
-        console.log(error.message);
+        alert(error.message);
       });
   }
 

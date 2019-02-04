@@ -7,4 +7,4 @@ export {
   usersReducer,
   FirebaseTypes
 } from './redux/index';
-export { FirebaseDBTypes } from './consts/interfaces';
+export { FirebaseDBTypes, FirebaseAuthTypes } from './consts/interfaces';

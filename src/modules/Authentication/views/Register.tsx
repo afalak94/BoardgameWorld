@@ -1,28 +1,34 @@
-//Register component
-import React, { Component } from 'react';
+// Register component
+import React, { Component, ChangeEvent } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { FirebaseAuth } from '../../Firebase';
-import styles from '../../../main/css/Register.module.css';
 
-export class Register extends Component {
-  constructor(props) {
-    super(props);
+import { FirebaseAuth, FirebaseAuthTypes } from '../../Firebase';
+const styles = require('../../../main/css/Register.module.css');
 
-    this.state = { email: '', password: '' };
-    //firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-  }
+interface Props {
+  history: any;
+}
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+interface State {
+  email: string;
+  password: string;
+}
+
+export class Register extends Component<Props, State> {
+  public state = { email: '', password: '' };
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+
+  handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ [e.target.name]: e.target.value } as Pick<
+      State,
+      keyof State
+    >);
   };
 
   handleClick = () => {
-    this.FbAuth.register(
-      this.state.email,
-      this.state.password,
-      this.props.history
-    );
+    const { email, password } = this.state;
+    const { history } = this.props;
+    this.FbAuth.register(email, password, history);
   };
 
   render() {

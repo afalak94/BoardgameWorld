@@ -1,20 +1,21 @@
-//Register component
-import React, { Component } from 'react';
+// Register component
+import React, { Component, ChangeEvent } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { FirebaseAuth } from '../../Firebase';
-import styles from '../../../main/css/Password.module.css';
 
-export class ResetPassword extends Component {
-  constructor(props) {
-    super(props);
+import { FirebaseAuth, FirebaseAuthTypes } from '../../Firebase';
+const styles = require('../../../main/css/Password.module.css');
 
-    this.state = { email: '' };
-    //firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-  }
+interface State {
+  email: string;
+}
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+export class ResetPassword extends Component<{}, State> {
+  public state = { email: '' };
+  // firebase authentication object
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+
+  handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ email: e.target.value });
   };
 
   handleClick = () => {
@@ -37,8 +38,6 @@ export class ResetPassword extends Component {
               value={this.state.email}
               onChange={this.handleChange}
               type='email'
-              name='email'
-              id='exampleEmail'
               placeholder='Enter your email account'
             />
           </FormGroup>

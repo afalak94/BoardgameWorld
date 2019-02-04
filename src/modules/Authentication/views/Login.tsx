@@ -1,36 +1,45 @@
-//Login component
-import React, { Component } from 'react';
+// Login component
+import React, { Component, ChangeEvent } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { FirebaseAuth } from '../../Firebase';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { Link } from 'react-router-dom';
-import styles from '../../../main/css/Login.module.css';
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
+import { ReduxState } from '../../../main';
+import { FirebaseAuth, FirebaseAuthTypes } from '../../Firebase';
+const styles = require('../../../main/css/Login.module.css');
 
-    this.state = { email: '', password: '' };
-    //firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-  }
+interface Props {
+  dispatch: Dispatch;
+  history: any;
+}
+
+interface State {
+  email: string;
+  password: string;
+}
+class Login extends Component<Props, State> {
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  state = { email: '', password: '' };
+  public unsubscribe: any;
 
   componentDidMount() {
-    this.unsubscribe = this.FbAuth.userListener(
-      this.props.dispatch,
-      this.props.history
-    );
+    const { dispatch, history } = this.props;
+    this.unsubscribe = this.FbAuth.userListener(dispatch, history);
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ [e.target.name]: e.target.value } as Pick<
+      State,
+      keyof State
+    >);
   };
 
-  handleClick = () => {
+  handleClick = (): void => {
     const { email, password } = this.state;
     this.FbAuth.loginUser(email, password);
   };
@@ -86,12 +95,12 @@ class Login extends Component {
 }
 
 export const LoginConn = connect(
-  state => {
+  (state: ReduxState) => {
     return {
       user: state.user[0]
     };
   },
-  dispatch => {
+  (dispatch: Dispatch) => {
     return { dispatch };
   }
 )(Login);
