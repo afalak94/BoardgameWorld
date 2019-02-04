@@ -1,25 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent, ReactNode } from 'react';
 import { Button } from 'reactstrap';
-import { FirebaseDB } from '../../Firebase';
-import AddItemTemplate from './AddItemTemplate';
+import { Dispatch } from 'redux';
 import _ from 'lodash';
-import styles from '../../../main/css/Admin.module.css';
 
-export default class ItemList extends Component {
-  //REMINDER: dont use componentWillMount because it acts unexpectedly
+import { FirebaseDB, FirebaseDBTypes } from '../../Firebase';
+import { CategoryInterface } from '../../Boardgames';
+
+import AddItemTemplate from './AddItemTemplate';
+const styles = require('../../../main/css/Admin.module.css');
+
+interface Props {
+  dispatch: Dispatch;
+  boardgames: any;
+  categories: CategoryInterface[];
+}
+
+export default class ItemList extends Component<Props> {
+  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public items: ReactNode;
+  // REMINDER: dont use componentWillMount because it acts unexpectedly
   componentDidMount() {
-    this.FbDB = new FirebaseDB();
+    // this.FbDB = new FirebaseDB(null);
     const { dispatch } = this.props;
     this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
     this.FbDB.saveDataFromDBToStore('categories', dispatch);
   }
 
-  handleClick = event => {
-    const { itemKey } = event.target.dataset;
-    this.FbDB.deleteItem(itemKey);
+  handleClick = (event: SyntheticEvent<HTMLButtonElement>): void => {
+    const { itemKey } = event.currentTarget.dataset;
+    this.FbDB.deleteItem(itemKey as string);
   };
 
-  renderItems = () => {
+  renderItems = (): ReactNode | null => {
     const { boardgames } = this.props;
     this.items = _.map(boardgames, (value, key) => {
       return (
@@ -39,6 +51,7 @@ export default class ItemList extends Component {
     if (!_.isEmpty(this.items)) {
       return this.items;
     }
+    return null;
   };
 
   render() {

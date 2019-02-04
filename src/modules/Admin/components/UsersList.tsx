@@ -1,19 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent, ReactNode } from 'react';
 import { Button } from 'reactstrap';
 import _ from 'lodash';
-import { fetchUsers, deleteUser } from '../../Firebase';
-import styles from '../../../main/css/Admin.module.css';
+import { Dispatch } from 'redux';
 
-export default class UsersList extends Component {
+import { fetchUsers, deleteUser } from '../../Firebase';
+import { User } from '../../Authentication';
+const styles = require('../../../main/css/Admin.module.css');
+
+interface Props {
+  dispatch: Dispatch;
+  allUsers: User[];
+}
+
+export default class UsersList extends Component<Props> {
+  public users: ReactNode;
+
   componentDidMount() {
-    this.props.dispatch(fetchUsers());
+    this.props.dispatch(fetchUsers() as any);
   }
 
-  //function that will delete user and fetch a new user list
-  handleClick = event => {
+  // function that will delete user and fetch a new user list
+  handleClick = (event: SyntheticEvent<HTMLButtonElement>) => {
     const { dispatch } = this.props;
-    const { userUid } = event.target.dataset;
-    dispatch(deleteUser(userUid, dispatch));
+    const { userUid } = event.currentTarget.dataset;
+    dispatch(deleteUser(userUid) as any);
   };
 
   renderUsers = () => {
@@ -37,6 +47,7 @@ export default class UsersList extends Component {
     if (!_.isEmpty(this.users)) {
       return this.users;
     }
+    return null;
   };
 
   render() {

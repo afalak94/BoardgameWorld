@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent, SyntheticEvent } from 'react';
 import {
   Button,
   Form,
@@ -10,12 +10,37 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-import { FirebaseDB } from '../../Firebase';
-import { MyToggler } from './MyToggler';
-import styles from '../../../main/css/Admin.module.css';
 
-export default class AddItemTemplate extends Component {
-  constructor(props) {
+import { FirebaseDB, FirebaseDBTypes } from '../../Firebase';
+import { CategoryInterface } from '../../Boardgames';
+
+import { MyToggler } from './MyToggler';
+const styles = require('../../../main/css/Admin.module.css');
+
+interface Props {
+  categories: CategoryInterface[];
+}
+
+interface State {
+  nameValue?: string;
+  scoreValue?: string;
+  imgUrlValue?: string;
+  priceValue?: string;
+  salePriceValue?: string;
+  onSale: boolean;
+  descriptionValue?: string;
+  dropdownValue1?: string;
+  dropdownValue2?: string;
+  dropdownValue3?: string;
+  dropdownOpen1?: boolean;
+  dropdownOpen2: boolean;
+  dropdownOpen3: boolean;
+}
+
+export default class AddItemTemplate extends Component<Props, State> {
+  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -24,8 +49,6 @@ export default class AddItemTemplate extends Component {
       dropdownOpen3: false,
       onSale: false
     };
-
-    this.FbDB = new FirebaseDB();
   }
 
   handleSubmit = () => {
@@ -41,7 +64,7 @@ export default class AddItemTemplate extends Component {
       dropdownValue2,
       dropdownValue3
     } = this.state;
-    //firebase service method
+    // firebase service method
     this.FbDB.addNewItem(
       nameValue,
       scoreValue,
@@ -54,38 +77,38 @@ export default class AddItemTemplate extends Component {
     );
   };
 
-  commonChange = event => {
-    const { type, name, checked, value } = event.target;
+  commonChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { type, name, checked, value } = event.currentTarget;
     if (type === 'checkbox') {
       this.setState({
         [name]: checked
-      });
+      } as Pick<State, 'onSale'>);
       return;
     }
     this.setState({
       [name]: value
-    });
+    } as Pick<State, 'nameValue' | 'scoreValue' | 'imgUrlValue' | 'priceValue' | 'salePriceValue' | 'descriptionValue'>);
   };
 
-  //function that changes menu toggler text when the category is selected
-  dropdownSelectValue = event => {
-    const { category, dropdown, value } = event.target.dataset;
+  // function that changes menu toggler text when the category is selected
+  dropdownSelectValue = (event: SyntheticEvent<any>) => {
+    const { category, dropdown, value } = event.currentTarget.dataset;
     this.setState({
       [dropdown]: !this.state[dropdown],
       [value]: category
-    });
+    } as Pick<State, keyof State>);
   };
 
-  //combined toggler for three dropdown buttons, they are wraped inside MyToggler component
-  //because data atributes do not work with some reactstrap elements like this one
-  dropdownToggle = id => {
+  // combined toggler for three dropdown buttons, they are wraped inside MyToggler component
+  // because data atributes do not work with some reactstrap elements like this one
+  dropdownToggle = (id: string) => {
     this.setState({
       [id]: !this.state[id]
-    });
+    } as Pick<State, 'dropdownOpen1' | 'dropdownOpen2' | 'dropdownOpen3'>);
   };
 
-  //reactstrap component ButtonDropdown requires to have toggle atribute, but it has a value of
-  //doNothing. Togglers are instead combined with wrapper component MyToggler that use dropdownToggle
+  // reactstrap component ButtonDropdown requires to have toggle atribute, but it has a value of
+  // doNothing. Togglers are instead combined with wrapper component MyToggler that use dropdownToggle
   doNothing = () => {};
 
   render() {
@@ -239,7 +262,7 @@ export default class AddItemTemplate extends Component {
         <FormGroup className={styles['form__submit']}>
           <Button
             color='success'
-            //passing all values to addNewItem function from props
+            // passing all values to addNewItem function from props
             onClick={this.handleSubmit}
           >
             Submit

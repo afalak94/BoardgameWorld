@@ -1,6 +1,12 @@
 import React from 'react';
 
-export const MyToggler = props => {
+interface Props {
+  id: string;
+  children: JSX.Element;
+  onClick(id: string): void;
+}
+
+export const MyToggler = (props: Props) => {
   const handleButtonClick = () => {
     const { onClick, id } = props;
     onClick(id);

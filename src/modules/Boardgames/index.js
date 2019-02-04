@@ -14,4 +14,4 @@ export {
   saleGamesSelector
 } from './redux/index';
 export { initialBoardgame, initialCategories } from './consts/initialValues';
-export { Boardgame } from './consts/interfaces';
+export { Boardgame, CategoryInterface } from './consts/interfaces';

@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": false, //toggle this while converting to TS
+    "noImplicitAny": true, //toggle this while converting to TS
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,

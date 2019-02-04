@@ -51,7 +51,7 @@ export class FirebaseAuth extends Component {
   }
 
   deleteUser(userUid, dispatch) {
-    //protect admin user
+    // protect admin user
     if (userUid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
       return;
     }

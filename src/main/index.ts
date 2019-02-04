@@ -7,3 +7,5 @@ export {
 export { HomeConn as Home } from './views/Home';
 export { Notfound } from './views/NotFound';
 export { LocalStorageService } from './services/LocalStorage';
+// export { default } from './Redux/store';
+export * from './Redux/store';

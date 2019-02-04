@@ -10,6 +10,11 @@ interface GameData {
   score: string;
 }
 
+export interface CategoryInterface {
+  key: string;
+  value: string;
+}
+
 export interface Boardgame {
   key: string;
   value: GameData;

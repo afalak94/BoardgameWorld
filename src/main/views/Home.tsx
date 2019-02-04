@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { SaleCarousel } from '../index';
+import { SaleCarousel, ReduxState } from '../index';
 import { User } from '../../modules/Authentication';
 import { FirebaseDB, FirebaseDBTypes } from '../../modules/Firebase';
 import {
@@ -13,10 +13,13 @@ import {
 } from '../../modules/Boardgames';
 const styles = require('../css/Home.module.css');
 
-interface Props {
+interface ReduxStateProps {
   saleGames: Boardgame[];
-  dispatch: Dispatch;
   user: User;
+}
+
+interface Props extends ReduxStateProps {
+  dispatch: Dispatch;
 }
 
 class Home extends Component<Props> {
@@ -74,7 +77,7 @@ class Home extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state: any): any => ({
+const mapStateToProps = (state: ReduxState): ReduxStateProps => ({
   user: state.user[0],
   saleGames: saleGamesSelector(state)
 });
