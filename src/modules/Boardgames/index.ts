@@ -1,6 +1,7 @@
-export { ListingConn as Listing } from './views/Listing.jsx';
+export { ListingConn as Listing } from './views/Listing';
 export { locateGameByKey } from './consts/locateGameByKey';
 export { GameCard } from './components/GameCard';
+export { GameInfoConn as GameInfo } from './views/GameInfo';
 export {
   addToStore,
   addCategories,
@@ -11,7 +12,8 @@ export {
   selectedCategoryReducer,
   priceReducer,
   mainSelector,
-  saleGamesSelector
+  saleGamesSelector,
+  ListingTypes
 } from './redux/index';
 export { initialBoardgame, initialCategories } from './consts/initialValues';
-export { Boardgame, CategoryInterface } from './consts/interfaces';
+export * from './consts/interfaces';

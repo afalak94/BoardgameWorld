@@ -11,3 +11,4 @@ export {
   priceReducer
 } from './reducer';
 export { mainSelector, saleGamesSelector } from './selectors';
+export * from './types';

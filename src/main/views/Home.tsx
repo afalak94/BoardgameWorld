@@ -39,15 +39,7 @@ class Home extends Component<Props> {
   renderSaleGames = (): ReactNode => {
     const { saleGames } = this.props;
     this.saleItems = _.map(saleGames, (value, key) => {
-      return (
-        <GameCard
-          className={styles['saleGames_card']}
-          key={key}
-          game={value}
-          user={this.props.user}
-          FbDB={this.FbDB}
-        />
-      );
+      return <GameCard key={key} game={value} user={this.props.user} />;
     });
     if (!_.isEmpty(this.saleItems)) {
       return this.saleItems;

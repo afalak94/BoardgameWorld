@@ -1,5 +1,5 @@
-//Listing container
-import React, { Component } from 'react';
+// Listing container
+import React, { Component, ReactNode, MouseEvent } from 'react';
 import {
   Col,
   Row,
@@ -10,43 +10,63 @@ import {
   Breadcrumb,
   BreadcrumbItem
 } from 'reactstrap';
-import { FirebaseDB } from '../../Firebase';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+
+import { FirebaseDB, FirebaseDBTypes } from '../../Firebase';
 import { updateSearchTerm } from '../../Navigation';
 import {
   selectCategory,
   selectPriceOrder,
   mainSelector,
-  GameCard
+  GameCard,
+  CategoryInterface,
+  Boardgame
 } from '../index';
-import styles from '../../../main/css/Listing.module.css';
+import { User } from '../../Authentication';
+import { ReduxState } from '../../../main';
+const styles = require('../../../main/css/Listing.module.css');
 
-class Listing extends Component {
+interface Props {
+  dispatch: Dispatch;
+  user: User;
+  categories: CategoryInterface[];
+  term: string;
+  selectedCategory: string;
+  priceFilter: string;
+  selectedBoardgames(state: ReduxState): Boardgame | Boardgame[] | null;
+}
+
+class Listing extends Component<Props> {
+  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public items: ReactNode;
+  public categories: ReactNode;
+
   componentDidMount() {
     const { dispatch } = this.props;
-    //save items to redux store
+    // save items to redux store
     this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
-    //save categories to redux store
+    // save categories to redux store
     this.FbDB.saveDataFromDBToStore('categories', dispatch);
   }
 
-  renderItems = () => {
-    //console.log(this.props.selectedBoardgames); => implemented only name selector for now
+  renderItems = (): ReactNode | null => {
     const { selectedBoardgames, user } = this.props;
     this.items = _.map(selectedBoardgames, (value, key) => {
       return (
         <Col xs='4' key={key}>
-          <GameCard game={value} user={user} FbDB={this.FbDB} />
+          <GameCard game={value} user={user} />
         </Col>
       );
     });
     if (!_.isEmpty(this.items)) {
       return this.items;
     }
+    return null;
   };
 
-  renderCategories = () => {
+  renderCategories = (): ReactNode | null => {
     const { categories } = this.props;
     this.categories = _.map(categories, (value, key) => {
       return (
@@ -65,21 +85,22 @@ class Listing extends Component {
     if (!_.isEmpty(this.categories)) {
       return this.categories;
     }
+    return null;
   };
 
-  categoryClicked = event => {
+  categoryClicked = (event: MouseEvent<HTMLElement>): void => {
     const { dispatch } = this.props;
-    const { categoryValue } = event.target.dataset;
-    dispatch(selectCategory(categoryValue));
+    const { categoryValue } = event.currentTarget.dataset;
+    dispatch(selectCategory(categoryValue as string));
   };
 
-  handlePriceClick = event => {
+  handlePriceClick = (event: MouseEvent<HTMLElement>): void => {
     const { dispatch } = this.props;
-    const { type } = event.target.dataset;
-    dispatch(selectPriceOrder(type));
+    const { type } = event.currentTarget.dataset;
+    dispatch(selectPriceOrder(type as string));
   };
 
-  handleFiltersClick = () => {
+  handleFiltersClick = (): void => {
     const { dispatch } = this.props;
     dispatch(selectCategory(''));
     dispatch(selectPriceOrder(''));
@@ -87,9 +108,6 @@ class Listing extends Component {
   };
 
   render() {
-    //create instance of firebase database service
-    this.FbDB = new FirebaseDB();
-
     const { term, selectedCategory, priceFilter } = this.props;
     return (
       <Row>
@@ -151,7 +169,7 @@ class Listing extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: ReduxState) {
   return {
     user: state.user[0],
     categories: state.categories,
@@ -164,7 +182,7 @@ function mapStateToProps(state) {
 
 export const ListingConn = connect(
   mapStateToProps,
-  dispatch => {
+  (dispatch: Dispatch) => {
     return { dispatch };
   }
 )(Listing);

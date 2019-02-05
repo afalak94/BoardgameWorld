@@ -7,6 +7,13 @@ interface LocalStorageItem {
   data: Boardgame;
 }
 
+export interface LocalStorageInterface {
+  addToLocalStorage(data: Boardgame): void;
+  removeFromLocalStorage(key: string): string;
+  increaseLocalStorageQuantity(key: string): string;
+  decreaseLocalStorageQuantity(key: string): string;
+}
+
 export class LocalStorageService extends Component {
   addToLocalStorage = (data: Boardgame) => {
     // function that adds item to localStorage

@@ -1,33 +1,46 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import styles from '../../../main/css/GameInfo.module.css';
+import { Dispatch } from 'redux';
+
+import { FirebaseDB, FirebaseDBTypes } from '../../Firebase';
+import {
+  LocalStorageService,
+  LocalStorageInterface,
+  ReduxState
+} from '../../../main';
+import { User } from '../../Authentication';
 import { locateGameByKey } from '../index';
-import { FirebaseDB } from '../../Firebase';
-import { LocalStorageService } from '../../../main';
+import { Boardgame } from '../consts/interfaces';
+const styles = require('../../../main/css/GameInfo.module.css');
 
-class GameInfo extends Component {
-  constructor(props) {
+interface Props {
+  dispatch: Dispatch;
+  user: User;
+  match: { params: { id: string } };
+  boardgames: Boardgame[];
+}
+
+class GameInfo extends Component<Props> {
+  // find the boardgame from redux store with the coresponding key
+  public boardgame: Boardgame | null = locateGameByKey(this.props);
+  // instantiate service objects
+  public LS: LocalStorageInterface = new LocalStorageService({});
+  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+
+  constructor(props: Props) {
     super(props);
-
-    //find the boardgame from redux store with the coresponding key
-    this.boardgame = locateGameByKey(this.props);
-
-    //instantiate service objects
-    this.LS = new LocalStorageService();
-    this.FbDB = new FirebaseDB();
 
     const { dispatch } = this.props;
     this.FbDB.saveDataFromDBToStore('boardgames', dispatch);
   }
 
-  //when user refreshes page, redux store is updated again and component can locate game
-  componentWillReceiveProps(nextProps) {
+  // when user refreshes page, redux store is updated again and component can locate game
+  componentWillReceiveProps(nextProps: Props) {
     this.boardgame = locateGameByKey(nextProps);
   }
 
-  renderCategories = () => {
-    //console.log(this.boardgame.value.category);
+  renderCategories = (): ReactNode => {
     if (!this.boardgame) {
       return null;
     }
@@ -40,7 +53,10 @@ class GameInfo extends Component {
     });
   };
 
-  renderPrice = () => {
+  renderPrice = (): ReactNode => {
+    if (!this.boardgame) {
+      return null;
+    }
     const { onSale, price, salePrice } = this.boardgame.value;
     if (onSale === false) {
       return <div className={styles['gameinfo__price']}>Price: {price} $</div>;
@@ -53,11 +69,14 @@ class GameInfo extends Component {
     );
   };
 
-  handleClick = () => {
+  handleClick = (): any => {
+    if (!this.boardgame) {
+      return null;
+    }
     const { user } = this.props;
     user.uid !== 'guest'
-      ? this.FbDB.addItemToUsersCart(this.boardgame, user)
-      : this.LS.addToLocalStorage(this.boardgame);
+      ? this.FbDB.addItemToUsersCart(this.boardgame as Boardgame, user)
+      : this.LS.addToLocalStorage(this.boardgame as Boardgame);
   };
 
   render() {
@@ -100,11 +119,11 @@ class GameInfo extends Component {
 }
 
 export const GameInfoConn = connect(
-  state => {
+  (state: ReduxState) => {
     return {
       user: state.user[0],
       boardgames: state.boardgames[0]
     };
   },
   null
-)(GameInfo);
+)(GameInfo as any);

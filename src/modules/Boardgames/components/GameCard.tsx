@@ -8,20 +8,33 @@ import {
   Button
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import styles from '../../../main/css/gameCard.module.css';
-import { LocalStorageService } from '../../../main';
 
-export class GameCard extends Component {
+import { User } from '../../Authentication';
+import { LocalStorageService, LocalStorageInterface } from '../../../main';
+import { Boardgame } from '../../Boardgames';
+import { FirebaseDB, FirebaseDBTypes } from '../../Firebase';
+
+const styles = require('../../../main/css/gameCard.module.css');
+
+interface Props {
+  game: Boardgame;
+  user: User;
+}
+
+export class GameCard extends Component<Props> {
+  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public LS: LocalStorageInterface = new LocalStorageService({});
+
   handleClick = () => {
     const { game, user } = this.props;
     this.props.user.uid !== 'guest'
-      ? //if the user is loged in, add item to his firebase cart
-        this.props.FbDB.addItemToUsersCart(game, user)
-      : //if its not, add item to local storage
+      ? // if the user is loged in, add item to his firebase cart
+        this.FbDB.addItemToUsersCart(game, user)
+      : // if its not, add item to local storage
         this.LS.addToLocalStorage(game);
   };
 
-  renderPrices = () => {
+  renderPrices = (): any => {
     const { value } = this.props.game;
     if (value.onSale === false) {
       return (
@@ -42,8 +55,8 @@ export class GameCard extends Component {
     );
   };
 
-  renderDiscount = () => {
-    //calculate discount percent and display it on sale items
+  renderDiscount = (): any => {
+    // calculate discount percent and display it on sale items
     const { value } = this.props.game;
     if (!value) {
       return null;
@@ -51,19 +64,17 @@ export class GameCard extends Component {
 
     const { onSale, salePrice, price } = value;
     if (onSale === true) {
-      let discount = (1 - parseFloat(salePrice) / parseFloat(price)) * 100;
+      const discount = (1 - parseFloat(salePrice) / parseFloat(price)) * 100;
       return (
         <div className={styles['gameCard__saleOverlay']}>
           <span>-{Math.floor(discount)} %</span>
         </div>
       );
     }
+    return null;
   };
 
   render() {
-    //instantiate LocalStorageService object
-    this.LS = new LocalStorageService();
-
     const { key, value } = this.props.game;
     return (
       <div>
