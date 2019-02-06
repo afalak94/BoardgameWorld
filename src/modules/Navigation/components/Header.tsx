@@ -1,5 +1,5 @@
-//Navbar component
-import React, { Component } from 'react';
+// Navbar component
+import React, { Component, ChangeEvent } from 'react';
 import {
   Collapse,
   Navbar,
@@ -9,30 +9,40 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+
 import { updateSearchTerm } from '../index';
-import styles from '../../../main/css/Header.module.css';
-import { FirebaseAuth } from '../../Firebase';
+import { FirebaseAuth, FirebaseAuthTypes } from '../../Firebase';
+import { User } from '../../Authentication';
+import { ReduxState } from '../../../main';
+const styles = require('../../../main/css/Header.module.css');
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
+interface Props extends RouteComponentProps<any> {
+  dispatch: Dispatch;
+  user: User;
+  term: string;
+}
 
-    this.state = {
-      isOpen: false
-    };
+interface State {
+  isOpen: boolean;
+}
 
-    //firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-  }
+class Header extends Component<Props, State> {
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  public unsubscribe: any;
+  state = {
+    isOpen: false
+  };
 
   componentDidMount() {
-    this.unsubscribe = this.FbAuth.userListener(this.props.dispatch);
+    const { dispatch } = this.props;
+    this.unsubscribe = this.FbAuth.userListener(dispatch);
   }
 
   componentWillUnmount() {
-    //destroy listener for authentication
+    // destroy listener for authentication
     this.unsubscribe();
   }
 
@@ -42,13 +52,13 @@ class Header extends Component {
     });
   };
 
-  handleChange = e => {
+  handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { dispatch } = this.props;
-    //update redux store
+    // update redux store
     dispatch(updateSearchTerm(e.target.value));
   };
 
-  handleSearchClick = () => {
+  handleSearchClick = (): void => {
     const { history } = this.props;
     history.push('/listing');
   };
@@ -79,7 +89,7 @@ class Header extends Component {
                   aria-label='Search'
                   onChange={this.handleChange}
                   value={term}
-                  //go to /listing so user can see filtered items
+                  // go to /listing so user can see filtered items
                   onClick={this.handleSearchClick}
                 />
               </NavItem>
@@ -112,15 +122,14 @@ class Header extends Component {
 }
 
 export const HeaderConn = connect(
-  // mapStateToProps,
-  state => {
+  (state: ReduxState) => {
     return {
       user: state.user[0],
       boardgames: state.boardgames[0],
       term: state.searchTerm
     };
   },
-  dispatch => {
+  (dispatch: Dispatch) => {
     return { dispatch };
   }
 )(withRouter(Header));

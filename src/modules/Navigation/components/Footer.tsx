@@ -1,25 +1,36 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, ReactNode } from 'react';
 import { Navbar, Nav, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { FirebaseAuth } from '../../Firebase';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import styles from '../../../main/css/Footer.module.css';
 
-class Footer extends Component {
-  handleClick = () => {
+import { FirebaseAuth, FirebaseAuthTypes } from '../../Firebase';
+import { User } from '../..//Authentication';
+import { ReduxState } from '../../../main';
+const styles = require('../../../main/css/Footer.module.css');
+
+interface Props {
+  history: {};
+  dispatch: Dispatch;
+  user: User;
+}
+
+class Footer extends Component<Props> {
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+
+  handleClick = (): void => {
     const { dispatch, history } = this.props;
     this.FbAuth.logoutUser(dispatch, history);
   };
 
-  returnAuth = () => {
+  returnAuth = (): ReactNode => {
     const { user } = this.props;
     if (user && user.uid !== 'guest') {
       return (
         <div>
           <NavLink
             disabled={
-              //check if admin is logged in
+              // check if admin is logged in
               this.props.user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1'
                 ? false
                 : true
@@ -61,9 +72,6 @@ class Footer extends Component {
   };
 
   render() {
-    //firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-
     return (
       <div className={styles['footer']}>
         <Navbar expand='md'>
@@ -85,13 +93,17 @@ class Footer extends Component {
   }
 }
 
+const mapStateToProps = (state: ReduxState) => {
+  return {
+    user: state.user[0]
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return { dispatch };
+};
+
 export const FooterConn = connect(
-  state => {
-    return {
-      user: state.user[0]
-    };
-  },
-  dispatch => {
-    return { dispatch };
-  }
-)(withRouter(Footer));
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Footer as any));

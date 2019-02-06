@@ -18,7 +18,7 @@
     "quotemark": [true, "single", "avoid-escape" /*, "jsx-double"*/],
     "no-var-requires": false,
     "no-trailing-whitespace": false,
-    "jsx-no-lambda": true, //change this back to true
+    "jsx-no-lambda": true,
     "jsx-boolean-value": false,
     "jsx-no-multiline-js": false,
     "jsx-wrap-multiline": false,

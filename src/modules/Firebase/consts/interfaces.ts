@@ -17,12 +17,12 @@ export interface FirebaseDBTypes {
 }
 
 export interface FirebaseAuthTypes {
-  userListener(dispatch: Dispatch, history: any): any;
+  userListener(dispatch: Dispatch, history?: {}): any;
   fetchUserCart(dispatch: Dispatch): any;
   fetchAllUsers(dispatch: Dispatch): void;
   deleteUser(userUid: string, dispatch: Dispatch): void;
-  register(email: string, password: string, history: any): void;
+  register(email: string, password: string, history: {}): void;
   loginUser(email: string, password: string): void;
-  logoutUser(dispatch: Dispatch, history: any): void;
+  logoutUser(dispatch: Dispatch, history: {}): void;
   resetPW(email: string): void;
 }
