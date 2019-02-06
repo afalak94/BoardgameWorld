@@ -19,7 +19,7 @@ interface State {
   password: string;
 }
 class Login extends Component<Props, State> {
-  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({});
   state = { email: '', password: '' };
   public unsubscribe: any;
 

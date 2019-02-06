@@ -1,4 +1,4 @@
-import { FirebaseTypes } from './types';
+import { FirebaseTypes, FetchUsersAction } from './index';
 
 const initialUsers = {
   uid: '6qXBbupnZsQkpp5vj5ZmteGF1qs1',
@@ -11,7 +11,10 @@ const initialUsers = {
   }
 };
 
-export const usersReducer = (state = [initialUsers], action) => {
+export const usersReducer = (
+  state = [initialUsers],
+  action: FetchUsersAction
+) => {
   switch (action.type) {
     case FirebaseTypes.FETCH_USERS:
       return action.payload;

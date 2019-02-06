@@ -25,13 +25,7 @@ interface Props extends ReduxStateProps {
 }
 
 class AdminSection extends React.Component<Props> {
-  public FbDB: FirebaseDBTypes;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.FbDB = new FirebaseDB(null);
-  }
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
 
   renderCategoryManagement = (props: {}): ReactNode => {
     return (

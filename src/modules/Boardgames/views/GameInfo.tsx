@@ -26,7 +26,7 @@ class GameInfo extends Component<Props> {
   public boardgame: Boardgame | null = locateGameByKey(this.props);
   // instantiate service objects
   public LS: LocalStorageInterface = new LocalStorageService({});
-  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
 
   constructor(props: Props) {
     super(props);

@@ -22,15 +22,9 @@ interface State {
 }
 
 export default class CategoryList extends Component<Props, State> {
-  public FbDB: FirebaseDBTypes;
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
   public categories: ReactNode;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = { inputValue: '' };
-    this.FbDB = new FirebaseDB(null);
-  }
+  state = { inputValue: '' };
 
   componentDidMount() {
     this.FbDB.saveDataFromDBToStore('categories', this.props.dispatch);

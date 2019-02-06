@@ -1,18 +1,24 @@
 import { Component } from 'react';
-import firebase from '../firebase.config';
+import { Dispatch } from 'redux';
 import 'firebase/database';
-import { addCategories, addToStore } from '../../Boardgames';
-import { FirebaseTypes } from '../index';
 
-export class FirebaseDB extends Component {
-  saveDataFromDBToStore(branch, dispatch) {
+import firebase from '../firebase.config';
+import { addCategories, addToStore, Boardgame } from '../../Boardgames';
+import { FirebaseTypes, FirebaseDBTypes } from '../index';
+import { User } from '../../Authentication';
+
+export class FirebaseDB extends Component<FirebaseDBTypes> {
+  saveDataFromDBToStore(branch: string, dispatch: Dispatch): void {
     const keys = { boardgames: 'boardgames/', categories: 'categories/' };
-    const dataType = keys[branch];
-    //get all data from wanted firebase database branch (boardgames or categories)
-    this.data = firebase.database().ref(dataType);
-    this.data.on('value', snap => {
-      //save categories data as array of objects with key-value pairs
-      let data = [];
+    const dataType: string = keys[branch];
+    // get all data from wanted firebase database branch (boardgames or categories)
+    const Data = firebase.database().ref(dataType);
+    Data.on('value', snap => {
+      // save categories data as array of objects with key-value pairs
+      const data: Array<{ key: string | null; value: any }> = [];
+      if (!snap) {
+        return;
+      }
       snap.forEach(ss => {
         data.push({ key: ss.key, value: ss.val() });
       });
@@ -24,16 +30,16 @@ export class FirebaseDB extends Component {
     });
   }
 
-  addItemToUsersCart(newitem, user) {
-    let updates = {};
+  addItemToUsersCart(newitem: Boardgame, user: User) {
+    const updates = {};
     firebase
       .database()
       .ref('carts/' + user.uid + '/' + newitem.key)
       .once('value')
       .then(snapshot => {
         if (snapshot.exists()) {
-          //if item in cart exists alredy, update its quantity
-          let quantity = snapshot.val().quantity;
+          // if item in cart exists alredy, update its quantity
+          const quantity = snapshot.val().quantity;
           updates['/carts/' + user.uid + '/' + newitem.key + '/quantity'] =
             quantity + 1;
           firebase
@@ -42,8 +48,8 @@ export class FirebaseDB extends Component {
             .update(updates);
           return;
         }
-        //if item in cart doesnt exist, create it
-        let data = {
+        // if item in cart doesnt exist, create it
+        const data = {
           quantity: 1,
           data: newitem.value
         };
@@ -55,33 +61,35 @@ export class FirebaseDB extends Component {
       });
   }
 
-  removeItemFromUsersCart(removeitemId, user) {
+  removeItemFromUsersCart(removeitemId: string, userUid: string) {
     firebase
       .database()
       .ref('/carts')
-      .child(user)
+      .child(userUid)
       .child(removeitemId)
       .remove();
   }
 
-  fetchUsersItems(user, dispatch) {
+  fetchUsersItems(userUid: string, dispatch: Dispatch) {
     firebase
       .database()
       .ref('/carts')
-      .child(user)
+      .child(userUid)
       .on('value', snapshot => {
-        dispatch({
-          type: FirebaseTypes.FETCH_ITEMS,
-          payload: snapshot.val()
-        });
+        if (snapshot) {
+          dispatch({
+            type: FirebaseTypes.FETCH_ITEMS,
+            payload: snapshot.val()
+          });
+        }
       });
   }
 
-  increaseItemQuantity(itemId, user) {
+  increaseItemQuantity(itemId: string, userUid: string) {
     const quantity = firebase
       .database()
       .ref('/carts')
-      .child(user)
+      .child(userUid)
       .child(itemId)
       .child('quantity');
 
@@ -90,21 +98,21 @@ export class FirebaseDB extends Component {
     });
   }
 
-  decreaseItemQuantity(itemId, user) {
+  decreaseItemQuantity(itemId: string, userUid: string) {
     const quantity = firebase
       .database()
       .ref('/carts')
-      .child(user)
+      .child(userUid)
       .child(itemId)
       .child('quantity');
 
     quantity.transaction(currentQuantity => {
-      //delete item if its quantity should drop to zero
+      // delete item if its quantity should drop to zero
       if (currentQuantity === 1) {
         firebase
           .database()
           .ref('/carts')
-          .child(user)
+          .child(userUid)
           .child(itemId)
           .remove();
         return;
@@ -113,9 +121,9 @@ export class FirebaseDB extends Component {
     });
   }
 
-  addCategory(name) {
-    //adding a new category to firebase
-    //check if name is valid length
+  addCategory(name: string) {
+    // adding a new category to firebase
+    // check if name is valid length
     if (name.length < 1 || name.length > 18) {
       alert('Invalid category name length');
       return;
@@ -126,8 +134,8 @@ export class FirebaseDB extends Component {
       .ref()
       .child('categories')
       .push().key;
-    //update a new category to firebase
-    let updates = {};
+    // update a new category to firebase
+    const updates = {};
     updates['/categories/' + newPostKey] = name;
     return firebase
       .database()
@@ -135,8 +143,8 @@ export class FirebaseDB extends Component {
       .update(updates);
   }
 
-  deleteCategory(key) {
-    //removing category from firebase by using key
+  deleteCategory(key: string) {
+    // removing category from firebase by using key
     firebase
       .database()
       .ref('categories/')
@@ -144,8 +152,8 @@ export class FirebaseDB extends Component {
       .remove();
   }
 
-  deleteItem(key) {
-    //removing category from firebase by using key
+  deleteItem(key: string) {
+    // removing category from firebase by using key
     firebase
       .database()
       .ref('boardgames/')
@@ -153,16 +161,16 @@ export class FirebaseDB extends Component {
       .remove();
   }
 
-  //function that adds a new item in boardgames to firebase database
+  // function that adds a new item in boardgames to firebase database
   addNewItem = (
-    name,
-    score,
-    imgUrl,
-    price,
-    salePrice,
-    onSale,
-    description,
-    category
+    name: string,
+    score: string,
+    imgUrl: string,
+    price: string,
+    salePrice: string,
+    onSale: boolean,
+    description: string,
+    category: string[]
   ) => {
     if (
       !name ||
@@ -176,13 +184,11 @@ export class FirebaseDB extends Component {
       alert('All fields are required');
       return;
     }
-    //listener for new child entries
+    // listener for new child entries
     firebase
       .database()
       .ref('boardgames/')
-      .on('child_added', snap => {
-        //console.log(snap.val());
-      });
+      .on('child_added', snap => {});
     // Item data
     const itemData = {
       name: name,

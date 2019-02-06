@@ -1,17 +1,19 @@
 import { Component } from 'react';
-import firebase from '../firebase.config';
 import 'firebase/auth';
-import { addUser } from '../../Authentication';
-import { fetchitems, fetchUsers, FirebaseTypes } from '..';
 import axios from 'axios';
+import { Dispatch } from 'redux';
+
+import firebase from '../firebase.config';
+import { addUser } from '../../Authentication';
+import { fetchitems, fetchUsers } from '../index';
 
 export class FirebaseAuth extends Component {
-  userListener(dispatch, history) {
+  userListener(dispatch: Dispatch, history: { push(route: string): any }) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         dispatch(addUser(user));
 
-        //if the history object has been provided, push to a new route
+        // if the history object has been provided, push to a new route
         if (history) {
           if (user.uid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
             history.push('/admin');
@@ -26,31 +28,28 @@ export class FirebaseAuth extends Component {
     return unsubscribe;
   }
 
-  fetchUserCart(dispatch) {
+  fetchUserCart(dispatch: Dispatch<any>) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        //when the user is logged in then fetch his cart from firebase
+        // when the user is logged in then fetch his cart from firebase
         dispatch(fetchitems(user.uid));
       }
     });
     return unsubscribe;
   }
 
-  fetchAllUsers(dispatch) {
-    //getting the list of all users
+  fetchAllUsers(dispatch: Dispatch) {
+    // getting the list of all users
     axios
       .get(
         `https://us-central1-react-store-3406f.cloudfunctions.net/getAllUsers`
       )
       .then(res => {
-        dispatch({
-          type: FirebaseTypes.FETCH_USERS,
-          payload: res.data
-        });
+        dispatch(fetchUsers(res.data));
       });
   }
 
-  deleteUser(userUid, dispatch) {
+  deleteUser(userUid: string, dispatch: Dispatch<any>): void {
     // protect admin user
     if (userUid === '6qXBbupnZsQkpp5vj5ZmteGF1qs1') {
       return;
@@ -67,17 +66,21 @@ export class FirebaseAuth extends Component {
         }
       )
       .then(() => {
-        //fetch users again to refresh users list in users management
-        dispatch(fetchUsers());
+        // fetch users again to refresh users list in users management
+        this.fetchAllUsers(dispatch);
       });
   }
 
-  register(email, password, history) {
+  register(
+    email: string,
+    password: string,
+    history: { push(route: string): any }
+  ) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        //redirect loged in user to homepage
+        // redirect loged in user to homepage
         history.push('/');
       })
       .catch(error => {
@@ -86,7 +89,7 @@ export class FirebaseAuth extends Component {
       });
   }
 
-  loginUser(email, password) {
+  loginUser(email: string, password: string) {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -95,17 +98,17 @@ export class FirebaseAuth extends Component {
       });
   }
 
-  logoutUser(dispatch, history) {
-    //delete user data from redux store and redirect to Home
-    let promise = new Promise(() => {
+  logoutUser(dispatch: Dispatch<any>, history: { push(route: string): any }) {
+    // delete user data from redux store and redirect to Home
+    const promise = new Promise(() => {
       firebase.auth().signOut();
     });
     promise
-      .then(dispatch(addUser({ uid: 'none', email: 'Guest' })))
+      .then(dispatch(addUser({ uid: 'none', email: 'Guest' })) as any)
       .then(history.push('/'));
   }
 
-  resetPW(email) {
+  resetPW(email: string) {
     firebase
       .auth()
       .sendPasswordResetEmail(email)

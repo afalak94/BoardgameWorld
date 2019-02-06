@@ -12,7 +12,7 @@ interface State {
 export class ResetPassword extends Component<{}, State> {
   public state = { email: '' };
   // firebase authentication object
-  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({});
 
   handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ email: e.target.value });

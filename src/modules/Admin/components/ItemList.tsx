@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default class ItemList extends Component<Props> {
-  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
   public items: ReactNode;
   // REMINDER: dont use componentWillMount because it acts unexpectedly
   componentDidMount() {

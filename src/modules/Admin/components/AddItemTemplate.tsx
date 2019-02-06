@@ -38,7 +38,7 @@ interface State {
 }
 
 export default class AddItemTemplate extends Component<Props, State> {
-  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
 
   constructor(props: Props) {
     super(props);
@@ -196,7 +196,7 @@ export default class AddItemTemplate extends Component<Props, State> {
                       data-category={cat.value}
                       data-dropdown='dropdownOpen1'
                       data-value='dropdownValue1'
-                      key={cat.key}
+                      key={cat.key as string}
                     >
                       {cat.value}
                     </DropdownItem>
@@ -219,7 +219,7 @@ export default class AddItemTemplate extends Component<Props, State> {
                   return (
                     <DropdownItem
                       onClick={this.dropdownSelectValue}
-                      key={cat.key}
+                      key={cat.key as string}
                       data-category={cat.value}
                       data-dropdown='dropdownOpen2'
                       data-value='dropdownValue2'
@@ -245,7 +245,7 @@ export default class AddItemTemplate extends Component<Props, State> {
                   return (
                     <DropdownItem
                       onClick={this.dropdownSelectValue}
-                      key={cat.key}
+                      key={cat.key as string}
                       data-category={cat.value}
                       data-dropdown='dropdownOpen3'
                       data-value='dropdownValue3'

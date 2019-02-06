@@ -30,7 +30,7 @@ interface State {
 }
 
 class Header extends Component<Props, State> {
-  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({});
   public unsubscribe: any;
   state = {
     isOpen: false

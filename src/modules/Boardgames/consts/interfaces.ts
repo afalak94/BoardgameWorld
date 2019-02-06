@@ -1,4 +1,4 @@
-interface GameData {
+export interface GameData {
   category: [];
   description: string;
   id?: number;
@@ -11,11 +11,11 @@ interface GameData {
 }
 
 export interface CategoryInterface {
-  key: string;
+  key: string | null;
   value: string;
 }
 
 export interface Boardgame {
-  key: string;
+  key: string | null;
   value: GameData;
 }

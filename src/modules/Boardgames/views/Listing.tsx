@@ -39,7 +39,7 @@ interface Props {
 }
 
 class Listing extends Component<Props> {
-  public FbDB: FirebaseDBTypes = new FirebaseDB(null);
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
   public items: ReactNode;
   public categories: ReactNode;
 

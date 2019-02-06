@@ -23,14 +23,8 @@ interface Props extends ReduxStateProps {
 }
 
 class Home extends Component<Props> {
-  public FbDB: FirebaseDBTypes;
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
   public saleItems: ReactNode;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.FbDB = new FirebaseDB(null);
-  }
 
   componentDidMount() {
     this.FbDB.saveDataFromDBToStore('boardgames', this.props.dispatch);

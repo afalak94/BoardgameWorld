@@ -16,7 +16,7 @@ interface State {
 
 export class Register extends Component<Props, State> {
   public state = { email: '', password: '' };
-  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({});
 
   handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ [e.target.name]: e.target.value } as Pick<

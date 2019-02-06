@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
 
-const DB_config = {
+const DB_CONFIG = {
   apiKey: 'AIzaSyCAEv8OsmbYHlXlHWBSHTQz8VBOrg5y-y4',
   authDomain: 'react-store-3406f.firebaseapp.com',
   databaseURL: 'https://react-store-3406f.firebaseio.com',
@@ -10,7 +10,7 @@ const DB_config = {
   messagingSenderId: '731538580683'
 };
 
-//check if connection alredy exists then connect or return connection
+// check if connection alredy exists then connect or return connection
 export default (!firebase.apps.length
-  ? firebase.initializeApp(DB_config)
+  ? firebase.initializeApp(DB_CONFIG)
   : firebase.app());

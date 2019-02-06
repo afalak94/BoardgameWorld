@@ -3,7 +3,7 @@ import { Button } from 'reactstrap';
 import _ from 'lodash';
 import { Dispatch } from 'redux';
 
-import { fetchUsers, deleteUser } from '../../Firebase';
+import { FirebaseAuth, FirebaseAuthTypes } from '../../Firebase';
 import { User } from '../../Authentication';
 const styles = require('../../../main/css/Admin.module.css');
 
@@ -14,16 +14,18 @@ interface Props {
 
 export default class UsersList extends Component<Props> {
   public users: ReactNode;
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({} as FirebaseAuthTypes);
 
   componentDidMount() {
-    this.props.dispatch(fetchUsers() as any);
+    this.FbAuth.fetchAllUsers(this.props.dispatch);
   }
 
   // function that will delete user and fetch a new user list
   handleClick = (event: SyntheticEvent<HTMLButtonElement>) => {
     const { dispatch } = this.props;
     const { userUid } = event.currentTarget.dataset;
-    dispatch(deleteUser(userUid) as any);
+    // dispatch<any>(deleteUser(userUid as string));
+    this.FbAuth.deleteUser(userUid as string, dispatch);
   };
 
   renderUsers = () => {

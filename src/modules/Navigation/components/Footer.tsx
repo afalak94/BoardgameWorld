@@ -16,7 +16,7 @@ interface Props {
 }
 
 class Footer extends Component<Props> {
-  public FbAuth: FirebaseAuthTypes = new FirebaseAuth(null);
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({});
 
   handleClick = (): void => {
     const { dispatch, history } = this.props;
