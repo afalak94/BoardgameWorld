@@ -1,5 +1,5 @@
-//Cart component
-import React, { Component } from 'react';
+// Cart component
+import React, { Component, ReactNode } from 'react';
 import {
   ListGroup,
   ListGroupItem,
@@ -10,35 +10,53 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { FirebaseAuth, FirebaseDB } from '../../Firebase';
-import { LocalStorageService } from '../../../main';
-import styles from '../../../main/css/Cart.module.css';
+import { Dispatch } from 'redux';
 
-class Cart extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      localCart: JSON.parse(localStorage.getItem('cart'))
-    };
+import {
+  FirebaseAuth,
+  FirebaseAuthTypes,
+  FirebaseDB,
+  FirebaseDBTypes
+} from '../../Firebase';
+import { CartInterface } from '../index';
+import { LocalStorageService, ReduxState } from '../../../main';
+import { User } from '../../Authentication';
+const styles = require('../../../main/css/Cart.module.css');
 
-    //instantiate LocalStorageService object
-    this.LS = new LocalStorageService();
-    //instantiate Firebase authentication object
-    this.FbAuth = new FirebaseAuth();
-    //instantiate firebase database object
-    this.FbDB = new FirebaseDB();
-  }
+interface Props {
+  dispatch: Dispatch;
+  user: User;
+  cart: CartInterface | CartInterface[];
+}
+
+class Cart extends Component<Props> {
+  state = {
+    localCart: JSON.parse(localStorage.getItem('cart') as string)
+  };
+
+  public unsubscribe: any;
+  public local: any;
+  public total: number = 0;
+  public numOfItems: number = 0;
+  public itemValue: string = '';
+  public itemsInCart: ReactNode;
+  // instantiate LocalStorageService object
+  public LS = new LocalStorageService({});
+  // instantiate Firebase authentication object
+  public FbAuth: FirebaseAuthTypes = new FirebaseAuth({});
+  // instantiate firebase database object
+  public FbDB: FirebaseDBTypes = new FirebaseDB({} as FirebaseDBTypes);
 
   componentDidMount() {
     this.unsubscribe = this.FbAuth.fetchUserCart(this.props.dispatch);
   }
 
   componentWillUnmount() {
-    //stop listener for user authentication
+    // stop listener for user authentication
     this.unsubscribe();
   }
 
-  handleGuestActions = event => {
+  handleGuestActions = (event: any) => {
     const { key, name } = event.target.dataset;
     switch (name) {
       case 'delete':
@@ -59,7 +77,7 @@ class Cart extends Component {
     });
   };
 
-  handleUserActions = event => {
+  handleUserActions = (event: any) => {
     const { itemKey, name } = event.target.dataset;
     const { uid } = this.props.user;
     switch (name) {
@@ -83,17 +101,17 @@ class Cart extends Component {
     this.numOfItems = 0;
 
     this.itemsInCart = _.map(cart, (value, key) => {
-      //calculate total price from all items in the cart
-      //add regular or sale price
+      // calculate total price from all items in the cart
+      // add regular or sale price
       if (value && value !== 'empty') {
         if (String(value.data.onSale) === 'true') {
-          this.total += parseFloat(value.data.salePrice, 10) * value.quantity;
+          this.total += parseFloat(value.data.salePrice) * value.quantity;
           this.itemValue = value.data.salePrice;
         } else {
-          this.total += parseFloat(value.data.price, 10) * value.quantity;
+          this.total += parseFloat(value.data.price) * value.quantity;
           this.itemValue = value.data.price;
         }
-        //calculate number of all items in users cart
+        // calculate number of all items in users cart
         this.numOfItems += value.quantity;
 
         return (
@@ -141,26 +159,28 @@ class Cart extends Component {
           </ListGroupItem>
         );
       }
+      return null;
     });
     if (!_.isEmpty(this.itemsInCart)) {
       return this.itemsInCart;
     }
+    return null;
   };
 
   renderLocalItems = () => {
     this.total = 0;
     this.numOfItems = 0;
+
     this.itemsInCart = _.map(this.state.localCart, (value, key) => {
-      //calculate total price from all items in the cart
+      // calculate total price from all items in the cart
       if (String(value.data.value.onSale) === 'true') {
-        this.total +=
-          parseFloat(value.data.value.salePrice, 10) * value.quantity;
+        this.total += parseFloat(value.data.value.salePrice) * value.quantity;
         this.itemValue = value.data.value.salePrice;
       } else {
-        this.total += parseFloat(value.data.value.price, 10) * value.quantity;
+        this.total += parseFloat(value.data.value.price) * value.quantity;
         this.itemValue = value.data.value.price;
       }
-      //calculate number of all items in guests cart
+      // calculate number of all items in guests cart
       this.numOfItems += value.quantity;
 
       return (
@@ -211,6 +231,7 @@ class Cart extends Component {
     if (!_.isEmpty(this.itemsInCart)) {
       return this.itemsInCart;
     }
+    return null;
   };
 
   render() {
@@ -252,7 +273,7 @@ class Cart extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: ReduxState) {
   return {
     user: state.user[0],
     cart: state.cart[state.cart.length - 1]

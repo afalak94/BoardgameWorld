@@ -4,7 +4,8 @@ import 'firebase/database';
 
 import firebase from '../firebase.config';
 import { addCategories, addToStore, Boardgame } from '../../Boardgames';
-import { FirebaseTypes, FirebaseDBTypes } from '../index';
+import { fetchItems } from '../../Cart';
+import { /*FirebaseTypes,*/ FirebaseDBTypes } from '../index';
 import { User } from '../../Authentication';
 
 export class FirebaseDB extends Component<FirebaseDBTypes> {
@@ -77,10 +78,7 @@ export class FirebaseDB extends Component<FirebaseDBTypes> {
       .child(userUid)
       .on('value', snapshot => {
         if (snapshot) {
-          dispatch({
-            type: FirebaseTypes.FETCH_ITEMS,
-            payload: snapshot.val()
-          });
+          dispatch<any>(fetchItems(snapshot.val()));
         }
       });
   }
