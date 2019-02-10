@@ -1,11 +1,10 @@
 // Cart component
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, MouseEvent } from 'react';
 import {
   ListGroup,
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText,
-  Jumbotron,
   Button
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -18,7 +17,7 @@ import {
   FirebaseDB,
   FirebaseDBTypes
 } from '../../Firebase';
-import { CartInterface } from '../index';
+import { CartInterface, CartSummary } from '../index';
 import { LocalStorageService, ReduxState } from '../../../main';
 import { User } from '../../Authentication';
 const styles = require('../../../main/css/Cart.module.css');
@@ -56,39 +55,38 @@ class Cart extends Component<Props> {
     this.unsubscribe();
   }
 
-  handleGuestActions = (event: any) => {
-    const { key, name } = event.target.dataset;
+  handleGuestActions = (event: MouseEvent<HTMLButtonElement>) => {
+    const { key, name } = event.currentTarget.dataset;
     switch (name) {
       case 'delete':
-        this.local = this.LS.removeFromLocalStorage(key);
+        this.local = this.LS.removeFromLocalStorage(key as string);
         break;
       case 'decrease':
-        this.local = this.LS.decreaseLocalStorageQuantity(key);
+        this.local = this.LS.decreaseLocalStorageQuantity(key as string);
         break;
       case 'increase':
-        this.local = this.LS.increaseLocalStorageQuantity(key);
+        this.local = this.LS.increaseLocalStorageQuantity(key as string);
         break;
       default:
         break;
     }
     this.setState(() => {
-      // const local = this.LS.decreaseLocalStorageQuantity(key);
       return { localCart: this.local };
     });
   };
 
-  handleUserActions = (event: any) => {
-    const { itemKey, name } = event.target.dataset;
+  handleUserActions = (event: MouseEvent<HTMLButtonElement>) => {
+    const { itemKey, name } = event.currentTarget.dataset;
     const { uid } = this.props.user;
     switch (name) {
       case 'delete':
-        this.FbDB.removeItemFromUsersCart(itemKey, uid);
+        this.FbDB.removeItemFromUsersCart(itemKey as string, uid);
         break;
       case 'decrease':
-        this.FbDB.decreaseItemQuantity(itemKey, uid);
+        this.FbDB.decreaseItemQuantity(itemKey as string, uid);
         break;
       case 'increase':
-        this.FbDB.increaseItemQuantity(itemKey, uid);
+        this.FbDB.increaseItemQuantity(itemKey as string, uid);
         break;
       default:
         break;
@@ -245,29 +243,12 @@ class Cart extends Component<Props> {
             : this.renderLocalItems()}
         </ListGroup>
 
-        <Jumbotron className={styles['cart__summary__jumbotron']}>
-          <h1 className={styles['cart__summary__header']}>Cart summary</h1>
-          <div className={styles['cart__summary__user']}>
-            User: {user ? user.email : 'Guest'}
-          </div>
-          {this.itemsInCart ? (
-            <div className={styles['cart__summary__number']}>
-              Number of items: <strong>{this.numOfItems}</strong>
-            </div>
-          ) : (
-            'None'
-          )}
-
-          <div className={styles['cart__summary__price']}>Total price: </div>
-          <div className={styles['cart__summary__priceNum']}>
-            <strong>
-              {Math.round(this.total * 100) / 100}
-              {' $'}
-            </strong>
-          </div>
-
-          <Button color='success'>CHECKOUT</Button>
-        </Jumbotron>
+        <CartSummary
+          user={user}
+          itemsInCart={this.itemsInCart}
+          numOfItems={this.numOfItems}
+          total={this.total}
+        />
       </div>
     );
   }
