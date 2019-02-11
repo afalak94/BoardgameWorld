@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import anime from 'animejs';
 
 import { FirebaseDB, FirebaseDBTypes } from '../../Firebase';
 import { updateSearchTerm } from '../../Navigation';
@@ -74,9 +75,10 @@ class Listing extends Component<Props> {
           tag='button'
           action
           key={key}
+          id={value.key as string}
           onClick={this.categoryClicked}
           data-category-value={value.value}
-          className={styles['listing__categoryListItem']}
+          className={`${styles['listing__categoryListItem']} cat-btns`}
         >
           {value.value}
         </ListGroupItem>
@@ -91,7 +93,27 @@ class Listing extends Component<Props> {
   categoryClicked = (event: MouseEvent<HTMLElement>): void => {
     const { dispatch } = this.props;
     const { categoryValue } = event.currentTarget.dataset;
+    const { id } = event.currentTarget;
     dispatch(selectCategory(categoryValue as string));
+
+    const elements = document.querySelectorAll('.cat-btns');
+    const target = document.getElementById(`${id}`);
+
+    anime({
+      targets: elements,
+      marginLeft: 0,
+      direction: 'left',
+      loop: false,
+      easing: 'spring(1, 80, 10, 0)'
+    });
+
+    anime({
+      targets: target,
+      marginLeft: 20,
+      direction: 'right',
+      loop: false,
+      easing: 'spring(1, 80, 10, 0)'
+    });
   };
 
   handlePriceClick = (event: MouseEvent<HTMLElement>): void => {
