@@ -98,7 +98,9 @@ class GameInfo extends Component<Props> {
               <ul>{this.renderCategories()}</ul>
             </div>
           </div>
-          <div className={styles['gameinfo__score']}>
+
+          <div className={styles['gameinfo__scoreWrapper']}>
+            <div className={styles['gameinfo__score']} />
             <div className={styles['gameinfo__scoreNum']}>{score}</div>
           </div>
         </div>

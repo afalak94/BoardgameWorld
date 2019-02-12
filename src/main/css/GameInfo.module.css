@@ -66,18 +66,32 @@
     }
   }
 
-  .gameinfo__score {
+  .gameinfo__scoreWrapper {
     grid-area: score;
-    background-image: url('../../main/assets/images/hexagon.png');
-    background-size: cover;
-    background-position: center;
-    text-align: center !important;
+
+    .gameinfo__score {
+      background-image: url('../../main/assets/images/hexagon.png');
+      background-size: cover;
+      background-position: center;
+      height: 400px;
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
 
     .gameinfo__scoreNum {
-      text-align: center !important;
+      position: absolute;
+      text-align: center;
       line-height: 394px;
       font-size: 140px;
       font-family: var(--font1);
+      margin-top: -400px;
+      width: 392px;
+      height: 400px;
     }
   }
 }

@@ -102,17 +102,15 @@ class Listing extends Component<Props> {
     anime({
       targets: elements,
       marginLeft: 0,
-      direction: 'left',
       loop: false,
-      easing: 'spring(1, 80, 10, 0)'
+      easing: 'spring(1, 90, 50, 10)'
     });
 
     anime({
       targets: target,
       marginLeft: 20,
-      direction: 'right',
       loop: false,
-      easing: 'spring(1, 80, 10, 0)'
+      easing: 'spring(1, 90, 50, 10)'
     });
   };
 
