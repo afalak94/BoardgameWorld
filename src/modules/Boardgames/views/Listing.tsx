@@ -125,6 +125,14 @@ class Listing extends Component<Props> {
     dispatch(selectCategory(''));
     dispatch(selectPriceOrder(''));
     dispatch(updateSearchTerm(''));
+
+    const elements = document.querySelectorAll('.cat-btns');
+    anime({
+      targets: elements,
+      marginLeft: 0,
+      loop: false,
+      easing: 'spring(1, 90, 50, 10)'
+    });
   };
 
   render() {
