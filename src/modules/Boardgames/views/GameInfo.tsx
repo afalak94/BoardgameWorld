@@ -88,7 +88,7 @@ class GameInfo extends Component<Props> {
     return (
       <div className={styles['gameinfo__wrapper']}>
         <div className={styles['gameinfo__imgContainer']}>
-          <img className={styles['gameinfo__img']} src={imgUrl} alt='info' />
+          <img className={styles['gameinfo__img']} src={imgUrl} alt="info" />
         </div>
 
         <div className={styles['gameinfo__info']}>
@@ -111,7 +111,7 @@ class GameInfo extends Component<Props> {
 
         <div className={styles['gameinfo__buy']}>
           {this.renderPrice()}
-          <Button color='success' onClick={this.handleClick}>
+          <Button color="success" onClick={this.handleClick}>
             Add to Cart
           </Button>
         </div>

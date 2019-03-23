@@ -20,14 +20,17 @@ export class LocalStorageService extends Component {
     let exists = false;
     const oldStorage: any = JSON.parse(localStorage.getItem('cart') as string);
     // check if item alredy exists in localStorage
-    oldStorage.forEach((item: LocalStorageItem) => {
-      if (item.data.key === data.key) {
-        // item exists, increment quantity
-        exists = true;
-        item.quantity++;
-        localStorage.setItem('cart', JSON.stringify(oldStorage));
-      }
-    });
+    if (oldStorage) {
+      oldStorage.forEach((item: LocalStorageItem) => {
+        if (item.data.key === data.key) {
+          // item exists, increment quantity
+          exists = true;
+          item.quantity++;
+          localStorage.setItem('cart', JSON.stringify(oldStorage));
+        }
+      });
+    }
+
     // if item doesnt exists in localStorage, create it
     if (!exists) {
       const newStorage: LocalStorageItem[] = [];
