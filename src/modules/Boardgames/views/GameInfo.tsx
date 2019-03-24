@@ -41,10 +41,7 @@ class GameInfo extends Component<Props> {
   }
 
   renderCategories = (): ReactNode => {
-    if (!this.boardgame) {
-      return null;
-    }
-    return this.boardgame.value.category.map((category, index) => {
+    return this.boardgame!.value.category.map((category, index) => {
       return (
         <li className={styles['gameinfo__categoryItem']} key={index}>
           {category}
@@ -54,10 +51,7 @@ class GameInfo extends Component<Props> {
   };
 
   renderPrice = (): ReactNode => {
-    if (!this.boardgame) {
-      return null;
-    }
-    const { onSale, price, salePrice } = this.boardgame.value;
+    const { onSale, price, salePrice } = this.boardgame!.value;
     if (onSale === false) {
       return <div className={styles['gameinfo__price']}>Price: {price} $</div>;
     }
@@ -70,9 +64,6 @@ class GameInfo extends Component<Props> {
   };
 
   handleClick = (): any => {
-    if (!this.boardgame) {
-      return null;
-    }
     const { user } = this.props;
     user.uid !== 'guest'
       ? this.FbDB.addItemToUsersCart(this.boardgame as Boardgame, user)
@@ -101,7 +92,9 @@ class GameInfo extends Component<Props> {
 
           <div className={styles['gameinfo__scoreWrapper']}>
             <div className={styles['gameinfo__score']} />
-            <div className={styles['gameinfo__scoreNum']}>{score}</div>
+            <div className={styles['gameinfo__scoreNum']}>
+              <span>{score}</span>
+            </div>
           </div>
         </div>
 

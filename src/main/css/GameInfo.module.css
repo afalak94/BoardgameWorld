@@ -71,8 +71,9 @@
 
     .gameinfo__score {
       background-image: url('../../main/assets/images/hexagon.png');
-      background-size: cover;
+      background-size: contain;
       background-position: center;
+      background-repeat: no-repeat;
       height: 400px;
       animation: spin 8s linear infinite;
     }
@@ -84,14 +85,22 @@
     }
 
     .gameinfo__scoreNum {
-      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 5;
       text-align: center;
-      line-height: 394px;
-      font-size: 140px;
+
       font-family: var(--font1);
       margin-top: -400px;
-      width: 392px;
-      height: 400px;
+      max-width: 392px;
+      max-height: 400px;
+
+      span {
+        line-height: 394px;
+        /* font-size: 140px; */
+        font-size: 10vw;
+      }
     }
   }
 }
