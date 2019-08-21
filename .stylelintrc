@@ -13,7 +13,6 @@
       "selector-combinator-space-after": "always",
       "declaration-block-trailing-semicolon": "always",
       "declaration-colon-space-before": "never",
-      "declaration-colon-space-after": "always",
       "rule-empty-line-before": ["always-multi-line", {
         except: ["after-single-line-comment", "first-nested"]
       }],
