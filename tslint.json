@@ -15,7 +15,7 @@
     "object-literal-sort-keys": false,
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "trailing-comma": false,
-    "quotemark": [true, "single", "avoid-escape" /*, "jsx-double"*/],
+    "quotemark": [true, "single", "avoid-escape", "jsx-double"],
     "no-var-requires": false,
     "no-trailing-whitespace": false,
     "jsx-no-lambda": true,

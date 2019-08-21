@@ -20,21 +20,21 @@ import ScrollToTop, {
 const routing = (
   <Provider store={store}>
     <BrowserRouter>
-      <div>
+      <div className="app">
         <Header />
         <ScrollToTop>
-          <div className='background'>
-            <div className='container-fluid'>
+          <div className="background">
+            <div className="container-fluid">
               <Switch>
-                <Route path='/' component={Home} exact />
-                <Route path='/listing' component={Listing} exact />
-                <Route path='/faq' component={FAQ} exact />
-                <Route path='/login' component={Login} exact />
-                <Route path='/register' component={Register} exact />
-                <Route path='/password' component={ResetPassword} exact />
-                <Route path='/cart' component={Cart} exact />
-                <Route path='/game/:id' component={GameInfo} exact />
-                <ProtectedRoute path='/admin' component={AdminSection} />
+                <Route path="/" component={Home} exact />
+                <Route path="/listing" component={Listing} exact />
+                <Route path="/faq" component={FAQ} exact />
+                <Route path="/login" component={Login} exact />
+                <Route path="/register" component={Register} exact />
+                <Route path="/password" component={ResetPassword} exact />
+                <Route path="/cart" component={Cart} exact />
+                <Route path="/game/:id" component={GameInfo} exact />
+                <ProtectedRoute path="/admin" component={AdminSection} />
 
                 <Route component={Notfound} />
               </Switch>
