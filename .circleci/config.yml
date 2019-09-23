@@ -20,7 +20,7 @@ jobs:
           command: npm install
       - run:
           name: Build for development.
-          command: npm build
+          command: npm run-script build
       - run:
           name: Remove node modules.
           command: rm -rf node_modules
