@@ -2,33 +2,58 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  firebase:
     docker:
-      # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.12.0-browsers
+    working_directory: ~/project
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+jobs:
+  build-development:
+    executor: firebase
     steps:
       - checkout
+      - run:
+        name: Install Dependencies.
+        command: npm install
+      - run:
+        name: Build for development.
+        command: npm build
+      - run:
+        name: Remove node modules.
+        command: rm -rf node_modules
+      - persist_to_workspace:
+        root: ~/project
+        paths:
+          - .
+  deploy-development:
+    executor: firebase
+    steps:
+      - attach_workspace:
+        at: ~/project
+      - run:
+        name: Install Firebase tools
+        command: npm install firebase-tools
+      - run:
+        name: Add target firebase hosting project
+        command: ./node_modules/.bin/firebase use react-store-3406f
+      - run:
+        name: Update target firebase hosting project
+        command: ./node_modules/.bin/firebase target:apply hosting boardgame-world boardgame-world
+      - run:
+          name: Deploy Develop to Firebase Development environment
+          command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --project react-store-3406f
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+workflows:
+  version: 2
+  build-development:
+    jobs:
+      - build-development:
+          filters:
+            branches:
+              only: develop
+      - deploy-development:
+          requires:
+            - build-development
