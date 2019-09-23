@@ -16,39 +16,39 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install Dependencies.
-        command: npm install
+          name: Install Dependencies.
+          command: npm install
       - run:
-        name: Build for development.
-        command: npm build
+          name: Build for development.
+          command: npm build
       - run:
-        name: Remove node modules.
-        command: rm -rf node_modules
+          name: Remove node modules.
+          command: rm -rf node_modules
       - persist_to_workspace:
-        root: ~/project
-        paths:
-          - .
+          root: ~/project
+          paths:
+            - .
   deploy-development:
     executor: firebase
     steps:
       - attach_workspace:
-        at: ~/project
+          at: ~/project
       - run:
-        name: Install Firebase tools
-        command: npm install firebase-tools
+          name: Install Firebase tools
+          command: npm install firebase-tools
       - run:
-        name: Add target firebase hosting project
-        command: ./node_modules/.bin/firebase use react-store-3406f
+          name: Add target firebase hosting project
+          command: ./node_modules/.bin/firebase use react-store-3406f
       - run:
-        name: Update target firebase hosting project
-        command: ./node_modules/.bin/firebase target:apply hosting boardgame-world boardgame-world
+          name: Update target firebase hosting project
+          command: ./node_modules/.bin/firebase target:apply hosting boardgame-world boardgame-world
       - run:
           name: Deploy Develop to Firebase Development environment
           command: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN" --non-interactive --project react-store-3406f
 
 workflows:
   version: 2
-  build-development:
+  build-and-deploy:
     jobs:
       - build-development:
           filters:
