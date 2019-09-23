@@ -13,7 +13,6 @@ executors:
 jobs:
   build-development:
     executor: firebase
-
     steps:
       - checkout
       - run:
